@@ -1445,7 +1445,7 @@
             <!-- T-SHIRT IMAGE -->
             <div class="tshirt-image-container">
                 <!-- REPLACE WITH YOUR ACTUAL IMAGE: -->
-                <img src="https://github.com/Bertarose/actions/blob/main/tshirt.png" alt="T-shirt ACTIONS" class="tshirt-image">
+                <!-- <img src="path/to/your/tshirt.jpg" alt="T-shirt ACTIONS" class="tshirt-image"> -->
                 
                 <!-- PLACEHOLDER - Delete this div when you add real image -->
                 <div class="tshirt-placeholder">
@@ -1462,7 +1462,7 @@
             </div>
 
             <div class="tshirt-price">45$</div>
-            <p style="color: var(--gray-light); margin-bottom: 2rem;">Pré-commande • Production éthique • Livraison 2-4 semaines</p>
+            <p id="tshirtPreorderText" style="color: var(--gray-light); margin-bottom: 2rem;">Pré-commande • Production éthique • Livraison 2-4 semaines</p>
             
             <button class="tshirt-cta" id="preorderBtn">Pré-commander maintenant</button>
 
@@ -1473,7 +1473,7 @@
                     <li>Production, impression, expédition → Artisans locaux quand possible</li>
                     <li>Le reste → Finance mon apprentissage créatif et mon loyer</li>
                 </ul>
-                <p style="margin-top: 1rem; font-style: italic;">Acheter ce T-shirt, c'est soutenir un projet artistique vivant et aider quelqu'un à continuer de créer.</p>
+                <p id="tshirtImpactFooter" style="margin-top: 1rem; font-style: italic;">Acheter ce T-shirt, c'est soutenir un projet artistique vivant et aider quelqu'un à continuer de créer.</p>
             </div>
         </div>
 
@@ -1742,37 +1742,46 @@
             currentLang = lang;
             const t = translations[lang];
 
+            // Helper function for safe updates
+            function safeUpdate(selector, property, value) {
+                const el = typeof selector === 'string' ? document.querySelector(selector) : selector;
+                if (el) el[property] = value;
+            }
+
             // Update all interface elements
-            document.getElementById('builtWithBtn').textContent = t.builtWithBtn;
-            document.querySelector('.subtitle').textContent = t.subtitle;
-            document.querySelector('.counter-label').textContent = t.counterLabel;
-            document.querySelector('.counter-sublabel').textContent = t.counterSub;
+            safeUpdate('#builtWithBtn', 'textContent', t.builtWithBtn);
+            safeUpdate('.subtitle', 'textContent', t.subtitle);
+            safeUpdate('.counter-label', 'textContent', t.counterLabel);
+            safeUpdate('.counter-sublabel', 'textContent', t.counterSub);
             
             // Stats labels
-            document.querySelectorAll('.stat-label')[0].textContent = t.stat1Label;
-            document.querySelectorAll('.stat-label')[1].textContent = t.stat2Label;
-            document.querySelectorAll('.stat-label')[2].textContent = t.stat3Label;
-            document.querySelectorAll('.stat-label')[3].textContent = t.stat4Label;
+            const statLabels = document.querySelectorAll('.stat-label');
+            if (statLabels[0]) statLabels[0].textContent = t.stat1Label;
+            if (statLabels[1]) statLabels[1].textContent = t.stat2Label;
+            if (statLabels[2]) statLabels[2].textContent = t.stat3Label;
+            if (statLabels[3]) statLabels[3].textContent = t.stat4Label;
 
             // T-shirt section
-            document.querySelector('.tshirt-section h2').textContent = t.tshirtTitle;
-            document.querySelector('.tshirt-tagline').textContent = t.tshirtTagline;
+            safeUpdate('.tshirt-section h2', 'textContent', t.tshirtTitle);
+            safeUpdate('.tshirt-tagline', 'textContent', t.tshirtTagline);
             const tshirtDesc = document.querySelectorAll('.tshirt-description p');
-            tshirtDesc[0].textContent = t.tshirtDesc1;
-            tshirtDesc[1].textContent = t.tshirtDesc2;
-            tshirtDesc[2].textContent = t.tshirtDesc3;
-            document.querySelector('.tshirt-section > p').textContent = t.tshirtPreorder;
-            document.getElementById('preorderBtn').textContent = t.tshirtBtn;
-            document.querySelector('.tshirt-impact h4').textContent = t.tshirtImpactTitle;
+            if (tshirtDesc[0]) tshirtDesc[0].textContent = t.tshirtDesc1;
+            if (tshirtDesc[1]) tshirtDesc[1].textContent = t.tshirtDesc2;
+            if (tshirtDesc[2]) tshirtDesc[2].textContent = t.tshirtDesc3;
+            
+            safeUpdate('#tshirtPreorderText', 'textContent', t.tshirtPreorder);
+            safeUpdate('#preorderBtn', 'textContent', t.tshirtBtn);
+            safeUpdate('.tshirt-impact h4', 'textContent', t.tshirtImpactTitle);
             const impactItems = document.querySelectorAll('.tshirt-impact li');
-            impactItems[0].textContent = t.tshirtImpact1;
-            impactItems[1].textContent = t.tshirtImpact2;
-            impactItems[2].textContent = t.tshirtImpact3;
-            document.querySelector('.tshirt-impact p').textContent = t.tshirtImpactFooter;
+            if (impactItems[0]) impactItems[0].textContent = t.tshirtImpact1;
+            if (impactItems[1]) impactItems[1].textContent = t.tshirtImpact2;
+            if (impactItems[2]) impactItems[2].textContent = t.tshirtImpact3;
+            safeUpdate('#tshirtImpactFooter', 'textContent', t.tshirtImpactFooter);
 
             // Hints modal
-            document.querySelector('.hints-title').textContent = t.hintsTitle;
-            document.querySelector('.hints-counter span:last-child').textContent = t.hintsCounter;
+            safeUpdate('.hints-title', 'textContent', t.hintsTitle);
+            const hintsCounter = document.querySelector('.hints-counter span:last-child');
+            if (hintsCounter) hintsCounter.textContent = t.hintsCounter;
             
             const hints = [
                 { title: t.hint1Title, desc: t.hint1Desc },
@@ -1790,30 +1799,33 @@
             ];
 
             document.querySelectorAll('.hint-item').forEach((item, i) => {
-                item.querySelector('.hint-title').textContent = hints[i].title;
-                item.querySelector('.hint-description').textContent = hints[i].desc;
+                const titleEl = item.querySelector('.hint-title');
+                const descEl = item.querySelector('.hint-description');
+                if (titleEl && hints[i]) titleEl.textContent = hints[i].title;
+                if (descEl && hints[i]) descEl.textContent = hints[i].desc;
             });
 
-            document.querySelector('.bonus-hint h3').textContent = t.bonusTitle;
-            document.querySelector('.bonus-hint p').innerHTML = t.bonusText;
+            safeUpdate('.bonus-hint h3', 'textContent', t.bonusTitle);
+            const bonusText = document.querySelector('.bonus-hint p');
+            if (bonusText) bonusText.innerHTML = t.bonusText;
 
             // Update modal
-            document.getElementById('modalTitle').textContent = t.modalTitle;
-            document.getElementById('modalIntroP1').textContent = t.modalIntro1;
-            document.getElementById('modalIntroP2').textContent = t.modalIntro2;
-            document.getElementById('toolsTitle').textContent = t.toolsTitle;
-            document.getElementById('tool1Desc').textContent = t.tool1Desc;
-            document.getElementById('tool2Desc').textContent = t.tool2Desc;
-            document.getElementById('tool3Name').textContent = t.tool3Name;
-            document.getElementById('tool3Desc').textContent = t.tool3Desc;
-            document.getElementById('tool4Name').textContent = t.tool4Name;
-            document.getElementById('tool4Desc').textContent = t.tool4Desc;
-            document.getElementById('tool5Name').textContent = t.tool5Name;
-            document.getElementById('tool5Desc').textContent = t.tool5Desc;
-            document.getElementById('conclusionTitle').textContent = t.conclusionTitle;
-            document.getElementById('conclusionP1').textContent = t.conclusionP1;
-            document.getElementById('conclusionP2').textContent = t.conclusionP2;
-            document.getElementById('conclusionP3').textContent = t.conclusionP3;
+            safeUpdate('#modalTitle', 'textContent', t.modalTitle);
+            safeUpdate('#modalIntroP1', 'textContent', t.modalIntro1);
+            safeUpdate('#modalIntroP2', 'textContent', t.modalIntro2);
+            safeUpdate('#toolsTitle', 'textContent', t.toolsTitle);
+            safeUpdate('#tool1Desc', 'textContent', t.tool1Desc);
+            safeUpdate('#tool2Desc', 'textContent', t.tool2Desc);
+            safeUpdate('#tool3Name', 'textContent', t.tool3Name);
+            safeUpdate('#tool3Desc', 'textContent', t.tool3Desc);
+            safeUpdate('#tool4Name', 'textContent', t.tool4Name);
+            safeUpdate('#tool4Desc', 'textContent', t.tool4Desc);
+            safeUpdate('#tool5Name', 'textContent', t.tool5Name);
+            safeUpdate('#tool5Desc', 'textContent', t.tool5Desc);
+            safeUpdate('#conclusionTitle', 'textContent', t.conclusionTitle);
+            safeUpdate('#conclusionP1', 'textContent', t.conclusionP1);
+            safeUpdate('#conclusionP2', 'textContent', t.conclusionP2);
+            safeUpdate('#conclusionP3', 'textContent', t.conclusionP3);
 
             // Reveal paragraphs
             revealOnScroll();
@@ -1963,7 +1975,6 @@
             }
 
             // Update terminal codes command
-            const count = secretsFound.length;
             const secretsList = secretsFound.join(', ') || (currentLang === 'fr' ? 'Aucun encore' : 'None yet');
             translations[currentLang].cmdCodes = `${currentLang === 'fr' ? 'Codes secrets trouvés' : 'Secret codes found'}: ${count}/12 - ${secretsList}`;
         }
