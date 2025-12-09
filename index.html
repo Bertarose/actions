@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Actions - Interactive Manifesto</title>
-    <meta name="description" content="An interactive manifesto exploring systemic violence and the power of conscious action">
+    <meta name="description" content="An interactive manifesto about systemic violence and conscious action">
     <style>
         * {
             margin: 0;
@@ -25,6 +25,32 @@
             overflow-x: hidden;
             font-family: 'Courier New', monospace;
             color: var(--text-white);
+            transition: all 0.3s ease;
+        }
+
+        body.peace-mode {
+            --neon-green: #90EE90;
+            --neon-pink: #FFB6C1;
+            --neon-cyan: #87CEEB;
+        }
+
+        body.truth-mode {
+            --neon-green: #ff0000;
+            --neon-pink: #ff0000;
+            --neon-cyan: #ff0000;
+        }
+
+        body.wake-mode {
+            animation: glitchBody 0.3s infinite;
+        }
+
+        @keyframes glitchBody {
+            0% { transform: translate(0); }
+            20% { transform: translate(-5px, 5px); }
+            40% { transform: translate(5px, -5px); }
+            60% { transform: translate(-5px, -5px); }
+            80% { transform: translate(5px, 5px); }
+            100% { transform: translate(0); }
         }
 
         /* Matrix Canvas Background */
@@ -35,6 +61,7 @@
             width: 100%;
             height: 100%;
             z-index: 1;
+            transition: opacity 0.5s ease;
         }
 
         /* Main Content Container */
@@ -64,6 +91,7 @@
             animation: glitch 3s infinite;
             margin-bottom: 2rem;
             text-align: center;
+            transition: all 0.3s ease;
         }
 
         /* Real-time Counter */
@@ -78,6 +106,26 @@
             max-width: 600px;
             width: 100%;
             text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .counter-container:hover {
+            transform: scale(1.02);
+            box-shadow: 
+                inset 0 0 30px rgba(255, 0, 255, 0.3),
+                0 0 40px rgba(255, 0, 255, 0.6);
+        }
+
+        .counter-container.crazy {
+            animation: shake 0.5s infinite;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(5px, 5px) rotate(2deg); }
+            50% { transform: translate(-5px, -5px) rotate(-2deg); }
+            75% { transform: translate(5px, -5px) rotate(1deg); }
         }
 
         .counter-label {
@@ -86,6 +134,7 @@
             text-transform: uppercase;
             letter-spacing: 0.2em;
             margin-bottom: 1rem;
+            transition: all 0.3s ease;
         }
 
         .counter-display {
@@ -96,6 +145,7 @@
                 0 0 10px var(--neon-pink),
                 0 0 20px var(--neon-pink);
             font-variant-numeric: tabular-nums;
+            transition: all 0.3s ease;
         }
 
         .counter-sublabel {
@@ -115,14 +165,15 @@
                 inset 0 0 30px rgba(0, 255, 65, 0.1),
                 0 0 30px rgba(0, 255, 65, 0.3);
             margin-bottom: 4rem;
+            transition: all 0.3s ease;
         }
 
         .text-container p {
-            font-size: clamp(0.9rem, 1.5vw, 1.1rem);
+            font-size: clamp(0.95rem, 1.5vw, 1.15rem);
             color: var(--text-white);
-            line-height: 1.9;
-            margin-bottom: 1.5rem;
-            text-align: justify;
+            line-height: 1.8;
+            margin-bottom: 1.2rem;
+            text-align: left;
             text-shadow: 0 0 3px rgba(255, 255, 255, 0.3);
             opacity: 0;
             transform: translateY(20px);
@@ -146,6 +197,7 @@
             text-decoration: underline;
             text-decoration-style: dotted;
             text-decoration-color: var(--neon-cyan);
+            transition: all 0.2s ease;
         }
 
         .stat-word:hover {
@@ -189,10 +241,27 @@
                 0 0 80px var(--neon-pink),
                 0 0 100px var(--neon-pink);
             opacity: 0.3;
-            pointer-events: none;
+            pointer-events: all;
             z-index: 6;
             animation: float 20s infinite ease-in-out;
             white-space: nowrap;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .floating-text:hover {
+            opacity: 0.5;
+            transform: scale(1.05);
+        }
+
+        .floating-text.explode {
+            animation: explode 1s ease-out;
+        }
+
+        @keyframes explode {
+            0% { transform: scale(1); opacity: 0.3; }
+            50% { transform: scale(3); opacity: 1; filter: blur(10px); }
+            100% { transform: scale(0.5); opacity: 0; }
         }
 
         /* Terminal Chat Interface */
@@ -225,6 +294,27 @@
             font-size: 2rem;
             color: var(--neon-green);
             font-weight: bold;
+        }
+
+        .terminal-toggle.secret-found::after {
+            content: '!';
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            width: 20px;
+            height: 20px;
+            background: var(--neon-pink);
+            border-radius: 50%;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
         }
 
         .terminal-window {
@@ -316,6 +406,66 @@
             outline: none;
         }
 
+        /* Secret Message Overlay */
+        .secret-message {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            background: rgba(0, 0, 0, 0.95);
+            border: 3px solid var(--neon-pink);
+            padding: 3rem;
+            z-index: 200;
+            text-align: center;
+            box-shadow: 0 0 50px rgba(255, 0, 255, 0.8);
+            opacity: 0;
+            pointer-events: none;
+            max-width: 80%;
+        }
+
+        .secret-message.show {
+            animation: popIn 0.5s ease forwards;
+            pointer-events: all;
+        }
+
+        @keyframes popIn {
+            0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+            70% { transform: translate(-50%, -50%) scale(1.1); opacity: 1; }
+            100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+        }
+
+        .secret-message h2 {
+            color: var(--neon-pink);
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 20px var(--neon-pink);
+        }
+
+        .secret-message p {
+            color: var(--text-white);
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+
+        .secret-message button {
+            background: transparent;
+            border: 2px solid var(--neon-green);
+            color: var(--neon-green);
+            padding: 0.8rem 2rem;
+            font-family: 'Courier New', monospace;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+        }
+
+        .secret-message button:hover {
+            background: var(--neon-green);
+            color: var(--bg-black);
+            box-shadow: 0 0 20px var(--neon-green);
+        }
+
         /* Visual Effects */
         .scanline {
             position: fixed;
@@ -359,6 +509,7 @@
             pointer-events: none;
             z-index: 5;
             animation: borderPulse 2s infinite alternate;
+            transition: all 0.3s ease;
         }
 
         /* Animations */
@@ -461,6 +612,10 @@
             .counter-container {
                 padding: 1.5rem;
             }
+
+            .secret-message {
+                padding: 2rem;
+            }
         }
 
         /* Section Separator */
@@ -479,7 +634,14 @@
     <div class="scanline"></div>
     <div class="noise"></div>
     <div class="cyber-border"></div>
-    <div class="floating-text">STOP WAR</div>
+    <div class="floating-text" id="floatingText">STOP WAR</div>
+
+    <!-- Secret Message Overlay -->
+    <div class="secret-message" id="secretMessage">
+        <h2>SECRET DÉBLOQUÉ</h2>
+        <p id="secretText">Message secret ici...</p>
+        <button onclick="closeSecret()">FERMER</button>
+    </div>
 
     <!-- Terminal Toggle Button -->
     <div class="terminal-toggle" id="terminalToggle"></div>
@@ -493,6 +655,7 @@
         <div class="terminal-content" id="terminalContent">
             <div class="terminal-line"><span class="terminal-prompt">&gt;</span> System initialized...</div>
             <div class="terminal-line"><span class="terminal-prompt">&gt;</span> Type 'help' for commands</div>
+            <div class="terminal-line"><span class="terminal-prompt">&gt;</span> Hidden codes: Try typing secret words...</div>
         </div>
         <div class="terminal-input-container">
             <input type="text" class="terminal-input" id="terminalInput" placeholder="Enter command..." autocomplete="off">
@@ -504,81 +667,99 @@
         <h1>Actions</h1>
 
         <!-- Real-time Military Spending Counter -->
-        <div class="counter-container">
+        <div class="counter-container" id="counterContainer">
             <div class="counter-label">Global Military Spending</div>
             <div class="counter-display" id="militaryCounter">$0</div>
-            <div class="counter-sublabel">Per second (estimated based on 2023 data: $2.4T/year)</div>
+            <div class="counter-sublabel">Per second (based on $2.4T/year)</div>
         </div>
 
         <!-- Main Text Content -->
         <div class="text-container" id="textContent">
-            <p>La violence, la guerre et la domination ne sont pas des accidents, ni des anomalies morales éparpillées à travers l'histoire. Ce sont les produits d'architectures humaines — politiques, économiques, culturelles — des systèmes que nous avons inventés, normalisés et collectivement maintenus. L'affirmer semble simple ; vivre avec ses implications ne l'est pas. Pourtant, avant même de tenter de changer le monde, une vérité inconfortable doit être reconnue : chaque jour, nous participons et bénéficions de <span class="stat-word">systèmes<span class="stat-tooltip">193 États membres de l'ONU</span></span> qui produisent de la souffrance.</p>
+            <!-- FRENCH VERSION -->
+            <p>La guerre n'est pas un accident. C'est un système qu'on finance tous les jours.</p>
 
-            <p>Ce texte n'est pas un appel à diviser le monde entre « bien » et « mal », ni n'offre de remède politique prêt à l'emploi. C'est une invitation à regarder la source — à comprendre les mécanismes qui rendent la guerre et la cruauté possibles — et à examiner nos propres gestes quotidiens dans ce miroir. Si l'on prétend vraiment être contre la <span class="stat-word">guerre<span class="stat-tooltip">56 conflits actifs en 2024</span></span> et la violence, la question ne peut s'arrêter à l'opinion ou à la protestation. Elle doit s'étendre à la violence que ses propres choix financent silencieusement. Sans cet examen, la condamnation publique risque de n'être rien de plus qu'un symbolisme vide — une indignation sans conséquence.</p>
+            <p>Les <span class="stat-word">gouvernements<span class="stat-tooltip">193 pays membres ONU</span></span> dépensent <span class="stat-word">2,4 trillions<span class="stat-tooltip">$2 400 000 000 000 en 2023</span></span> par année en armement. Ça fait <span class="stat-word">76 000$<span class="stat-tooltip">$76,103 par seconde</span></span> par seconde. Pendant que tu lis ça, des contrats militaires se signent, des usines d'armes produisent, des lobbyistes négocient.</p>
 
-            <p>La violence n'émerge pas spontanément. Elle est planifiée, organisée, rationalisée. Les États, les industries et les institutions construisent des cadres dans lesquels la destruction devient un outil fonctionnel. Les guerres ne sont pas des ruptures soudaines ; elles sont préparées par le lobbying, les intérêts économiques et les récits légitimants. Les politiques publiques, les chaînes d'approvisionnement, les <span class="stat-word">investissements financiers<span class="stat-tooltip">$2.4 trillion dépensés en 2023</span></span> et les accords commerciaux façonnent tous les résultats — déterminant qui est protégé, qui prospère et qui peut être sacrifié. Il ne s'agit pas simplement d'une question de moralité individuelle. La logique systémique transforme les actions isolées en rôles sociaux. Les soldats se déplacent parce que les machines d'État les mettent en mouvement. Les tueries de masse deviennent possibles parce que des infrastructures administratives, logistiques et financières les soutiennent. Réduire la violence à l'échec moral individuel occulte la machinerie qui lui permet de perdurer.</p>
+            <p>Il y a présentement <span class="stat-word">56 conflits armés<span class="stat-tooltip">Données 2024</span></span> actifs dans le monde. Chacun repose sur des chaînes d'approvisionnement, des investissements, des accords commerciaux. La guerre est une industrie. Elle a besoin de clients.</p>
 
-            <p>Dans ce paysage, l'activisme émerge souvent comme nécessité et refuge. Les mouvements, marches, slogans et symboles créent du sens partagé et de la solidarité. Dans le meilleur des cas, ils sauvent des vies, ralentissent les abus et exposent les crimes. Pourtant, l'activisme peut aussi se durcir en identité. Lorsque l'engagement devient principalement une façon d'être — de signaler l'appartenance ou la légitimité morale — il risque de piéger les participants dans des cycles de visibilité et de consommation d'information qui restent en sécurité dans la polarité idéologique. Se sentir moralement justifié n'est pas la même chose que poursuivre la cohérence éthique. On peut dénoncer bruyamment la guerre tout en continuant à consommer des produits qui soutiennent d'autres formes de violence. La dissonance entre parole et acte demeure l'un des angles morts les plus persistants de l'engagement contemporain.</p>
+            <p>On condamne la violence. On partage des posts. On signe des pétitions. Puis on achète un nouveau téléphone dont les <span class="stat-word">minéraux<span class="stat-tooltip">Cobalt, lithium, coltan</span></span> viennent de mines où travaillent des <span class="stat-word">enfants<span class="stat-tooltip">160 millions d'enfants en travail forcé</span></span>. On commande des vêtements fabriqués dans des usines où les gens font 12h par jour pour 2$. On mange de la viande produite dans des systèmes qui tuent <span class="stat-word">80 milliards d'animaux<span class="stat-tooltip">Par année, globalement</span></span> par année.</p>
 
-            <p>La violence moderne s'annonce rarement par le spectacle seul. Alors que la guerre tue à grande échelle, la modernité industrielle a raffiné le préjudice en formes plus silencieuses. Elle tue progressivement, à l'intérieur des usines, entrepôts, mines, abattoirs — des espaces qui occupent rarement les gros titres. Des <span class="stat-word">milliards d'êtres vivants<span class="stat-tooltip">80+ milliards d'animaux tués/an</span></span>, humains et non-humains, endurent la souffrance à l'intérieur de systèmes industriels conçus pour l'efficacité, la rentabilité et l'accumulation. Ce ne sont pas des accidents logistiques ; ce sont des choix institutionnels. Leurs conséquences sont la souffrance de masse, l'érosion morale et la normalisation du meurtre.</p>
+            <p>Ce n'est pas de la morale. C'est de l'observation.</p>
 
-            <p>La même logique s'étend aux objets quotidiens. L'électronique, les vêtements, la nourriture et l'énergie dépendent souvent de pratiques d'extraction liées au <span class="stat-word">travail des enfants<span class="stat-tooltip">160 millions d'enfants en travail forcé</span></span>, aux communautés déplacées et à la destruction écologique. Les matériaux à l'intérieur d'un téléphone peuvent remonter à des corps exploités ; la semelle d'une chaussure peut porter le coût invisible de vies déracinées. La violence ne nécessite pas toujours d'armes. Elle peut être administrative, économique, industrielle. Un simple clic sur « acheter » peut renforcer silencieusement des systèmes qui nuisent à un rythme régulier et normalisé.</p>
+            <p>Les systèmes violents existent parce qu'ils sont rentables. Ils continuent parce qu'on participe. Pas par cruauté, mais par habitude. Par commodité. Par manque d'alternative visible.</p>
 
-            <p>C'est pourquoi la moralité publique coexiste si souvent avec la contradiction privée. Les images de souffrance circulent, les émotions montent, l'indignation est partagée — et puis les routines quotidiennes reprennent inchangées. Faire du shopping, mettre à jour des appareils, commander de la nourriture. C'est le rythme du spectacle suivi de l'oubli. L'émotion médiatique reste détachée des décisions pratiques qui soutiennent matériellement le préjudice. Souvent, cette déconnexion n'est pas de la cruauté délibérée mais de l'inconscience — l'absence d'habitude de tracer la cause et l'effet à travers des systèmes complexes. Parfois, cependant, c'est une hypocrisie plus silencieuse : le choix de préserver le confort tout en minimisant le coût moral. Quelle que soit sa source, cette dissonance importe. Lorsque la responsabilité est performativement rejetée, la protestation devient un rituel dépourvu de force transformatrice.</p>
+            <p>Le problème n'est pas d'être "une mauvaise personne". Le problème est de vivre dans un système conçu pour cacher ses coûts réels. Tu vois le produit, pas la chaîne. Tu vois le prix, pas les corps. Tu vois la marque, pas les contrats militaires derrière.</p>
 
-            <p>C'est aussi pourquoi remettre en question ces structures peut provoquer l'hostilité. Suggérer que les humains ont construit la guerre — et peuvent choisir de ne pas la nourrir — est radical, non pas parce que c'est extrême, mais parce que cela exige de sortir des cadres familiers. Cela tient un miroir à chaque vie individuelle. Ceux profondément investis dans des identités politiques ou activistes peuvent réagir défensivement, pas nécessairement par mauvaise foi, mais pour protéger un ordre psychologique qui donne cohérence à leur existence. Refuser la polarité déstabilise le confort moral. Plutôt que d'affronter cet inconfort, il est souvent plus facile d'attaquer la position qui le révèle. La réaction elle-même devient preuve de la profondeur avec laquelle la source résiste à l'examen.</p>
+            <p>L'activisme peut devenir une identité. Une façon de se sentir du bon côté. Mais si ton indignation s'arrête à l'écran, si tes achats ne changent pas, si ton confort reste intact, c'est du théâtre. Ce n'est pas une accusation. C'est une question: est-ce que tes actions suivent tes mots?</p>
 
-            <p>Dans ce contexte, le refus et le retrait prennent un sens éthique. La non-participation n'est pas l'apathie ; c'est une stratégie. C'est un refus de nourrir ce qui détruit. Cette position n'est pas nouvelle. Des stoïciens antiques aux mystiques, et des penseurs écologiques aux défenseurs contemporains de la sobriété matérielle, le retrait a longtemps fonctionné comme un acte politique et moral. Lorsque le pouvoir semble capturé par des intérêts violents, le désengagement volontaire peut préserver l'intégrité. Il devient une façon de retirer son consentement, de refuser de légitimer la machinerie par la conformité quotidienne.</p>
+            <p>La guerre qu'on dénonce, c'est souvent la guerre qu'on finance en petits paiements invisibles. Les souffrances qui nous choquent sont produites par les mêmes systèmes économiques qu'on alimente tous les jours.</p>
 
-            <p>Vivre hors réseau, choisir la simplicité, rejeter l'excès — rien de tout cela ne garantit la pureté morale. Mais cela peut représenter une réponse cohérente à la conscience de la complicité systémique. C'est une façon de dire, tranquillement et obstinément, « Je refuse d'être un rouage. »</p>
+            <p>Refuser n'est pas de l'apathie. C'est une stratégie. Ne pas acheter, c'est retirer du financement. Choisir la simplicité, c'est réduire la demande. Vivre hors-système, c'est arrêter de valider la machine par ta participation.</p>
 
-            <p>Pour beaucoup, la nature devient l'espace où ce refus peut être vécu plutôt que déclaré. Non pas comme un échappatoire, mais comme une réorientation. En dehors de la logique du profit et de l'extraction, d'autres rythmes émergent. La valeur n'est plus médiatisée uniquement par la finance ; les conséquences deviennent visibles et immédiates. Vivre avec la nature exige une responsabilité quotidienne — soin, cultivation, réciprocité — au lieu d'une consommation distante. Elle remplace le préjudice anonyme par une responsabilité tangible.</p>
+            <p>Ce n'est pas facile. Ça demande de renoncer à du confort. De chercher des alternatives. De tracer d'où viennent les choses. De poser des questions désagréables. De vivre avec moins.</p>
 
-            <p>Pourtant, la tâche reste difficile. Changer la source de la violence ne s'accomplit pas par les slogans ou les gestes moraux seuls. Cela nécessite une transformation culturelle, technique et institutionnelle. Cela exige de repenser la production et la distribution, de desserrer l'emprise entre accumulation et pouvoir, de démanteler les récits qui normalisent la domination, et d'inventer des formes de participation politique qui ne reposent pas sur la polarisation ou la consommation identitaire. C'est un travail lent. Il nécessite autant de cohérence personnelle que d'imagination collective — des alternatives fondées sur la coopération, la durabilité et la responsabilité partagée.</p>
+            <p>Mais c'est possible.</p>
 
-            <p>Au centre de cette réflexion se trouve un miroir, un miroir dans lequel beaucoup préfèrent ne pas regarder. Que signifie réellement, dans la pratique quotidienne, de dire qu'on est contre la guerre ? À quelle fréquence enquête-t-on sur l'origine des produits, sur le travail ou la souffrance qu'ils contiennent ? Que se passerait-il si le système industriel mondial devenait soudainement inaccessible — où apparaîtraient les limites du confort ? Est-on prêt à perdre la commodité pour cesser de financer le préjudice ? L'indignation s'étend-elle au-delà de l'écran et dans l'action privée ? L'engagement est-il performatif, optimisé pour être vu, ou transformateur, visant le changement ? Et si l'on avait vraiment le pouvoir, quelle partie du système serait démantelée en premier ?</p>
+            <p>La nature offre un espace où les conséquences sont directes. Tu plantes, tu récoltes. Tu négliges, ça meurt. Tu prends soin, ça pousse. Il n'y a pas de chaîne invisible entre ton action et son résultat. C'est un système sans mensonge.</p>
 
-            <p>Ce ne sont pas des accusations. Ce sont des outils de clarté. Ils déplacent l'attention du positionnement moral vers la conséquence matérielle — de qui a raison à ce qui est soutenu.</p>
+            <p>Changer le système demande du temps. Ça ne se fait pas avec des slogans. Ça demande de repenser comment on produit, comment on distribue, comment on valorise. Ça demande de créer des alternatives qui ne reposent pas sur l'exploitation. Ça demande de la cohérence personnelle avant l'action collective.</p>
 
-            <p>La guerre que l'on condamne est souvent la guerre que l'on finance par fragments. La souffrance qui provoque les larmes est fréquemment la souffrance dont les usines sont soutenues par les achats quotidiens. La paix n'émergera pas d'impulsions morales isolées. Elle émergera quand les mots s'aligneront avec les actes, quand la condamnation sera assortie de refus, quand les gestes deviendront cohérents.</p>
+            <p>Les questions ne sont pas confortables:</p>
 
-            <p>Ce texte n'est pas un rejet de l'humanité. Nommer l'origine humaine de la guerre et de la violence systémique n'est pas un déni de la valeur individuelle ; c'est une analyse structurelle. La misanthropie — se détourner entièrement de l'humanité — peut être une réponse personnelle légitime. La lucidité, cependant, porte la responsabilité. Choisir la distance éthique nécessite encore cohérence et effort.</p>
+            <p>D'où vient ce que tu achètes? Qui l'a fait? Dans quelles conditions? Avec quels matériaux? Es-tu prêt à perdre en commodité pour arrêter de financer du mal? Ton engagement va-t-il au-delà de l'écran? Si tu avais le pouvoir, quelle partie du système démantellerais-tu en premier?</p>
 
-            <p>Ce que ce texte cherche finalement n'est pas le désespoir, mais l'interruption. Une rupture dans le rythme où la conscience devient spectacle et rien d'autre. Il invite à faire le bilan de ce que nous nourrissons, de ce que nous normalisons et de ce que nous refusons. La paix commence non pas par de grandes déclarations, mais quand le langage rencontre finalement l'action.</p>
+            <p>Ce ne sont pas des accusations. Ce sont des outils de clarté.</p>
 
-            <p class="section-separator">Violence, war, and domination are not accidents, nor are they moral anomalies scattered across history. They are the products of human-made architectures—political, economic, cultural—systems we have invented, normalized, and collectively maintained. Stating this feels simple; living with its implications is not. Yet before even attempting to change the world, one uncomfortable truth must be acknowledged: every day, we participate in and benefit from <span class="stat-word">systems<span class="stat-tooltip">193 UN member states</span></span> that produce suffering.</p>
+            <p>La paix ne viendra pas de bons sentiments. Elle viendra quand les mots et les actions seront alignés. Quand la condamnation sera accompagnée de refus. Quand les gestes deviendront cohérents.</p>
 
-            <p>This text is not a call to divide the world into "good" and "evil," nor does it offer a ready-made political remedy. It is an invitation to look at the source—to understand the mechanisms that make war and cruelty possible—and to examine our own daily gestures in that mirror. If one truly claims to be against <span class="stat-word">war<span class="stat-tooltip">56 active conflicts in 2024</span></span> and violence, the question cannot stop at opinion or protest. It must extend to the violence one's own choices quietly finance. Without that examination, public condemnation risks becoming nothing more than empty symbolism—outrage without consequence.</p>
+            <p>Ce texte n'est pas un rejet de l'humanité. C'est une analyse de structure. Dire que les humains ont construit la guerre, c'est aussi dire qu'ils peuvent choisir de ne pas la nourrir.</p>
 
-            <p>Violence does not emerge spontaneously. It is planned, organized, rationalized. States, industries, and institutions construct frameworks in which destruction becomes a functional tool. Wars are not sudden ruptures; they are prepared through lobbying, economic interests, and legitimizing narratives. Public policy, supply chains, <span class="stat-word">financial investments<span class="stat-tooltip">$2.4 trillion spent in 2023</span></span>, and trade agreements all shape outcomes—determining who is protected, who prospers, and who can be sacrificed. This is not merely a matter of individual morality. Systemic logic transforms isolated actions into social roles. Soldiers move because state machines set them in motion. Mass killings become possible because administrative, logistical, and financial infrastructures sustain them. Reducing violence to individual moral failure obscures the machinery that allows it to endure.</p>
+            <p>Ce qui est cherché ici n'est pas le désespoir. C'est l'interruption. Une pause dans le rythme où la conscience devient spectacle. Une invitation à examiner ce qu'on nourrit, ce qu'on normalise, ce qu'on refuse.</p>
 
-            <p>Within this landscape, activism often emerges as both necessity and refuge. Movements, marches, slogans, and symbols create shared meaning and solidarity. At their best, they save lives, slow abuses, and expose crimes. Yet activism can also harden into identity. When engagement becomes primarily a way of being—of signaling belonging or moral legitimacy—it risks trapping participants in cycles of visibility and information consumption that remain safely within ideological polarity. Feeling morally justified is not the same as pursuing ethical coherence. One can loudly denounce war while continuing to consume products that sustain other forms of violence. The dissonance between word and deed remains one of the most persistent blind spots of contemporary engagement.</p>
+            <p>La paix commence quand le langage rencontre l'action.</p>
 
-            <p>Modern violence rarely announces itself with spectacle alone. While war kills at scale, industrial modernity has refined harm into quieter forms. It kills incrementally, inside factories, warehouses, mines, slaughterhouses—spaces that rarely occupy headlines. <span class="stat-word">Billions of living beings<span class="stat-tooltip">80+ billion animals killed/year</span></span>, human and non-human alike, endure suffering inside industrial systems designed for efficiency, profitability, and accumulation. These are not logistical accidents; they are institutional choices. Their consequences are mass suffering, moral erosion, and the normalization of killing.</p>
+            <!-- ENGLISH VERSION -->
+            <p class="section-separator">War is not an accident. It's a system we all fund every day.</p>
 
-            <p>The same logic extends to everyday objects. Electronics, clothing, food, and energy often depend on extraction practices tied to <span class="stat-word">child labor<span class="stat-tooltip">160 million children in forced labor</span></span>, displaced communities, and ecological destruction. The materials inside a phone may trace back to exploited bodies; the sole of a shoe may carry the invisible cost of uprooted lives. Violence does not always require weapons. It can be administrative, economic, industrial. A simple click on "buy" may quietly reinforce systems that harm at a steady, normalized pace.</p>
+            <p><span class="stat-word">Governments<span class="stat-tooltip">193 UN member states</span></span> spend <span class="stat-word">2.4 trillion<span class="stat-tooltip">$2,400,000,000,000 in 2023</span></span> per year on weapons. That's <span class="stat-word">$76,000<span class="stat-tooltip">$76,103 per second</span></span> per second. While you read this, military contracts are being signed, weapons factories are producing, lobbyists are negotiating.</p>
 
-            <p>This is why public morality so often coexists with private contradiction. Images of suffering circulate, emotions rise, outrage is shared—and then daily routines resume unchanged. Shopping, updating devices, ordering food. It is the rhythm of spectacle followed by forgetting. Media emotion remains detached from the practical decisions that materially sustain harm. Often, this disconnect is not deliberate cruelty but unawareness—the absence of habit in tracing cause and effect across complex systems. At times, however, it is a quieter hypocrisy: the choice to preserve comfort while minimizing moral cost. Whatever its source, this dissonance matters. When responsibility is performatively rejected, protest becomes a ritual devoid of transformative force.</p>
+            <p>There are currently <span class="stat-word">56 armed conflicts<span class="stat-tooltip">2024 data</span></span> active worldwide. Each relies on supply chains, investments, trade agreements. War is an industry. It needs customers.</p>
 
-            <p>This is also why challenging these structures can provoke hostility. To suggest that humans have constructed war—and can choose not to feed it—is radical, not because it is extreme, but because it demands stepping outside familiar frameworks. It holds a mirror to each individual life. Those deeply invested in political or activist identities may react defensively, not necessarily out of bad faith, but to protect a psychological order that gives coherence to their existence. Refusing polarity destabilizes moral comfort. Rather than confront that discomfort, it is often easier to attack the position that reveals it. The reaction itself becomes evidence of how deeply the source resists scrutiny.</p>
+            <p>We condemn violence. We share posts. We sign petitions. Then we buy a new phone whose <span class="stat-word">minerals<span class="stat-tooltip">Cobalt, lithium, coltan</span></span> come from mines where <span class="stat-word">children<span class="stat-tooltip">160 million children in forced labor</span></span> work. We order clothes made in factories where people work 12-hour days for $2. We eat meat produced in systems that kill <span class="stat-word">80 billion animals<span class="stat-tooltip">Per year, globally</span></span> per year.</p>
 
-            <p>In this context, refusal and withdrawal take on ethical meaning. Non-participation is not apathy; it is strategy. It is a refusal to feed what destroys. This stance is not new. From ancient Stoics to mystics, and from ecological thinkers to contemporary advocates of material sobriety, withdrawal has long functioned as a political and moral act. When power appears captured by violent interests, voluntary disengagement can preserve integrity. It becomes a way of withholding consent, of declining to legitimize the machinery through everyday compliance.</p>
+            <p>This is not morality. This is observation.</p>
 
-            <p>Living off-grid, choosing simplicity, rejecting excess—none of this guarantees moral purity. But it may represent a coherent response to awareness of systemic complicity. It is a way of saying, quietly and persistently, "I refuse to be a cog."</p>
+            <p>Violent systems exist because they're profitable. They continue because we participate. Not out of cruelty, but out of habit. Out of convenience. Out of lack of visible alternatives.</p>
 
-            <p>For many, nature becomes the space where this refusal can be lived rather than declared. Not as escapism, but as reorientation. Outside the logic of profit and extraction, other rhythms emerge. Value is no longer mediated solely by finance; consequences become visible and immediate. Living with nature demands daily responsibility—care, cultivation, reciprocity—instead of distant consumption. It replaces anonymous harm with tangible accountability.</p>
+            <p>The problem isn't being "a bad person". The problem is living in a system designed to hide its real costs. You see the product, not the chain. You see the price, not the bodies. You see the brand, not the military contracts behind it.</p>
 
-            <p>Still, the task remains difficult. Changing the source of violence is not accomplished through slogans or moral gestures alone. It requires cultural, technical, and institutional transformation. It demands rethinking production and distribution, loosening the grip between accumulation and power, dismantling narratives that normalize domination, and inventing forms of political participation that do not rely on polarization or identity consumption. This is slow work. It requires personal coherence as much as collective imagination—alternatives grounded in cooperation, sustainability, and shared responsibility.</p>
+            <p>Activism can become an identity. A way to feel on the right side. But if your outrage stops at the screen, if your purchases don't change, if your comfort remains intact, it's theater. This isn't an accusation. It's a question: do your actions follow your words?</p>
 
-            <p>At the center of this reflection lies a mirror, one that many prefer not to look into. What does it actually mean, in daily practice, to say one is against war? How often does one investigate where products come from, whose labor or suffering they contain? What would happen if the global industrial system were suddenly inaccessible—where would the limits of comfort appear? Is one willing to lose convenience to stop funding harm? Does outrage extend beyond the screen and into private action? Is engagement performative, optimized to be seen, or transformative, aimed at change? And if one truly had power, what part of the system would be dismantled first?</p>
+            <p>The war we denounce is often the war we finance in small invisible payments. The suffering that shocks us is produced by the same economic systems we feed every day.</p>
 
-            <p>These are not accusations. They are tools for clarity. They shift attention away from moral positioning toward material consequence—from who is right to what is being sustained.</p>
+            <p>Refusal is not apathy. It's strategy. Not buying is withdrawing funding. Choosing simplicity is reducing demand. Living off-system is stopping validation of the machine through your participation.</p>
 
-            <p>The war one condemns is often the war one finances in fragments. The suffering that elicits tears is frequently the suffering whose factories are supported by everyday purchases. Peace will not emerge from isolated moral impulses. It will emerge when words align with deeds, when condemnation is matched by refusal, when gestures become coherent.</p>
+            <p>It's not easy. It requires giving up comfort. Seeking alternatives. Tracing where things come from. Asking uncomfortable questions. Living with less.</p>
 
-            <p>This text is not a rejection of humanity. Naming the human origin of war and systemic violence is not a denial of individual worth; it is structural analysis. Misanthropy—turning away from humanity entirely—may be a legitimate personal response. Lucidity, however, carries responsibility. Choosing ethical distance still requires coherence and effort.</p>
+            <p>But it's possible.</p>
 
-            <p>What this text ultimately seeks is not despair, but interruption. A break in the rhythm where conscience becomes spectacle and nothing else. It invites a reckoning with what we feed, what we normalize, and what we refuse. Peace begins not with grand declarations, but when language finally meets action.</p>
+            <p>Nature offers a space where consequences are direct. You plant, you harvest. You neglect, it dies. You care, it grows. There's no invisible chain between your action and its result. It's a system without lies.</p>
+
+            <p>Changing the system takes time. It's not done with slogans. It requires rethinking how we produce, how we distribute, how we value. It requires creating alternatives that don't rely on exploitation. It requires personal coherence before collective action.</p>
+
+            <p>The questions aren't comfortable:</p>
+
+            <p>Where does what you buy come from? Who made it? Under what conditions? With what materials? Are you willing to lose convenience to stop funding harm? Does your engagement go beyond the screen? If you had power, which part of the system would you dismantle first?</p>
+
+            <p>These are not accusations. They are tools for clarity.</p>
+
+            <p>Peace won't come from good feelings. It will come when words and actions align. When condemnation is accompanied by refusal. When gestures become coherent.</p>
+
+            <p>This text is not a rejection of humanity. It's structural analysis. Saying humans built war also means they can choose not to feed it.</p>
+
+            <p>What is sought here is not despair. It's interruption. A pause in the rhythm where conscience becomes spectacle. An invitation to examine what we feed, what we normalize, what we refuse.</p>
+
+            <p>Peace begins when language meets action.</p>
         </div>
     </div>
 
@@ -592,7 +773,6 @@
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
 
-        // Custom invented glyphs/symbols
         const customGlyphs = '◊◈◇◆◘○●◐◑◒◓◔◕◖◗◙◚◛◜◝◞◟◠◡◢◣◤◥◦◧◨◩◪◫◬◭◮◯▀▁▂▃▄▅▆▇█▉▊▋▌▍▎▏▐░▒▓▔▕■□▢▣▤▥▦▧▨▩▪▫▬▭▮▯▰▱▲△▴▵▶▷▸▹►▻▼▽▾▿◀◁◂◃◄◅';
         const techSymbols = '⊕⊖⊗⊘⊙⊚⊛⊜⊝⊞⊟⊠⊡⊢⊣⊤⊥⊦⊧⊨⊩⊪⊫⊬⊭⊮⊯⊰⊱⊲⊳⊴⊵⊶⊷⊸⊹⊺⊻⊼⊽⊾⊿⋀⋁⋂⋃⋄⋅⋆⋇⋈⋉⋊⋋⋌⋍⋎⋏';
         const nums = '0123456789';
@@ -607,6 +787,9 @@
         for (let x = 0; x < columns; x++) {
             rainDrops[x] = Math.random() * canvas.height / fontSize;
         }
+
+        let matrixSpeed = 33;
+        let matrixInterval;
 
         function drawMatrix() {
             ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
@@ -626,7 +809,12 @@
             }
         }
 
-        setInterval(drawMatrix, 33);
+        function startMatrix() {
+            if (matrixInterval) clearInterval(matrixInterval);
+            matrixInterval = setInterval(drawMatrix, matrixSpeed);
+        }
+
+        startMatrix();
 
         window.addEventListener('resize', () => {
             canvas.width = window.innerWidth;
@@ -637,18 +825,53 @@
         // REAL-TIME MILITARY SPENDING COUNTER
         // ============================================
         const counterDisplay = document.getElementById('militaryCounter');
-        const yearlySpending = 2400000000000; // $2.4 trillion per year
+        const counterContainer = document.getElementById('counterContainer');
+        const yearlySpending = 2400000000000;
         const perSecond = yearlySpending / (365 * 24 * 60 * 60);
         
         let currentAmount = 0;
+        let counterSpeed = 1000;
+        let counterInterval;
+        let clickCount = 0;
+        let clickTimer;
 
         function updateCounter() {
-            currentAmount += perSecond;
-            counterDisplay.textContent = '$' + currentAmount.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            currentAmount += perSecond * (counterSpeed / 1000);
+            counterDisplay.textContent = '$' + Math.floor(currentAmount).toLocaleString();
         }
 
-        setInterval(updateCounter, 1000);
+        function startCounter() {
+            if (counterInterval) clearInterval(counterInterval);
+            counterInterval = setInterval(updateCounter, counterSpeed);
+        }
+
+        startCounter();
         updateCounter();
+
+        // Counter click easter egg
+        counterContainer.addEventListener('click', () => {
+            clickCount++;
+            clearTimeout(clickTimer);
+            
+            if (clickCount === 5) {
+                counterContainer.classList.add('crazy');
+                counterSpeed = 50;
+                startCounter();
+                showSecret('SYSTÈME OVERLOAD', 'Le compteur est devenu fou! Les dépenses militaires montent 20x plus vite! 💸💸💸');
+                
+                setTimeout(() => {
+                    counterContainer.classList.remove('crazy');
+                    counterSpeed = 1000;
+                    startCounter();
+                }, 5000);
+                
+                clickCount = 0;
+            }
+            
+            clickTimer = setTimeout(() => {
+                clickCount = 0;
+            }, 1000);
+        });
 
         // ============================================
         // SCROLL-TRIGGERED TEXT REVEAL
@@ -667,7 +890,7 @@
         }
 
         window.addEventListener('scroll', revealOnScroll);
-        revealOnScroll(); // Initial check
+        revealOnScroll();
 
         // ============================================
         // TERMINAL CHAT INTERFACE
@@ -678,19 +901,29 @@
         const terminalInput = document.getElementById('terminalInput');
         const terminalContent = document.getElementById('terminalContent');
 
-        let terminalLineIndex = 2;
+        let terminalLineIndex = 3;
+        let secretsFound = [];
+        let hoverTimer;
 
         // Terminal commands
         const commands = {
-            'help': 'Available commands: about, stats, contact, clear, peace',
-            'about': 'This is an interactive manifesto about systemic violence and conscious action. Created to provoke thought and inspire change.',
-            'stats': 'Global military spending: $2.4T/year | Active conflicts: 56 | Child laborers: 160M | Factory-farmed animals killed: 80B+/year',
-            'contact': 'Created by Kim Maurice - Multimedia Designer & Creative Technologist | kimmaurice.com',
+            'help': 'Available commands: about, stats, contact, clear, codes\nSecret commands: Try typing words related to peace and war...',
+            'about': 'Interactive manifesto about systemic violence and conscious action. Created by Kim Maurice.',
+            'stats': 'Military spending: $2.4T/year ($76K/sec) | Active conflicts: 56 | Child laborers: 160M | Animals killed: 80B+/year',
+            'contact': 'Kim Maurice - Multimedia Designer & Creative Technologist\nPortfolio: kimmaurice.com | Montreal, QC',
             'clear': 'CLEAR_SCREEN',
-            'peace': '✌️ Peace is not the absence of conflict, but the presence of justice and coherence in action.',
-            'war': '⚠️ War is a human construction. Every purchase, every choice, either feeds or starves the machine.',
-            'think': '💭 "The war one condemns is often the war one finances in fragments."',
-            'action': '🎯 Real change requires alignment between words and deeds. What will you refuse today?'
+            'codes': 'Secret codes found: ' + (secretsFound.length > 0 ? secretsFound.join(', ') : 'None yet. Keep exploring!'),
+            'peace': '✌️ Peace is not the absence of conflict, but the presence of justice and coherence.',
+            'war': '⚠️ War is a human construction. Every purchase either feeds or starves the machine.',
+            'truth': '🔴 Activating TRUTH MODE... See the world without filters.',
+            'wake': '⚡ WAKE UP. The system depends on your sleep.',
+            'stop': '🛑 Stopping is the first act of resistance.',
+            'action': '🎯 Real change requires alignment between words and deeds.',
+            'money': '💰 Follow the money. It always leads to the source.',
+            'system': '🔧 The system is not broken. It works exactly as designed.',
+            'refuse': '🚫 Refusal is not apathy. It is strategy.',
+            'kim': '👋 Hey! You found my name. Thanks for exploring!',
+            'end': '🏁 You reached the end. But this is where it begins.'
         };
 
         // Toggle terminal
@@ -705,20 +938,45 @@
             terminalWindow.classList.remove('active');
         });
 
+        // Terminal hover easter egg
+        terminalToggle.addEventListener('mouseenter', () => {
+            hoverTimer = setTimeout(() => {
+                if (!secretsFound.includes('hover')) {
+                    secretsFound.push('hover');
+                    terminalToggle.classList.add('secret-found');
+                    showSecret('SECRET HOVER', 'Tu as découvert le secret du hover! 🎉\nContinue d\'explorer... il y en a d\'autres.');
+                }
+            }, 3000);
+        });
+
+        terminalToggle.addEventListener('mouseleave', () => {
+            clearTimeout(hoverTimer);
+        });
+
         // Handle terminal input
         terminalInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
                 const command = terminalInput.value.trim().toLowerCase();
                 
-                // Add user input to terminal
                 addTerminalLine(`> ${terminalInput.value}`, 'user');
                 
-                // Process command
                 if (command === 'clear') {
                     terminalContent.innerHTML = '';
                     terminalLineIndex = 0;
                 } else if (commands[command]) {
                     addTerminalLine(commands[command], 'response');
+                    
+                    // Special command effects
+                    if (command === 'truth') {
+                        activateTruthMode();
+                        if (!secretsFound.includes('truth')) secretsFound.push('truth');
+                    } else if (command === 'wake') {
+                        activateWakeMode();
+                        if (!secretsFound.includes('wake')) secretsFound.push('wake');
+                    } else if (command === 'peace') {
+                        activatePeaceMode();
+                        if (!secretsFound.includes('peace')) secretsFound.push('peace');
+                    }
                 } else if (command) {
                     addTerminalLine(`Command not found: "${command}". Type 'help' for available commands.`, 'error');
                 }
@@ -731,10 +989,10 @@
         function addTerminalLine(text, type = 'response') {
             const line = document.createElement('div');
             line.className = 'terminal-line';
-            line.style.animationDelay = `${terminalLineIndex * 0.1}s`;
+            line.style.animationDelay = `${terminalLineIndex * 0.05}s`;
             
             if (type === 'user') {
-                line.innerHTML = `<span class="terminal-prompt" style="color: var(--neon-cyan);">${text}</span>`;
+                line.innerHTML = `<span style="color: var(--neon-cyan);">${text}</span>`;
             } else if (type === 'error') {
                 line.innerHTML = `<span style="color: var(--neon-pink);">${text}</span>`;
             } else {
@@ -746,7 +1004,91 @@
         }
 
         // ============================================
-        // EASTER EGG: Konami Code
+        // SECRET MESSAGE SYSTEM
+        // ============================================
+        function showSecret(title, message) {
+            const secretMsg = document.getElementById('secretMessage');
+            const secretText = document.getElementById('secretText');
+            
+            document.querySelector('.secret-message h2').textContent = title;
+            secretText.textContent = message;
+            
+            secretMsg.classList.add('show');
+        }
+
+        function closeSecret() {
+            document.getElementById('secretMessage').classList.remove('show');
+        }
+
+        // ============================================
+        // SPECIAL MODES
+        // ============================================
+        function activateTruthMode() {
+            document.body.classList.add('truth-mode');
+            document.querySelector('.cyber-border').style.borderColor = '#ff0000';
+            ctx.fillStyle = '#ff0000';
+            
+            setTimeout(() => {
+                document.body.classList.remove('truth-mode');
+                document.querySelector('.cyber-border').style.borderColor = '';
+                ctx.fillStyle = '#00ff41';
+            }, 5000);
+        }
+
+        function activateWakeMode() {
+            document.body.classList.add('wake-mode');
+            matrixSpeed = 10;
+            startMatrix();
+            
+            setTimeout(() => {
+                document.body.classList.remove('wake-mode');
+                matrixSpeed = 33;
+                startMatrix();
+            }, 3000);
+        }
+
+        function activatePeaceMode() {
+            document.body.classList.add('peace-mode');
+            canvas.style.opacity = '0.3';
+            
+            setTimeout(() => {
+                document.body.classList.remove('peace-mode');
+                canvas.style.opacity = '1';
+            }, 5000);
+        }
+
+        // ============================================
+        // FLOATING TEXT EASTER EGG
+        // ============================================
+        const floatingText = document.getElementById('floatingText');
+        let doubleClickTimer;
+        let doubleClickCount = 0;
+
+        floatingText.addEventListener('click', () => {
+            doubleClickCount++;
+            clearTimeout(doubleClickTimer);
+            
+            if (doubleClickCount === 2) {
+                floatingText.classList.add('explode');
+                if (!secretsFound.includes('stopwar')) {
+                    secretsFound.push('stopwar');
+                    showSecret('STOP WAR ACTIVATED', 'Tu as double-cliqué sur STOP WAR! 💥\nLes mots ne suffisent pas. L\'action commence maintenant.');
+                }
+                
+                setTimeout(() => {
+                    floatingText.classList.remove('explode');
+                }, 1000);
+                
+                doubleClickCount = 0;
+            }
+            
+            doubleClickTimer = setTimeout(() => {
+                doubleClickCount = 0;
+            }, 500);
+        });
+
+        // ============================================
+        // KONAMI CODE EASTER EGG
         // ============================================
         let konamiCode = [];
         const konamiSequence = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
@@ -757,6 +1099,10 @@
 
             if (konamiCode.join(',') === konamiSequence.join(',')) {
                 document.body.style.filter = 'hue-rotate(180deg)';
+                if (!secretsFound.includes('konami')) {
+                    secretsFound.push('konami');
+                    showSecret('KONAMI CODE! 🎮', 'Tu connais les classiques! Le code Konami original de 1986.\nRespect aux vrais gamers. 👾');
+                }
                 setTimeout(() => {
                     document.body.style.filter = 'none';
                 }, 3000);
@@ -764,10 +1110,55 @@
         });
 
         // ============================================
-        // PERFORMANCE: Reduce animations on mobile
+        // KEYBOARD EASTER EGGS
+        // ============================================
+        let typedWord = '';
+        let typingTimer;
+
+        document.addEventListener('keypress', (e) => {
+            // Ignore if typing in terminal
+            if (document.activeElement === terminalInput) return;
+            
+            typedWord += e.key.toLowerCase();
+            clearTimeout(typingTimer);
+            
+            // Check for secret words
+            if (typedWord.includes('end')) {
+                if (!secretsFound.includes('end')) {
+                    secretsFound.push('end');
+                    showSecret('THE END?', 'Non. C\'est juste le début.\nMaintenant, va agir. 🎯');
+                }
+                typedWord = '';
+            }
+            
+            // Reset typed word after 2 seconds
+            typingTimer = setTimeout(() => {
+                typedWord = '';
+            }, 2000);
+        });
+
+        // ============================================
+        // SCROLL TO BOTTOM DETECTION
+        // ============================================
+        let hasReachedBottom = false;
+
+        window.addEventListener('scroll', () => {
+            if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 100) {
+                if (!hasReachedBottom && !secretsFound.includes('bottom')) {
+                    hasReachedBottom = true;
+                    secretsFound.push('bottom');
+                    addTerminalLine('You scrolled to the bottom. Now type "end" anywhere on the page...', 'response');
+                }
+            }
+        });
+
+        // ============================================
+        // PERFORMANCE
         // ============================================
         if (window.innerWidth < 768) {
             document.querySelector('.floating-text').style.animationDuration = '30s';
+            matrixSpeed = 50;
+            startMatrix();
         }
     </script>
 </body>
