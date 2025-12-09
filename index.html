@@ -828,7 +828,7 @@
             max-height: 500px;
             background: rgba(0, 0, 0, 0.95);
             border: 2px solid var(--white);
-            z-index: 99;
+            z-index: 150;
             display: none;
             flex-direction: column;
         }
@@ -836,6 +836,47 @@
         .terminal-window.active {
             display: flex;
             animation: slideUp 0.3s ease;
+        }
+
+        /* On mobile, terminal takes more space and is centered */
+        @media (max-width: 768px) {
+            .terminal-window {
+                bottom: 10%;
+                right: 5%;
+                left: 5%;
+                width: 90%;
+                max-height: 70vh;
+            }
+        }
+
+        /* Hide bottom buttons when terminal is open */
+        body.terminal-open .terminal-toggle,
+        body.terminal-open .hints-toggle {
+            opacity: 0 !important;
+            pointer-events: none !important;
+            transform: scale(0.5);
+            visibility: hidden;
+        }
+
+        /* Hide bottom buttons when hints modal is open */
+        body.hints-open .terminal-toggle,
+        body.hints-open .hints-toggle {
+            opacity: 0 !important;
+            pointer-events: none !important;
+            transform: scale(0.5);
+            visibility: hidden;
+        }
+
+        /* Add backdrop when terminal is open */
+        body.terminal-open::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 149;
         }
 
         @keyframes slideUp {
@@ -915,14 +956,6 @@
 
         /* Responsive */
         @media (max-width: 768px) {
-            .terminal-window {
-                width: calc(100vw - 40px);
-                right: 20px;
-                left: 20px;
-                bottom: 20px;
-                max-height: 60vh;
-            }
-            
             .stats-grid {
                 grid-template-columns: 1fr;
             }
@@ -951,6 +984,7 @@
                 padding: 8px 12px;
                 max-width: 120px;
                 line-height: 1.2;
+                z-index: 101;
             }
 
             .language-switcher {
@@ -959,6 +993,7 @@
                 left: auto;
                 padding: 5px 8px;
                 gap: 5px;
+                z-index: 101;
             }
 
             .lang-btn {
@@ -966,12 +1001,13 @@
                 font-size: 0.75rem;
             }
 
-            /* Mobile: Bottom buttons bigger and better positioned */
+            /* Mobile: Bottom buttons - adjust for terminal */
             .hints-toggle {
                 bottom: 20px;
                 left: 20px;
                 width: 55px;
                 height: 55px;
+                z-index: 101;
             }
 
             .terminal-toggle {
@@ -979,6 +1015,7 @@
                 right: 20px;
                 width: 55px;
                 height: 55px;
+                z-index: 101;
             }
 
             .hints-toggle::before, .terminal-toggle::before {
@@ -1074,6 +1111,34 @@
             /* Content padding top to avoid overlap */
             .content {
                 padding-top: 5rem;
+            }
+
+            /* CRITICAL: Terminal window on mobile - CENTERED and HIGHER */
+            .terminal-window {
+                bottom: auto !important;
+                top: 50% !important;
+                left: 50% !important;
+                right: auto !important;
+                transform: translate(-50%, -50%);
+                width: 90vw !important;
+                max-width: 90vw !important;
+                max-height: 60vh;
+                z-index: 300 !important;
+            }
+
+            .terminal-window.active {
+                animation: popIn 0.3s ease;
+            }
+
+            @keyframes popIn {
+                from { 
+                    transform: translate(-50%, -50%) scale(0.8);
+                    opacity: 0;
+                }
+                to { 
+                    transform: translate(-50%, -50%) scale(1);
+                    opacity: 1;
+                }
             }
         }
 
@@ -1633,9 +1698,14 @@
             <!-- T-SHIRT IMAGE -->
             <div class="tshirt-image-container">
                 <!-- REPLACE WITH YOUR ACTUAL IMAGE: -->
-            
-                <img src="action.png" alt="T-shirt ACTIONS" class="tshirt-image">
+                <!-- <img src="path/to/your/tshirt.jpg" alt="T-shirt ACTIONS" class="tshirt-image"> -->
                 
+                <!-- PLACEHOLDER - Delete this div when you add real image -->
+                <div class="tshirt-placeholder">
+                    <div class="placeholder-text">T-SHIRT</div>
+                    <div class="placeholder-subtext">ACTIONS</div>
+                    <div class="placeholder-note">Design minimaliste noir/blanc</div>
+                </div>
             </div>
 
             <div class="tshirt-description">
@@ -2170,15 +2240,18 @@
         hintsToggle.addEventListener('click', () => {
             updateHintsDisplay();
             hintsModal.classList.add('active');
+            document.body.classList.add('hints-open');
         });
 
         hintsClose.addEventListener('click', () => {
             hintsModal.classList.remove('active');
+            document.body.classList.remove('hints-open');
         });
 
         hintsModal.addEventListener('click', (e) => {
             if (e.target === hintsModal) {
                 hintsModal.classList.remove('active');
+                document.body.classList.remove('hints-open');
             }
         });
 
@@ -2209,6 +2282,7 @@
 
         terminalToggle.addEventListener('click', () => {
             terminalWindow.classList.toggle('active');
+            document.body.classList.toggle('terminal-open');
             if (terminalWindow.classList.contains('active')) {
                 terminalInput.focus();
             }
@@ -2216,6 +2290,7 @@
 
         terminalClose.addEventListener('click', () => {
             terminalWindow.classList.remove('active');
+            document.body.classList.remove('terminal-open');
         });
 
         // Initialize hints display
