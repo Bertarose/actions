@@ -743,6 +743,234 @@
                 padding: 6px 12px;
                 font-size: 0.8rem;
             }
+
+            .audio-player {
+                bottom: 100px !important;
+            }
+        }
+
+        /* Audio Player */
+        .audio-player {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            background: rgba(0, 0, 0, 0.9);
+            border: 2px solid var(--neon-cyan);
+            padding: 15px 20px;
+            border-radius: 5px;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+            transition: all 0.3s ease;
+        }
+
+        .audio-player:hover {
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.8);
+        }
+
+        .play-btn {
+            width: 40px;
+            height: 40px;
+            background: transparent;
+            border: 2px solid var(--neon-cyan);
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            font-size: 0;
+        }
+
+        .play-btn:hover {
+            background: var(--neon-cyan);
+            box-shadow: 0 0 15px var(--neon-cyan);
+        }
+
+        .play-btn::before {
+            content: '▶';
+            font-size: 1rem;
+            color: var(--neon-cyan);
+            margin-left: 3px;
+        }
+
+        .play-btn:hover::before {
+            color: var(--bg-black);
+        }
+
+        .play-btn.playing::before {
+            content: '❚❚';
+            margin-left: 0;
+        }
+
+        .audio-info {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .audio-title {
+            color: var(--neon-cyan);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .audio-time {
+            color: var(--text-white);
+            font-size: 0.7rem;
+            opacity: 0.7;
+        }
+
+        .volume-control {
+            width: 60px;
+            height: 4px;
+            background: rgba(0, 255, 255, 0.2);
+            border-radius: 2px;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .volume-fill {
+            height: 100%;
+            background: var(--neon-cyan);
+            border-radius: 2px;
+            width: 70%;
+            transition: width 0.1s ease;
+        }
+
+        /* Interactive Questions Modal */
+        .questions-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 201;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .questions-container.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .question-card {
+            background: rgba(0, 0, 0, 0.9);
+            border: 3px solid var(--neon-green);
+            padding: 3rem;
+            max-width: 600px;
+            width: 90%;
+            box-shadow: 0 0 50px rgba(0, 255, 65, 0.6);
+            text-align: center;
+        }
+
+        .question-number {
+            color: var(--neon-cyan);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            margin-bottom: 2rem;
+        }
+
+        .question-text {
+            color: var(--neon-green);
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            line-height: 1.6;
+            margin-bottom: 2rem;
+            font-weight: bold;
+        }
+
+        .question-input {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            border: 2px solid var(--neon-cyan);
+            color: var(--text-white);
+            padding: 1rem;
+            font-family: 'Courier New', monospace;
+            font-size: 1rem;
+            margin-bottom: 2rem;
+            resize: vertical;
+            min-height: 100px;
+            outline: none;
+        }
+
+        .question-input:focus {
+            border-color: var(--neon-green);
+            box-shadow: 0 0 20px rgba(0, 255, 65, 0.3);
+        }
+
+        .question-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .question-btn {
+            background: transparent;
+            border: 2px solid var(--neon-green);
+            color: var(--neon-green);
+            padding: 1rem 2rem;
+            font-family: 'Courier New', monospace;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+        }
+
+        .question-btn:hover {
+            background: var(--neon-green);
+            color: var(--bg-black);
+            box-shadow: 0 0 20px var(--neon-green);
+        }
+
+        .question-btn.skip {
+            border-color: var(--text-white);
+            color: var(--text-white);
+            opacity: 0.5;
+        }
+
+        .question-btn.skip:hover {
+            background: var(--text-white);
+            opacity: 1;
+        }
+
+        .reflection-complete {
+            display: none;
+        }
+
+        .reflection-complete.active {
+            display: block;
+        }
+
+        .reflection-summary {
+            color: var(--text-white);
+            font-size: 1rem;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+            text-align: left;
+        }
+
+        .reflection-summary p {
+            margin-bottom: 1rem;
+            opacity: 1;
+            transform: none;
+        }
+
+        .user-answer {
+            background: rgba(0, 255, 65, 0.1);
+            border-left: 3px solid var(--neon-green);
+            padding: 1rem;
+            margin: 1rem 0;
+            color: var(--neon-cyan);
+            font-style: italic;
         }
     </style>
 </head>
@@ -772,6 +1000,41 @@
     <!-- Terminal Toggle Button -->
     <div class="terminal-toggle" id="terminalToggle"></div>
 
+    <!-- Audio Player -->
+    <div class="audio-player">
+        <button class="play-btn" id="playBtn"></button>
+        <div class="audio-info">
+            <div class="audio-title">Ambient</div>
+            <div class="audio-time" id="audioTime">0:00 / 0:00</div>
+        </div>
+        <div class="volume-control" id="volumeControl">
+            <div class="volume-fill" id="volumeFill"></div>
+        </div>
+        <audio id="audioPlayer" loop>
+            <source src="YOUR_MP3_LINK_HERE.mp3" type="audio/mpeg">
+        </audio>
+    </div>
+
+    <!-- Interactive Questions Modal -->
+    <div class="questions-container" id="questionsContainer">
+        <div class="question-card">
+            <div class="question-number" id="questionNumber">Question 1/3</div>
+            <div class="question-text" id="questionText"></div>
+            <textarea class="question-input" id="questionInput" placeholder="Écris ta réponse ici... (optionnel)"></textarea>
+            <div class="question-buttons">
+                <button class="question-btn skip" id="skipBtn">Passer</button>
+                <button class="question-btn" id="nextBtn">Suivant</button>
+            </div>
+            
+            <!-- Reflection Complete Screen -->
+            <div class="reflection-complete" id="reflectionComplete">
+                <div class="question-text">Merci d'avoir réfléchi.</div>
+                <div class="reflection-summary" id="reflectionSummary"></div>
+                <button class="question-btn" id="closeReflection">Fermer</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Terminal Window -->
     <div class="terminal-window" id="terminalWindow">
         <div class="terminal-header">
@@ -782,6 +1045,7 @@
             <div class="terminal-line"><span class="terminal-prompt">&gt;</span> System initialized...</div>
             <div class="terminal-line"><span class="terminal-prompt">&gt;</span> Type 'help' for commands</div>
             <div class="terminal-line"><span class="terminal-prompt">&gt;</span> Updated with 2024-2025 data</div>
+            <div class="terminal-line"><span class="terminal-prompt">&gt;</span> Type 'reflect' to start questions</div>
         </div>
         <div class="terminal-input-container">
             <input type="text" class="terminal-input" id="terminalInput" placeholder="Enter command..." autocomplete="off">
@@ -976,10 +1240,10 @@
         let matrixInterval;
 
         function drawMatrix() {
-            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.08)';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            ctx.fillStyle = '#00ff41';
+            ctx.fillStyle = 'rgba(0, 255, 65, 0.5)'; // Reduced opacity to 50%
             ctx.font = fontSize + 'px monospace';
 
             for (let i = 0; i < rainDrops.length; i++) {
@@ -1087,13 +1351,13 @@
         const terminalInput = document.getElementById('terminalInput');
         const terminalContent = document.getElementById('terminalContent');
 
-        let terminalLineIndex = 3;
+        let terminalLineIndex = 4;
         let secretsFound = [];
         let hoverTimer;
 
         // Terminal commands (updated with 2024-2025 data)
         const commands = {
-            'help': 'Available commands: about, stats, data, sources, contact, clear, codes\nSecret commands: Try typing words related to peace and war...',
+            'help': 'Available commands: about, stats, data, sources, contact, reflect, clear, codes\nSecret commands: Try typing words related to peace and war...',
             'about': 'Data-driven interactive manifesto about systemic violence. Created by Kim Maurice. Updated with 2024-2025 data.',
             'stats': 'Military: $2.718T/year ($86K/sec) | Conflicts: 61 (highest since 1946) | Deaths: ~160K/year | NATO target: 5% GDP by 2035',
             'data': '2024 was record-breaking: 9.4% military spending increase, 61 active conflicts, Europe spending up 17%, NATO nations at 55% of global total',
@@ -1101,6 +1365,8 @@
             'contact': 'Kim Maurice - Multimedia Designer & Creative Technologist\nPortfolio: kimmaurice.com | Montreal, QC',
             'clear': 'CLEAR_SCREEN',
             'codes': 'Secret codes found: ' + (secretsFound.length > 0 ? secretsFound.join(', ') : 'None yet. Keep exploring!'),
+            'reflect': 'Opening reflection questions...',
+            'questions': 'Opening reflection questions...',
             'peace': '✌️ Peace is not the absence of conflict, but the presence of justice and coherence.',
             'war': '⚠️ War is a human construction. Every purchase either feeds or starves the machine.',
             'truth': '🔴 Activating TRUTH MODE... See the world without filters.',
@@ -1152,6 +1418,13 @@
                 if (command === 'clear') {
                     terminalContent.innerHTML = '';
                     terminalLineIndex = 0;
+                } else if (command === 'reflect' || command === 'questions') {
+                    addTerminalLine('Opening reflection questions...', 'response');
+                    terminalWindow.classList.remove('active');
+                    questionsContainer.classList.add('active');
+                    currentQuestion = 0;
+                    answers = [];
+                    showQuestion(0);
                 } else if (commands[command]) {
                     addTerminalLine(commands[command], 'response');
                     
@@ -1337,6 +1610,184 @@
                     hasReachedBottom = true;
                     secretsFound.push('bottom');
                     addTerminalLine('You scrolled to the bottom. Now type "end" anywhere on the page...', 'response');
+                }
+            }
+        });
+
+        // ============================================
+        // AUDIO PLAYER
+        // ============================================
+        const audioPlayer = document.getElementById('audioPlayer');
+        const playBtn = document.getElementById('playBtn');
+        const audioTime = document.getElementById('audioTime');
+        const volumeControl = document.getElementById('volumeControl');
+        const volumeFill = document.getElementById('volumeFill');
+
+        let isPlaying = false;
+
+        playBtn.addEventListener('click', () => {
+            if (isPlaying) {
+                audioPlayer.pause();
+                playBtn.classList.remove('playing');
+            } else {
+                audioPlayer.play();
+                playBtn.classList.add('playing');
+            }
+            isPlaying = !isPlaying;
+        });
+
+        // Update time display
+        audioPlayer.addEventListener('timeupdate', () => {
+            const current = Math.floor(audioPlayer.currentTime);
+            const duration = Math.floor(audioPlayer.duration) || 0;
+            audioTime.textContent = `${formatTime(current)} / ${formatTime(duration)}`;
+        });
+
+        function formatTime(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            return `${mins}:${secs.toString().padStart(2, '0')}`;
+        }
+
+        // Volume control
+        volumeControl.addEventListener('click', (e) => {
+            const rect = volumeControl.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const percentage = (x / rect.width) * 100;
+            volumeFill.style.width = percentage + '%';
+            audioPlayer.volume = percentage / 100;
+        });
+
+        // ============================================
+        // INTERACTIVE QUESTIONS SYSTEM
+        // ============================================
+        const questionsContainer = document.getElementById('questionsContainer');
+        const questionNumber = document.getElementById('questionNumber');
+        const questionText = document.getElementById('questionText');
+        const questionInput = document.getElementById('questionInput');
+        const nextBtn = document.getElementById('nextBtn');
+        const skipBtn = document.getElementById('skipBtn');
+        const reflectionComplete = document.getElementById('reflectionComplete');
+        const reflectionSummary = document.getElementById('reflectionSummary');
+        const closeReflection = document.getElementById('closeReflection');
+
+        const questions = [
+            {
+                fr: "Quel est le dernier produit que tu as acheté?",
+                en: "What's the last product you bought?"
+            },
+            {
+                fr: "Sais-tu d'où il vient et qui l'a fabriqué?",
+                en: "Do you know where it comes from and who made it?"
+            },
+            {
+                fr: "Es-tu prêt·e à perdre du confort pour arrêter de financer des systèmes violents?",
+                en: "Are you willing to lose comfort to stop funding violent systems?"
+            }
+        ];
+
+        let currentQuestion = 0;
+        let answers = [];
+        let currentLang = 'fr';
+
+        // Update language tracking
+        btnFR.addEventListener('click', () => { currentLang = 'fr'; });
+        btnEN.addEventListener('click', () => { currentLang = 'en'; });
+
+        function showQuestion(index) {
+            if (index >= questions.length) {
+                showReflectionComplete();
+                return;
+            }
+
+            questionNumber.textContent = `Question ${index + 1}/${questions.length}`;
+            questionText.textContent = questions[index][currentLang];
+            questionInput.value = answers[index] || '';
+        }
+
+        function showReflectionComplete() {
+            questionNumber.style.display = 'none';
+            questionText.style.display = 'none';
+            questionInput.style.display = 'none';
+            document.querySelector('.question-buttons').style.display = 'none';
+            reflectionComplete.classList.add('active');
+
+            // Build summary
+            let summaryHTML = currentLang === 'fr' 
+                ? '<p>Voici tes réflexions:</p>' 
+                : '<p>Here are your reflections:</p>';
+            
+            answers.forEach((answer, i) => {
+                if (answer.trim()) {
+                    summaryHTML += `
+                        <div class="user-answer">
+                            <strong>Q${i + 1}:</strong> ${questions[i][currentLang]}<br>
+                            <em>${answer}</em>
+                        </div>
+                    `;
+                }
+            });
+
+            if (answers.filter(a => a.trim()).length === 0) {
+                summaryHTML += currentLang === 'fr'
+                    ? '<p>Tu n\'as pas écrit de réponses, mais l\'important est d\'avoir réfléchi.</p>'
+                    : '<p>You didn\'t write answers, but what matters is that you reflected.</p>';
+            }
+
+            summaryHTML += currentLang === 'fr'
+                ? '<p style="margin-top: 2rem;">Ces questions n\'ont pas de bonne réponse. Elles sont là pour interrompre le rythme. Pour créer une pause. Pour que tu regardes ce que tu finances, ce que tu normalises, ce que tu refuses.</p><p>La paix commence quand le langage rencontre l\'action.</p>'
+                : '<p style="margin-top: 2rem;">These questions have no right answer. They\'re here to interrupt the rhythm. To create a pause. So you can examine what you fund, what you normalize, what you refuse.</p><p>Peace begins when language meets action.</p>';
+
+            reflectionSummary.innerHTML = summaryHTML;
+
+            // Save to localStorage
+            localStorage.setItem('actionsReflection', JSON.stringify({
+                answers: answers,
+                timestamp: new Date().toISOString()
+            }));
+
+            if (!secretsFound.includes('reflection')) {
+                secretsFound.push('reflection');
+            }
+        }
+
+        nextBtn.addEventListener('click', () => {
+            answers[currentQuestion] = questionInput.value;
+            currentQuestion++;
+            if (currentQuestion < questions.length) {
+                showQuestion(currentQuestion);
+            } else {
+                showReflectionComplete();
+            }
+        });
+
+        skipBtn.addEventListener('click', () => {
+            answers[currentQuestion] = '';
+            currentQuestion++;
+            if (currentQuestion < questions.length) {
+                showQuestion(currentQuestion);
+            } else {
+                showReflectionComplete();
+            }
+        });
+
+        closeReflection.addEventListener('click', () => {
+            questionsContainer.classList.remove('active');
+        });
+
+        // Trigger questions at the end of scroll
+        let questionsTriggered = false;
+
+        window.addEventListener('scroll', () => {
+            if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 200) {
+                if (!questionsTriggered) {
+                    questionsTriggered = true;
+                    
+                    // Wait 2 seconds after reaching bottom
+                    setTimeout(() => {
+                        questionsContainer.classList.add('active');
+                        showQuestion(0);
+                    }, 2000);
                 }
             }
         });
