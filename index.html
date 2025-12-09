@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Actions - Futuristic Interactive Experience</title>
-    <meta name="description" content="An immersive data-driven manifesto with 3D graphics, webcam interaction, and gamification. Showcase by Kim Maurice.">
+    <title>Actions - Interactive Manifesto 2025</title>
+    <meta name="description" content="A transparent, interactive manifesto about systemic violence and conscious consumption. By Kim Maurice.">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <style>
         * {
@@ -14,21 +14,19 @@
         }
 
         :root {
-            --neon-green: #00ff41;
-            --neon-pink: #ff00ff;
-            --neon-cyan: #00ffff;
-            --bg-black: #000;
-            --text-white: #e0e0e0;
-            --purple-dark: #1a0033;
-            --purple-mid: #2d0052;
+            --black: #000000;
+            --white: #ffffff;
+            --gray-dark: #1a1a1a;
+            --gray-mid: #333333;
+            --gray-light: #cccccc;
         }
 
         body {
-            background: linear-gradient(135deg, var(--bg-black) 0%, var(--purple-dark) 50%, var(--bg-black) 100%);
+            background: var(--black);
             overflow-x: hidden;
             font-family: 'Courier New', monospace;
-            color: var(--text-white);
-            transition: all 0.3s ease;
+            color: var(--white);
+            line-height: 1.6;
         }
 
         /* Three.js Canvas Background */
@@ -40,172 +38,7 @@
             height: 100%;
             z-index: 1;
             pointer-events: none;
-        }
-
-        /* Animated Gradient Overlay */
-        .gradient-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 2;
-            pointer-events: none;
-            background: 
-                radial-gradient(circle at 20% 50%, rgba(0, 255, 65, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 80% 80%, rgba(255, 0, 255, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 40% 20%, rgba(0, 255, 255, 0.08) 0%, transparent 50%);
-            animation: gradientShift 15s ease infinite;
-        }
-
-        @keyframes gradientShift {
-            0%, 100% { opacity: 0.3; transform: scale(1); }
-            50% { opacity: 0.5; transform: scale(1.1); }
-        }
-
-        /* Webcam Container */
-        .webcam-container {
-            position: fixed;
-            bottom: 120px;
-            left: 30px;
-            width: 200px;
-            height: 150px;
-            border: 2px solid var(--neon-cyan);
-            border-radius: 10px;
-            overflow: hidden;
-            z-index: 100;
-            display: none;
-            box-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
-        }
-
-        .webcam-container.active {
-            display: block;
-        }
-
-        #webcam {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            filter: hue-rotate(90deg) contrast(1.2);
-        }
-
-        .webcam-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-        }
-
-        .face-detection-box {
-            position: absolute;
-            border: 2px solid var(--neon-green);
-            box-shadow: 0 0 20px var(--neon-green);
-        }
-
-        /* Webcam Toggle Button */
-        .webcam-toggle {
-            position: fixed;
-            bottom: 120px;
-            left: 240px;
-            background: rgba(0, 0, 0, 0.9);
-            border: 2px solid var(--neon-cyan);
-            color: var(--neon-cyan);
-            padding: 10px 20px;
-            font-family: 'Courier New', monospace;
-            cursor: pointer;
-            z-index: 100;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            font-size: 0.8rem;
-        }
-
-        .webcam-toggle:hover {
-            background: var(--neon-cyan);
-            color: var(--bg-black);
-            box-shadow: 0 0 20px var(--neon-cyan);
-        }
-
-        /* Typing Game Overlay */
-        .typing-game {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) scale(0);
-            background: rgba(0, 0, 0, 0.95);
-            border: 3px solid var(--neon-green);
-            padding: 3rem;
-            max-width: 700px;
-            width: 90%;
-            z-index: 202;
-            box-shadow: 0 0 60px rgba(0, 255, 65, 0.8);
-            opacity: 0;
-            pointer-events: none;
-            transition: all 0.3s ease;
-        }
-
-        .typing-game.active {
-            transform: translate(-50%, -50%) scale(1);
-            opacity: 1;
-            pointer-events: all;
-        }
-
-        .typing-game h2 {
-            color: var(--neon-green);
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            text-align: center;
-        }
-
-        .typing-challenge {
-            color: var(--neon-cyan);
-            font-size: 1.2rem;
-            margin-bottom: 1.5rem;
-            text-align: center;
-            line-height: 1.8;
-        }
-
-        .typing-input {
-            width: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            border: 2px solid var(--neon-cyan);
-            color: var(--text-white);
-            padding: 1rem;
-            font-family: 'Courier New', monospace;
-            font-size: 1rem;
-            margin-bottom: 1rem;
-            outline: none;
-        }
-
-        .typing-input:focus {
-            border-color: var(--neon-green);
-            box-shadow: 0 0 20px rgba(0, 255, 65, 0.3);
-        }
-
-        .typing-stats {
-            display: flex;
-            justify-content: space-between;
-            color: var(--text-white);
-            font-size: 0.9rem;
-            margin-bottom: 1rem;
-        }
-
-        .typing-progress {
-            width: 100%;
-            height: 10px;
-            background: rgba(0, 255, 65, 0.2);
-            border-radius: 5px;
-            overflow: hidden;
-            margin-bottom: 1rem;
-        }
-
-        .typing-progress-bar {
-            height: 100%;
-            background: var(--neon-green);
-            width: 0%;
-            transition: width 0.3s ease;
-            box-shadow: 0 0 20px var(--neon-green);
+            opacity: 0.3;
         }
 
         /* Language Switcher */
@@ -216,18 +49,15 @@
             z-index: 100;
             display: flex;
             gap: 10px;
-            background: rgba(0, 0, 0, 0.8);
+            background: rgba(0, 0, 0, 0.9);
             padding: 10px 15px;
-            border: 2px solid var(--neon-green);
-            border-radius: 5px;
-            box-shadow: 0 0 20px rgba(0, 255, 65, 0.5);
-            backdrop-filter: blur(10px);
+            border: 1px solid var(--white);
         }
 
         .lang-btn {
             background: transparent;
-            border: 1px solid var(--neon-green);
-            color: var(--neon-green);
+            border: 1px solid var(--white);
+            color: var(--white);
             padding: 8px 15px;
             cursor: pointer;
             font-family: 'Courier New', monospace;
@@ -237,14 +67,13 @@
         }
 
         .lang-btn:hover {
-            background: var(--neon-green);
-            color: var(--bg-black);
-            box-shadow: 0 0 15px var(--neon-green);
+            background: var(--white);
+            color: var(--black);
         }
 
         .lang-btn.active {
-            background: var(--neon-green);
-            color: var(--bg-black);
+            background: var(--white);
+            color: var(--black);
             font-weight: bold;
         }
 
@@ -259,29 +88,32 @@
             padding: 4rem 2rem;
         }
 
-        /* Futuristic 8-bit Title */
+        /* Title */
         h1 {
             font-size: clamp(3rem, 10vw, 8rem);
-            background: linear-gradient(135deg, var(--neon-green) 0%, var(--neon-cyan) 50%, var(--neon-pink) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            color: var(--white);
             text-transform: uppercase;
             letter-spacing: 0.3em;
-            filter: drop-shadow(0 0 20px var(--neon-green)) drop-shadow(0 0 40px var(--neon-cyan));
-            animation: titlePulse 4s ease infinite;
             margin-bottom: 1rem;
             text-align: center;
             font-weight: 900;
+            text-shadow: 
+                4px 0 0 var(--white),
+                -4px 0 0 var(--white),
+                0 4px 0 var(--white),
+                0 -4px 0 var(--white);
+            animation: pixelShift 3s infinite;
         }
 
-        @keyframes titlePulse {
-            0%, 100% { filter: drop-shadow(0 0 20px var(--neon-green)) drop-shadow(0 0 40px var(--neon-cyan)); }
-            50% { filter: drop-shadow(0 0 40px var(--neon-green)) drop-shadow(0 0 80px var(--neon-cyan)); }
+        @keyframes pixelShift {
+            0%, 100% { transform: translate(0); }
+            25% { transform: translate(2px, -2px); }
+            50% { transform: translate(-2px, 2px); }
+            75% { transform: translate(2px, 2px); }
         }
 
         .subtitle {
-            color: var(--neon-cyan);
+            color: var(--gray-light);
             font-size: clamp(0.8rem, 2vw, 1.2rem);
             margin-bottom: 3rem;
             text-align: center;
@@ -289,46 +121,25 @@
             text-transform: uppercase;
         }
 
-        /* Glassmorphism Cards */
-        .glass-card {
-            background: rgba(0, 0, 0, 0.4);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(0, 255, 65, 0.3);
-            border-radius: 15px;
-            padding: 2rem;
-            box-shadow: 
-                0 8px 32px 0 rgba(0, 255, 65, 0.2),
-                inset 0 0 20px rgba(0, 255, 65, 0.05);
-        }
-
         /* Counter Container */
         .counter-container {
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(15px);
-            border: 2px solid var(--neon-pink);
-            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid var(--white);
             padding: 2rem;
             margin-bottom: 3rem;
-            box-shadow: 
-                0 0 30px rgba(255, 0, 255, 0.4),
-                inset 0 0 20px rgba(255, 0, 255, 0.1);
             max-width: 600px;
             width: 100%;
             text-align: center;
-            cursor: pointer;
             transition: all 0.3s ease;
         }
 
         .counter-container:hover {
-            transform: scale(1.02);
-            box-shadow: 
-                0 0 40px rgba(255, 0, 255, 0.6),
-                inset 0 0 30px rgba(255, 0, 255, 0.15);
+            background: rgba(255, 255, 255, 0.1);
         }
 
         .counter-label {
             font-size: 0.9rem;
-            color: var(--neon-pink);
+            color: var(--gray-light);
             text-transform: uppercase;
             letter-spacing: 0.2em;
             margin-bottom: 1rem;
@@ -336,41 +147,36 @@
 
         .counter-display {
             font-size: clamp(1.5rem, 4vw, 3rem);
-            color: var(--neon-pink);
+            color: var(--white);
             font-weight: bold;
-            text-shadow: 
-                0 0 10px var(--neon-pink),
-                0 0 20px var(--neon-pink);
             font-variant-numeric: tabular-nums;
             margin-bottom: 0.5rem;
         }
 
         .counter-sublabel {
             font-size: 0.8rem;
-            color: var(--text-white);
-            opacity: 0.7;
+            color: var(--gray-light);
             margin-bottom: 1rem;
         }
 
         .counter-source {
             font-size: 0.75rem;
+            color: var(--gray-light);
             margin-top: 1rem;
         }
 
         .counter-source a {
-            color: var(--neon-cyan);
+            color: var(--white);
             text-decoration: none;
-            border-bottom: 1px dotted var(--neon-cyan);
+            border-bottom: 1px solid var(--white);
             transition: all 0.2s ease;
         }
 
         .counter-source a:hover {
-            color: var(--neon-pink);
-            border-bottom-color: var(--neon-pink);
-            text-shadow: 0 0 10px var(--neon-pink);
+            opacity: 0.7;
         }
 
-        /* Stats Grid with Glassmorphism */
+        /* Stats Grid */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -381,25 +187,21 @@
         }
 
         .stat-card {
-            background: rgba(0, 0, 0, 0.4);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(0, 255, 255, 0.3);
-            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--white);
             padding: 1.5rem;
             text-align: center;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 20px rgba(0, 255, 255, 0.2);
         }
 
         .stat-card:hover {
-            border-color: var(--neon-pink);
-            box-shadow: 0 8px 30px rgba(255, 0, 255, 0.4);
+            background: rgba(255, 255, 255, 0.1);
             transform: translateY(-5px);
         }
 
         .stat-number {
             font-size: 2rem;
-            color: var(--neon-cyan);
+            color: var(--white);
             font-weight: bold;
             display: block;
             margin-bottom: 0.5rem;
@@ -407,37 +209,31 @@
 
         .stat-label {
             font-size: 0.9rem;
-            color: var(--text-white);
+            color: var(--gray-light);
             margin-bottom: 0.8rem;
         }
 
         .stat-source {
             font-size: 0.7rem;
-            opacity: 0.7;
+            color: var(--gray-light);
         }
 
         .stat-source a {
-            color: var(--neon-cyan);
+            color: var(--white);
             text-decoration: none;
-            border-bottom: 1px dotted var(--neon-cyan);
+            border-bottom: 1px dotted var(--white);
         }
 
         .stat-source a:hover {
-            color: var(--neon-pink);
-            border-bottom-color: var(--neon-pink);
+            opacity: 0.7;
         }
 
         /* Text Container */
         .text-container {
             max-width: 900px;
-            background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(15px);
+            background: rgba(0, 0, 0, 0.8);
             padding: 3rem;
-            border: 1px solid rgba(0, 255, 65, 0.3);
-            border-radius: 15px;
-            box-shadow: 
-                0 8px 32px rgba(0, 255, 65, 0.2),
-                inset 0 0 30px rgba(0, 255, 65, 0.05);
+            border: 1px solid var(--white);
             margin-bottom: 4rem;
         }
 
@@ -447,9 +243,9 @@
 
         .text-container p {
             font-size: clamp(0.95rem, 1.5vw, 1.15rem);
-            color: var(--text-white);
+            color: var(--white);
             line-height: 1.8;
-            margin-bottom: 1.2rem;
+            margin-bottom: 1.5rem;
             text-align: left;
             opacity: 0;
             transform: translateY(20px);
@@ -462,49 +258,270 @@
         }
 
         .source-link {
-            color: var(--neon-cyan);
+            color: var(--white);
             text-decoration: none;
-            border-bottom: 1px dotted var(--neon-cyan);
+            border-bottom: 1px solid var(--white);
             transition: all 0.2s ease;
         }
 
         .source-link:hover {
-            color: var(--neon-pink);
-            border-bottom-color: var(--neon-pink);
-            text-shadow: 0 0 10px var(--neon-pink);
+            opacity: 0.7;
         }
 
-        /* Floating Text */
-        .floating-text {
+        /* Built With Button */
+        .built-with-btn {
             position: fixed;
-            font-size: clamp(4rem, 15vw, 12rem);
-            background: linear-gradient(135deg, var(--neon-pink) 0%, var(--neon-cyan) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            font-weight: bold;
+            top: 20px;
+            left: 20px;
+            background: rgba(0, 0, 0, 0.9);
+            border: 1px solid var(--white);
+            color: var(--white);
+            padding: 10px 20px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            cursor: pointer;
+            z-index: 100;
+            transition: all 0.3s ease;
             text-transform: uppercase;
-            letter-spacing: 0.2em;
-            filter: drop-shadow(0 0 40px var(--neon-pink));
-            opacity: 0.3;
-            pointer-events: all;
-            z-index: 6;
-            animation: float 20s infinite ease-in-out;
-            white-space: nowrap;
+        }
+
+        .built-with-btn:hover {
+            background: var(--white);
+            color: var(--black);
+        }
+
+        /* Built With Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 200;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal-content {
+            background: var(--black);
+            border: 2px solid var(--white);
+            padding: 3rem;
+            max-width: 800px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid var(--white);
+            padding-bottom: 1rem;
+        }
+
+        .modal-title {
+            font-size: 1.8rem;
+            color: var(--white);
+            text-transform: uppercase;
+        }
+
+        .modal-close {
+            color: var(--white);
+            font-size: 2rem;
+            cursor: pointer;
+            border: none;
+            background: none;
+            transition: opacity 0.2s ease;
+        }
+
+        .modal-close:hover {
+            opacity: 0.7;
+        }
+
+        .modal-section {
+            margin-bottom: 2rem;
+        }
+
+        .modal-section h3 {
+            color: var(--white);
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+        }
+
+        .tool-item {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--gray-mid);
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .tool-name {
+            font-weight: bold;
+            color: var(--white);
+            margin-bottom: 0.5rem;
+        }
+
+        .tool-description {
+            color: var(--gray-light);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .tool-links {
+            font-size: 0.8rem;
+        }
+
+        .tool-links a {
+            color: var(--white);
+            text-decoration: underline;
+            margin-right: 1rem;
+        }
+
+        .tool-links a:hover {
+            opacity: 0.7;
+        }
+
+        /* T-Shirt Section */
+        .tshirt-section {
+            max-width: 900px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid var(--white);
+            padding: 3rem;
+            margin-bottom: 4rem;
+            text-align: center;
+        }
+
+        .tshirt-section h2 {
+            font-size: clamp(2rem, 5vw, 3rem);
+            color: var(--white);
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+        }
+
+        .tshirt-tagline {
+            font-size: 1.2rem;
+            color: var(--gray-light);
+            margin-bottom: 2rem;
+            font-style: italic;
+        }
+
+        .tshirt-description {
+            text-align: left;
+            margin-bottom: 2rem;
+            line-height: 1.8;
+        }
+
+        .tshirt-prompt-container {
+            margin: 2rem 0;
+        }
+
+        .tshirt-prompt-label {
+            font-size: 1rem;
+            color: var(--white);
+            margin-bottom: 1rem;
+            text-align: left;
+        }
+
+        .tshirt-prompt-input {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid var(--white);
+            color: var(--white);
+            padding: 1rem;
+            font-family: 'Courier New', monospace;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            outline: none;
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .tshirt-prompt-input:focus {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .tshirt-preview {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--white);
+            padding: 2rem;
+            margin: 2rem 0;
+            min-height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .tshirt-preview-placeholder {
+            color: var(--gray-light);
+            font-style: italic;
+        }
+
+        .tshirt-cta {
+            background: var(--white);
+            color: var(--black);
+            border: 2px solid var(--white);
+            padding: 1rem 2rem;
+            font-family: 'Courier New', monospace;
+            font-size: 1rem;
             cursor: pointer;
             transition: all 0.3s ease;
+            text-transform: uppercase;
+            font-weight: bold;
         }
 
-        .floating-text:hover {
-            opacity: 0.5;
+        .tshirt-cta:hover {
+            background: var(--black);
+            color: var(--white);
         }
 
-        @keyframes float {
-            0% { transform: translate(-10vw, 20vh) rotate(-5deg); }
-            25% { transform: translate(60vw, 10vh) rotate(3deg); }
-            50% { transform: translate(70vw, 60vh) rotate(-2deg); }
-            75% { transform: translate(20vw, 70vh) rotate(4deg); }
-            100% { transform: translate(-10vw, 20vh) rotate(-5deg); }
+        .tshirt-price {
+            font-size: 2rem;
+            color: var(--white);
+            margin: 1rem 0;
+        }
+
+        .tshirt-impact {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--gray-mid);
+            padding: 1.5rem;
+            margin-top: 2rem;
+            text-align: left;
+        }
+
+        .tshirt-impact h4 {
+            color: var(--white);
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+        }
+
+        .tshirt-impact ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .tshirt-impact li {
+            margin-bottom: 0.5rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .tshirt-impact li:before {
+            content: "→";
+            position: absolute;
+            left: 0;
         }
 
         /* Terminal */
@@ -515,8 +532,7 @@
             width: 60px;
             height: 60px;
             background: rgba(0, 0, 0, 0.9);
-            backdrop-filter: blur(10px);
-            border: 2px solid var(--neon-green);
+            border: 2px solid var(--white);
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -524,25 +540,21 @@
             cursor: pointer;
             z-index: 100;
             transition: all 0.3s ease;
-            box-shadow: 0 0 20px rgba(0, 255, 65, 0.5);
-            animation: pulse 2s infinite;
         }
 
         .terminal-toggle:hover {
-            transform: scale(1.1);
-            box-shadow: 0 0 30px rgba(0, 255, 65, 0.8);
+            background: var(--white);
         }
 
         .terminal-toggle::before {
             content: '>';
             font-size: 2rem;
-            color: var(--neon-green);
+            color: var(--white);
             font-weight: bold;
         }
 
-        @keyframes pulse {
-            0%, 100% { box-shadow: 0 0 20px rgba(0, 255, 65, 0.5); }
-            50% { box-shadow: 0 0 30px rgba(0, 255, 65, 0.8); }
+        .terminal-toggle:hover::before {
+            color: var(--black);
         }
 
         .terminal-window {
@@ -552,10 +564,7 @@
             width: 450px;
             max-height: 500px;
             background: rgba(0, 0, 0, 0.95);
-            backdrop-filter: blur(20px);
-            border: 2px solid var(--neon-green);
-            border-radius: 10px;
-            box-shadow: 0 0 40px rgba(0, 255, 65, 0.6);
+            border: 2px solid var(--white);
             z-index: 99;
             display: none;
             flex-direction: column;
@@ -572,32 +581,28 @@
         }
 
         .terminal-header {
-            background: rgba(0, 255, 65, 0.2);
+            background: rgba(255, 255, 255, 0.1);
             padding: 0.8rem 1rem;
-            border-bottom: 1px solid var(--neon-green);
+            border-bottom: 1px solid var(--white);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-radius: 10px 10px 0 0;
         }
 
         .terminal-title {
-            color: var(--neon-green);
+            color: var(--white);
             font-size: 0.9rem;
             text-transform: uppercase;
-            letter-spacing: 0.1em;
         }
 
         .terminal-close {
-            color: var(--neon-pink);
+            color: var(--white);
             cursor: pointer;
             font-size: 1.2rem;
-            transition: all 0.2s ease;
         }
 
         .terminal-close:hover {
-            transform: scale(1.2);
-            text-shadow: 0 0 10px var(--neon-pink);
+            opacity: 0.7;
         }
 
         .terminal-content {
@@ -605,7 +610,6 @@
             overflow-y: auto;
             flex-grow: 1;
             font-size: 0.85rem;
-            line-height: 1.6;
         }
 
         .terminal-line {
@@ -619,12 +623,12 @@
         }
 
         .terminal-prompt {
-            color: var(--neon-green);
+            color: var(--white);
         }
 
         .terminal-input-container {
             padding: 1rem;
-            border-top: 1px solid var(--neon-green);
+            border-top: 1px solid var(--white);
             display: flex;
             align-items: center;
             gap: 0.5rem;
@@ -632,7 +636,7 @@
 
         .terminal-input-container::before {
             content: '>';
-            color: var(--neon-green);
+            color: var(--white);
             font-weight: bold;
         }
 
@@ -640,218 +644,49 @@
             flex-grow: 1;
             background: transparent;
             border: none;
-            color: var(--text-white);
+            color: var(--white);
             font-family: 'Courier New', monospace;
             font-size: 0.85rem;
             outline: none;
         }
 
-        /* Audio Player */
-        .audio-player {
-            position: fixed;
-            bottom: 30px;
-            left: 30px;
-            background: rgba(0, 0, 0, 0.9);
-            backdrop-filter: blur(15px);
-            border: 2px solid var(--neon-cyan);
-            padding: 15px 20px;
-            border-radius: 10px;
-            z-index: 100;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
-            transition: all 0.3s ease;
-        }
-
-        .audio-player:hover {
-            box-shadow: 0 0 30px rgba(0, 255, 255, 0.8);
-        }
-
-        .play-btn {
-            width: 40px;
-            height: 40px;
-            background: transparent;
-            border: 2px solid var(--neon-cyan);
-            border-radius: 50%;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-        }
-
-        .play-btn:hover {
-            background: var(--neon-cyan);
-            box-shadow: 0 0 15px var(--neon-cyan);
-        }
-
-        .play-btn::before {
-            content: '▶';
-            font-size: 1rem;
-            color: var(--neon-cyan);
-            margin-left: 3px;
-        }
-
-        .play-btn:hover::before {
-            color: var(--bg-black);
-        }
-
-        .play-btn.playing::before {
-            content: '❚❚';
-            margin-left: 0;
-        }
-
-        .audio-info {
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-        }
-
-        .audio-title {
-            color: var(--neon-cyan);
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-        }
-
-        .audio-time {
-            color: var(--text-white);
-            font-size: 0.7rem;
-            opacity: 0.7;
-        }
-
-        /* Questions Modal - Updated Style */
-        .questions-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.95);
-            backdrop-filter: blur(10px);
-            z-index: 201;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .questions-container.active {
-            display: flex;
-            opacity: 1;
-        }
-
-        .question-card {
-            background: rgba(0, 0, 0, 0.9);
-            backdrop-filter: blur(20px);
-            border: 3px solid var(--neon-green);
-            border-radius: 15px;
-            padding: 3rem;
-            max-width: 600px;
-            width: 90%;
-            box-shadow: 0 0 50px rgba(0, 255, 65, 0.6);
-            text-align: center;
-        }
-
-        .question-number {
-            color: var(--neon-cyan);
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 0.2em;
-            margin-bottom: 2rem;
-        }
-
-        .question-text {
-            color: var(--neon-green);
-            font-size: clamp(1.2rem, 3vw, 1.8rem);
-            line-height: 1.6;
-            margin-bottom: 2rem;
-            font-weight: bold;
-        }
-
-        .question-input {
-            width: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            border: 2px solid var(--neon-cyan);
-            border-radius: 5px;
-            color: var(--text-white);
-            padding: 1rem;
-            font-family: 'Courier New', monospace;
-            font-size: 1rem;
-            margin-bottom: 2rem;
-            resize: vertical;
-            min-height: 100px;
-            outline: none;
-        }
-
-        .question-input:focus {
-            border-color: var(--neon-green);
-            box-shadow: 0 0 20px rgba(0, 255, 65, 0.3);
-        }
-
-        .question-buttons {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-        }
-
-        .question-btn {
-            background: transparent;
-            border: 2px solid var(--neon-green);
-            border-radius: 5px;
-            color: var(--neon-green);
-            padding: 1rem 2rem;
-            font-family: 'Courier New', monospace;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-        }
-
-        .question-btn:hover {
-            background: var(--neon-green);
-            color: var(--bg-black);
-            box-shadow: 0 0 20px var(--neon-green);
-        }
-
-        .question-btn.skip {
-            border-color: var(--text-white);
-            color: var(--text-white);
-            opacity: 0.5;
-        }
-
-        .question-btn.skip:hover {
-            background: var(--text-white);
-            opacity: 1;
-        }
-
         /* Responsive */
         @media (max-width: 768px) {
-            .terminal-window { width: calc(100vw - 40px); right: 20px; left: 20px; }
-            .stats-grid { grid-template-columns: 1fr; }
-            .text-container { padding: 2rem 1.5rem; }
-            .audio-player { bottom: 100px; }
-            .webcam-container { width: 150px; height: 112px; }
-            .webcam-toggle { left: 190px; font-size: 0.7rem; padding: 8px 15px; }
+            .terminal-window {
+                width: calc(100vw - 40px);
+                right: 20px;
+                left: 20px;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .text-container, .tshirt-section {
+                padding: 2rem 1.5rem;
+            }
+
+            .modal-content {
+                padding: 2rem 1.5rem;
+            }
+
+            h1 {
+                letter-spacing: 0.2em;
+            }
+
+            .built-with-btn {
+                font-size: 0.8rem;
+                padding: 8px 15px;
+            }
         }
     </style>
 </head>
 <body>
     <!-- Three.js 3D Background -->
     <canvas id="three-canvas"></canvas>
-    <div class="gradient-overlay"></div>
 
-    <!-- Floating "STOP WAR" -->
-    <div class="floating-text" id="floatingText">STOP WAR</div>
-
-    <!-- Webcam Container -->
-    <div class="webcam-container" id="webcamContainer">
-        <video id="webcam" autoplay playsinline></video>
-        <canvas class="webcam-overlay" id="webcamOverlay"></canvas>
-    </div>
-    <button class="webcam-toggle" id="webcamToggle">Enable Webcam</button>
+    <!-- Built With Button -->
+    <button class="built-with-btn" id="builtWithBtn">How This Was Made</button>
 
     <!-- Language Switcher -->
     <div class="language-switcher">
@@ -859,74 +694,99 @@
         <button class="lang-btn" id="btnEN">EN</button>
     </div>
 
-    <!-- Typing Game -->
-    <div class="typing-game" id="typingGame">
-        <h2>⌨️ TYPING CHALLENGE</h2>
-        <div class="typing-challenge" id="typingChallenge"></div>
-        <input type="text" class="typing-input" id="typingInput" placeholder="Type here..." autocomplete="off">
-        <div class="typing-progress">
-            <div class="typing-progress-bar" id="typingProgress"></div>
+    <!-- Built With Modal -->
+    <div class="modal-overlay" id="builtWithModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="modalTitle">Transparence</h2>
+                <button class="modal-close" id="modalClose">×</button>
+            </div>
+
+            <div class="modal-section" id="modalIntro">
+                <p>Ce site critique le système de consommation qui finance la guerre. Mais il a été créé AVEC les produits de ce système.</p>
+                <p>Il n'y a pas de position pure. Même en créant ce manifeste, j'ai participé aux structures que je critique. La conscience de cette contradiction n'est pas de l'hypocrisie — c'est de l'honnêteté.</p>
+            </div>
+
+            <div class="modal-section">
+                <h3 id="toolsTitle">Les outils utilisés</h3>
+                
+                <div class="tool-item">
+                    <div class="tool-name">MacBook Air M2</div>
+                    <div class="tool-description">Ordinateur portable fabriqué par Apple. Chaîne d'approvisionnement incluant Foxconn, cobalt extrait au Congo dans des conditions problématiques, terres rares.</div>
+                    <div class="tool-links">
+                        <a href="https://www.theguardian.com/global-development/2021/nov/08/cobalt-drc-miners-toil-for-30p-a-day-to-fuel-electric-cars" target="_blank">Cobalt mining</a>
+                        <a href="https://www.bbc.com/news/business-50154499" target="_blank">Foxconn conditions</a>
+                    </div>
+                </div>
+
+                <div class="tool-item">
+                    <div class="tool-name">Claude AI (Anthropic)</div>
+                    <div class="tool-description">Intelligence artificielle utilisée pour coder ce site. Nécessite des serveurs massifs, data centers énergivores, infrastructure cloud mondiale.</div>
+                    <div class="tool-links">
+                        <a href="https://www.nature.com/articles/s42256-020-0219-9" target="_blank">AI energy consumption</a>
+                    </div>
+                </div>
+
+                <div class="tool-item">
+                    <div class="tool-name">Souris (commandée en ligne)</div>
+                    <div class="tool-description">Périphérique fabriqué en Asie, expédié par avion cargo, emballage plastique, distribution via plateformes e-commerce.</div>
+                    <div class="tool-links">
+                        <a href="https://www.theguardian.com/environment/2020/mar/23/amazon-climate-change-environmental-impact" target="_blank">E-commerce impact</a>
+                    </div>
+                </div>
+
+                <div class="tool-item">
+                    <div class="tool-name">Électricité (Hydro-Québec)</div>
+                    <div class="tool-description">Énergie hydroélectrique, réseau provincial, infrastructure de barrages avec impacts environnementaux et sociaux sur territoires autochtones.</div>
+                    <div class="tool-links">
+                        <a href="https://www.cbc.ca/news/canada/north/hydro-quebec-indigenous-consultation-1.5349888" target="_blank">Hydro impacts</a>
+                    </div>
+                </div>
+
+                <div class="tool-item">
+                    <div class="tool-name">Hébergement web (Vercel)</div>
+                    <div class="tool-description">Infrastructure cloud, serveurs mondiaux, centres de données AWS/Google Cloud, consommation énergétique continue.</div>
+                    <div class="tool-links">
+                        <a href="https://www.theguardian.com/environment/2017/dec/11/tsunami-of-data-could-consume-fifth-global-electricity-by-2025" target="_blank">Data centers</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-section" id="modalConclusion">
+                <h3 id="conclusionTitle">Et maintenant?</h3>
+                <p>Utilise cet inconfort. Laisse cette contradiction te motiver à l'action.</p>
+                <p>La cohérence parfaite est impossible dans ce système. Mais les choix informés sont possibles.</p>
+                <p>Ce site n'est pas une solution. C'est une interruption. Une pause pour examiner ce qu'on finance, ce qu'on normalise, ce qu'on refuse.</p>
+            </div>
         </div>
-        <div class="typing-stats">
-            <span>Speed: <span id="typingSpeed">0</span> WPM</span>
-            <span>Accuracy: <span id="typingAccuracy">100</span>%</span>
-        </div>
-        <button class="question-btn" id="closeTyping">Close</button>
     </div>
 
     <!-- Terminal -->
     <div class="terminal-toggle" id="terminalToggle"></div>
     <div class="terminal-window" id="terminalWindow">
         <div class="terminal-header">
-            <span class="terminal-title">Terminal.exe</span>
+            <span class="terminal-title">Terminal</span>
             <span class="terminal-close" id="terminalClose">×</span>
         </div>
         <div class="terminal-content" id="terminalContent">
             <div class="terminal-line"><span class="terminal-prompt">&gt;</span> System initialized...</div>
             <div class="terminal-line"><span class="terminal-prompt">&gt;</span> Type 'help' for commands</div>
-            <div class="terminal-line"><span class="terminal-prompt">&gt;</span> Type 'game' to start typing challenge</div>
-            <div class="terminal-line"><span class="terminal-prompt">&gt;</span> Type 'cam' to enable webcam</div>
         </div>
         <div class="terminal-input-container">
             <input type="text" class="terminal-input" id="terminalInput" placeholder="Enter command..." autocomplete="off">
         </div>
     </div>
 
-    <!-- Audio Player -->
-    <div class="audio-player">
-        <button class="play-btn" id="playBtn"></button>
-        <div class="audio-info">
-            <div class="audio-title">Ambient</div>
-            <div class="audio-time" id="audioTime">0:00 / 0:00</div>
-        </div>
-        <audio id="audioPlayer" loop>
-            <source src="YOUR_MP3_LINK_HERE.mp3" type="audio/mpeg">
-        </audio>
-    </div>
-
-    <!-- Questions Modal -->
-    <div class="questions-container" id="questionsContainer">
-        <div class="question-card">
-            <div class="question-number" id="questionNumber">Question 1/3</div>
-            <div class="question-text" id="questionText"></div>
-            <textarea class="question-input" id="questionInput" placeholder="Write your answer... (optional)"></textarea>
-            <div class="question-buttons">
-                <button class="question-btn skip" id="skipBtn">Skip</button>
-                <button class="question-btn" id="nextBtn">Next</button>
-            </div>
-        </div>
-    </div>
-
     <!-- Main Content -->
     <div class="content">
         <h1>ACTIONS</h1>
-        <div class="subtitle">Futuristic Interactive Experience // 2025</div>
+        <div class="subtitle">Interactive Manifesto // 2025</div>
 
         <!-- Counter -->
-        <div class="counter-container glass-card" id="counterContainer">
+        <div class="counter-container">
             <div class="counter-label">Global Military Spending 2024</div>
             <div class="counter-display" id="militaryCounter">$0</div>
-            <div class="counter-sublabel">Per second (live counter)</div>
+            <div class="counter-sublabel">Per second (live)</div>
             <div class="counter-source">
                 Source: <a href="https://www.sipri.org/publications/2025/sipri-fact-sheets/trends-world-military-expenditure-2024" target="_blank">SIPRI 2025</a>
             </div>
@@ -936,7 +796,7 @@
         <div class="stats-grid">
             <div class="stat-card">
                 <span class="stat-number">61</span>
-                <div class="stat-label">Active Armed Conflicts</div>
+                <div class="stat-label">Active Conflicts</div>
                 <div class="stat-source"><a href="https://www.uu.se/en/press/press-releases/2024/2024-06-03-ucdp-record-number-of-armed-conflicts-in-the-world" target="_blank">UCDP 2024</a></div>
             </div>
             <div class="stat-card">
@@ -946,88 +806,175 @@
             </div>
             <div class="stat-card">
                 <span class="stat-number">€426B</span>
-                <div class="stat-label">EU Spending 2026</div>
+                <div class="stat-label">EU 2026</div>
                 <div class="stat-source"><a href="https://www.europarl.europa.eu/RegData/etudes/ATAG/2025/772846/EPRS_ATA(2025)772846_EN.pdf" target="_blank">EU 2025</a></div>
             </div>
             <div class="stat-card">
                 <span class="stat-number">5%</span>
-                <div class="stat-label">NATO Target 2035</div>
-                <div class="stat-source"><a href="https://www.nato.int/cps/en/natohq/topics_49198.htm" target="_blank">NATO 2025</a></div>
+                <div class="stat-label">NATO 2035</div>
+                <div class="stat-source"><a href="https://www.nato.int/cps/en/natohq/topics_49198.htm" target="_blank">NATO</a></div>
             </div>
         </div>
 
-        <!-- Text (shortened for demo) -->
+        <!-- FRENCH TEXT -->
         <div class="text-container" id="textFR">
             <p>La guerre n'est pas un accident. C'est un système qu'on finance tous les jours.</p>
-            <p>Les gouvernements ont dépensé <a href="https://www.sipri.org/publications/2025/sipri-fact-sheets/trends-world-military-expenditure-2024" target="_blank" class="source-link">2,718 milliards de dollars</a> en armement en 2024.</p>
-            <p><strong>Try typing 'game' in the terminal to test your typing speed! Or 'cam' to enable webcam face detection.</strong></p>
+
+            <p>Les gouvernements ont dépensé <a href="https://www.sipri.org/publications/2025/sipri-fact-sheets/trends-world-military-expenditure-2024" target="_blank" class="source-link">2,718 milliards de dollars</a> en armement en 2024. Ça fait 86 158$ par seconde. L'augmentation de 9.4% est la plus forte depuis la fin de la guerre froide.</p>
+
+            <p>Il y a présentement <a href="https://www.uu.se/en/press/press-releases/2024/2024-06-03-ucdp-record-number-of-armed-conflicts-in-the-world" target="_blank" class="source-link">61 conflits armés</a> actifs dans le monde — le chiffre le plus élevé depuis 1946. Chacun repose sur des chaînes d'approvisionnement, des investissements, des accords commerciaux. La guerre est une industrie. Elle a besoin de clients.</p>
+
+            <p><a href="https://www.nato.int/cps/en/natohq/topics_49198.htm" target="_blank" class="source-link">L'OTAN a fixé un nouveau target</a>: 5% du PIB d'ici 2035. L'Europe seule prévoit dépenser <a href="https://www.europarl.europa.eu/RegData/etudes/ATAG/2025/772846/EPRS_ATA(2025)772846_EN.pdf" target="_blank" class="source-link">426 milliards d'euros en 2026</a> — une augmentation de 100 milliards par rapport à 2024.</p>
+
+            <p>On condamne la violence. On partage des posts. On signe des pétitions. Puis on achète un nouveau téléphone dont les minéraux viennent de mines où travaillent des <a href="https://www.ilo.org/global/topics/child-labour/lang--en/index.htm" target="_blank" class="source-link">160 millions d'enfants</a>. On commande des vêtements fabriqués dans des usines où les gens font 12h par jour pour 2$. On mange de la viande produite dans des systèmes qui tuent <a href="https://ourworldindata.org/meat-production" target="_blank" class="source-link">80 milliards d'animaux</a> par année.</p>
+
+            <p>Ce n'est pas de la morale. C'est de l'observation.</p>
+
+            <p>Les systèmes violents existent parce qu'ils sont rentables. Ils continuent parce qu'on participe. Pas par cruauté, mais par habitude. Par commodité. Par manque d'alternative visible.</p>
+
+            <p>Le problème n'est pas d'être "une mauvaise personne". Le problème est de vivre dans un système conçu pour cacher ses coûts réels. Tu vois le produit, pas la chaîne. Tu vois le prix, pas les corps. Tu vois la marque, pas les contrats militaires derrière.</p>
+
+            <p>L'activisme peut devenir une identité. Une façon de se sentir du bon côté. Mais si ton indignation s'arrête à l'écran, si tes achats ne changent pas, si ton confort reste intact, c'est du théâtre. Ce n'est pas une accusation. C'est une question: est-ce que tes actions suivent tes mots?</p>
+
+            <p>La guerre qu'on dénonce, c'est souvent la guerre qu'on finance en petits paiements invisibles. Les souffrances qui nous choquent sont produites par les mêmes systèmes économiques qu'on alimente tous les jours.</p>
+
+            <p>Refuser n'est pas de l'apathie. C'est une stratégie. Ne pas acheter, c'est retirer du financement. Choisir la simplicité, c'est réduire la demande. Vivre hors-système, c'est arrêter de valider la machine par ta participation.</p>
+
+            <p>Ce n'est pas facile. Ça demande de renoncer à du confort. De chercher des alternatives. De tracer d'où viennent les choses. De poser des questions désagréables. De vivre avec moins.</p>
+
+            <p>Mais c'est possible.</p>
+
+            <p>La nature offre un espace où les conséquences sont directes. Tu plantes, tu récoltes. Tu négliges, ça meurt. Tu prends soin, ça pousse. Il n'y a pas de chaîne invisible entre ton action et son résultat. C'est un système sans mensonge.</p>
+
+            <p>Changer le système demande du temps. Ça ne se fait pas avec des slogans. Ça demande de repenser comment on produit, comment on distribue, comment on valorise. Ça demande de créer des alternatives qui ne reposent pas sur l'exploitation. Ça demande de la cohérence personnelle avant l'action collective.</p>
+
+            <p>Les questions ne sont pas confortables:</p>
+
+            <p>D'où vient ce que tu achètes? Qui l'a fait? Dans quelles conditions? Avec quels matériaux? Es-tu prêt à perdre en commodité pour arrêter de financer du mal? Ton engagement va-t-il au-delà de l'écran? Si tu avais le pouvoir, quelle partie du système démantellerais-tu en premier?</p>
+
+            <p>Ce ne sont pas des accusations. Ce sont des outils de clarté.</p>
+
+            <p>La paix ne viendra pas de bons sentiments. Elle viendra quand les mots et les actions seront alignés. Quand la condamnation sera accompagnée de refus. Quand les gestes deviendront cohérents.</p>
+
+            <p>Ce texte n'est pas un rejet de l'humanité. C'est une analyse de structure. Dire que les humains ont construit la guerre, c'est aussi dire qu'ils peuvent choisir de ne pas la nourrir.</p>
+
+            <p>Ce qui est cherché ici n'est pas le désespoir. C'est l'interruption. Une pause dans le rythme où la conscience devient spectacle. Une invitation à examiner ce qu'on nourrit, ce qu'on normalise, ce qu'on refuse.</p>
+
+            <p>La paix commence quand le langage rencontre l'action.</p>
         </div>
 
+        <!-- ENGLISH TEXT -->
         <div class="text-container hidden" id="textEN">
             <p>War is not an accident. It's a system we all fund every day.</p>
-            <p>Governments spent <a href="https://www.sipri.org/publications/2025/sipri-fact-sheets/trends-world-military-expenditure-2024" target="_blank" class="source-link">$2.718 trillion</a> on weapons in 2024.</p>
-            <p><strong>Try typing 'game' in the terminal to test your typing speed! Or 'cam' to enable webcam face detection.</strong></p>
+
+            <p>Governments spent <a href="https://www.sipri.org/publications/2025/sipri-fact-sheets/trends-world-military-expenditure-2024" target="_blank" class="source-link">$2.718 trillion</a> on weapons in 2024. That's $86,158 per second. The 9.4% increase is the steepest since the end of the Cold War.</p>
+
+            <p>There are currently <a href="https://www.uu.se/en/press/press-releases/2024/2024-06-03-ucdp-record-number-of-armed-conflicts-in-the-world" target="_blank" class="source-link">61 armed conflicts</a> active worldwide — the highest number since 1946. Each relies on supply chains, investments, trade agreements. War is an industry. It needs customers.</p>
+
+            <p><a href="https://www.nato.int/cps/en/natohq/topics_49198.htm" target="_blank" class="source-link">NATO set a new target</a>: 5% of GDP by 2035. Europe alone projects spending <a href="https://www.europarl.europa.eu/RegData/etudes/ATAG/2025/772846/EPRS_ATA(2025)772846_EN.pdf" target="_blank" class="source-link">€426 billion in 2026</a> — a €100 billion increase from 2024.</p>
+
+            <p>We condemn violence. We share posts. We sign petitions. Then we buy a new phone whose minerals come from mines where <a href="https://www.ilo.org/global/topics/child-labour/lang--en/index.htm" target="_blank" class="source-link">160 million children</a> work. We order clothes made in factories where people work 12-hour days for $2. We eat meat produced in systems that kill <a href="https://ourworldindata.org/meat-production" target="_blank" class="source-link">80 billion animals</a> per year.</p>
+
+            <p>This is not morality. This is observation.</p>
+
+            <p>Violent systems exist because they're profitable. They continue because we participate. Not out of cruelty, but out of habit. Out of convenience. Out of lack of visible alternatives.</p>
+
+            <p>The problem isn't being "a bad person". The problem is living in a system designed to hide its real costs. You see the product, not the chain. You see the price, not the bodies. You see the brand, not the military contracts behind it.</p>
+
+            <p>Activism can become an identity. A way to feel on the right side. But if your outrage stops at the screen, if your purchases don't change, if your comfort remains intact, it's theater. This isn't an accusation. It's a question: do your actions follow your words?</p>
+
+            <p>The war we denounce is often the war we finance in small invisible payments. The suffering that shocks us is produced by the same economic systems we feed every day.</p>
+
+            <p>Refusal is not apathy. It's strategy. Not buying is withdrawing funding. Choosing simplicity is reducing demand. Living off-system is stopping validation of the machine through your participation.</p>
+
+            <p>It's not easy. It requires giving up comfort. Seeking alternatives. Tracing where things come from. Asking uncomfortable questions. Living with less.</p>
+
+            <p>But it's possible.</p>
+
+            <p>Nature offers a space where consequences are direct. You plant, you harvest. You neglect, it dies. You care, it grows. There's no invisible chain between your action and its result. It's a system without lies.</p>
+
+            <p>Changing the system takes time. It's not done with slogans. It requires rethinking how we produce, how we distribute, how we value. It requires creating alternatives that don't rely on exploitation. It requires personal coherence before collective action.</p>
+
+            <p>The questions aren't comfortable:</p>
+
+            <p>Where does what you buy come from? Who made it? Under what conditions? With what materials? Are you willing to lose convenience to stop funding harm? Does your engagement go beyond the screen? If you had power, which part of the system would you dismantle first?</p>
+
+            <p>These are not accusations. They are tools for clarity.</p>
+
+            <p>Peace won't come from good feelings. It will come when words and actions align. When condemnation is accompanied by refusal. When gestures become coherent.</p>
+
+            <p>This text is not a rejection of humanity. It's structural analysis. Saying humans built war also means they can choose not to feed it.</p>
+
+            <p>What is sought here is not despair. It's interruption. A pause in the rhythm where conscience becomes spectacle. An invitation to examine what we feed, what we normalize, what we refuse.</p>
+
+            <p>Peace begins when language meets action.</p>
         </div>
+
+        <!-- T-SHIRT SECTION -->
+        <div class="tshirt-section">
+            <h2>BUT NOW...</h2>
+            <p class="tshirt-tagline">"Ce n'est pas du merch. C'est une collaboration."</p>
+            
+            <div class="tshirt-description">
+                <p>Ce texte t'a fait réfléchir? Transforme cette réflexion en objet tangible.</p>
+                <p>Écris un prompt. Une phrase. Une idée. Je la transforme en design de T-shirt.</p>
+                <p>Ce n'est pas de la consommation passive. C'est une co-création.</p>
+            </div>
+
+            <div class="tshirt-prompt-container">
+                <div class="tshirt-prompt-label">Ton prompt / ton idée:</div>
+                <textarea class="tshirt-prompt-input" id="tshirtPrompt" placeholder="Exemple: 'La paix en pixels', 'Refuse le système', 'Mon rêve en image'..."></textarea>
+                <button class="tshirt-cta" id="generateBtn">Générer le design</button>
+            </div>
+
+            <div class="tshirt-preview" id="tshirtPreview">
+                <div class="tshirt-preview-placeholder">Ton design apparaîtra ici...</div>
+            </div>
+
+            <div class="tshirt-price">45$</div>
+            <p style="color: var(--gray-light); margin-bottom: 1rem;">Pré-commande uniquement • Livraison 2-4 semaines</p>
+            
+            <button class="tshirt-cta" id="preorderBtn" style="display: none;">Pré-commander maintenant</button>
+
+            <div class="tshirt-impact">
+                <h4>Où va l'argent?</h4>
+                <ul>
+                    <li>2$ par T-shirt → Organismes d'aide à l'itinérance (Montréal)</li>
+                    <li>Production, impression, expédition → Artisans locaux quand possible</li>
+                    <li>Le reste → Finance mon apprentissage créatif et mon loyer</li>
+                </ul>
+                <p style="margin-top: 1rem; font-style: italic;">Acheter ce T-shirt, c'est soutenir un projet artistique vivant et aider quelqu'un à continuer de créer.</p>
+            </div>
+        </div>
+
     </div>
 
     <script>
         // ============================================
-        // THREE.JS 3D BACKGROUND
+        // THREE.JS MINIMALIST 3D BACKGROUND
         // ============================================
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('three-canvas'), alpha: true });
+        const renderer = new THREE.WebGLRenderer({ 
+            canvas: document.getElementById('three-canvas'), 
+            alpha: true,
+            antialias: true
+        });
         renderer.setSize(window.innerWidth, window.innerHeight);
         renderer.setPixelRatio(window.devicePixelRatio);
 
         camera.position.z = 5;
 
-        // Particles
-        const particlesGeometry = new THREE.BufferGeometry();
-        const particlesCount = 2000;
-        const posArray = new Float32Array(particlesCount * 3);
-
-        for(let i = 0; i < particlesCount * 3; i++) {
-            posArray[i] = (Math.random() - 0.5) * 20;
-        }
-
-        particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
-
-        const particlesMaterial = new THREE.PointsMaterial({
-            size: 0.02,
-            color: 0x00ff41,
-            transparent: true,
-            opacity: 0.6
-        });
-
-        const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
-        scene.add(particlesMesh);
-
-        // Geometric shapes
-        const geometries = [];
-        const torusGeometry = new THREE.TorusGeometry(1, 0.3, 16, 100);
-        const torusMaterial = new THREE.MeshBasicMaterial({ 
-            color: 0x00ffff, 
+        // Create large minimalist wireframe sphere
+        const geometry = new THREE.IcosahedronGeometry(2, 1);
+        const material = new THREE.MeshBasicMaterial({ 
+            color: 0xffffff, 
             wireframe: true,
             transparent: true,
             opacity: 0.3
         });
-        const torus = new THREE.Mesh(torusGeometry, torusMaterial);
-        torus.position.set(-3, 2, -2);
-        scene.add(torus);
-        geometries.push(torus);
-
-        const sphereGeometry = new THREE.IcosahedronGeometry(0.8, 0);
-        const sphereMaterial = new THREE.MeshBasicMaterial({ 
-            color: 0xff00ff, 
-            wireframe: true,
-            transparent: true,
-            opacity: 0.3
-        });
-        const sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
-        sphere.position.set(3, -2, -3);
+        const sphere = new THREE.Mesh(geometry, material);
         scene.add(sphere);
-        geometries.push(sphere);
 
         // Mouse interaction
         let mouseX = 0;
@@ -1042,19 +989,12 @@
         function animate() {
             requestAnimationFrame(animate);
 
-            // Rotate particles
-            particlesMesh.rotation.y += 0.001;
-            particlesMesh.rotation.x += 0.0005;
+            sphere.rotation.x += 0.002;
+            sphere.rotation.y += 0.003;
 
-            // Rotate geometries
-            geometries.forEach((geo, i) => {
-                geo.rotation.x += 0.005 * (i + 1);
-                geo.rotation.y += 0.003 * (i + 1);
-            });
-
-            // Mouse parallax
-            camera.position.x = mouseX * 0.5;
-            camera.position.y = mouseY * 0.5;
+            // Subtle mouse parallax
+            camera.position.x = mouseX * 0.3;
+            camera.position.y = mouseY * 0.3;
 
             renderer.render(scene, camera);
         }
@@ -1068,118 +1008,22 @@
         });
 
         // ============================================
-        // WEBCAM + FACE DETECTION
-        // ============================================
-        const webcamToggle = document.getElementById('webcamToggle');
-        const webcamContainer = document.getElementById('webcamContainer');
-        const webcamVideo = document.getElementById('webcam');
-        let webcamActive = false;
-
-        webcamToggle.addEventListener('click', async () => {
-            if (!webcamActive) {
-                try {
-                    const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-                    webcamVideo.srcObject = stream;
-                    webcamContainer.classList.add('active');
-                    webcamToggle.textContent = 'Disable Webcam';
-                    webcamActive = true;
-                } catch (err) {
-                    alert('Webcam access denied or not available');
-                }
-            } else {
-                const stream = webcamVideo.srcObject;
-                const tracks = stream.getTracks();
-                tracks.forEach(track => track.stop());
-                webcamContainer.classList.remove('active');
-                webcamToggle.textContent = 'Enable Webcam';
-                webcamActive = false;
-            }
-        });
-
-        // ============================================
-        // TYPING GAME
-        // ============================================
-        const typingGame = document.getElementById('typingGame');
-        const typingChallenge = document.getElementById('typingChallenge');
-        const typingInput = document.getElementById('typingInput');
-        const typingProgress = document.getElementById('typingProgress');
-        const typingSpeed = document.getElementById('typingSpeed');
-        const typingAccuracy = document.getElementById('typingAccuracy');
-        const closeTyping = document.getElementById('closeTyping');
-
-        const challenges = [
-            "War is a system we finance every day",
-            "Peace begins when language meets action",
-            "Every purchase either feeds or starves the machine",
-            "Refusal is not apathy. It is strategy.",
-            "The system works exactly as designed"
-        ];
-
-        let currentChallenge = '';
-        let startTime = 0;
-        let correctChars = 0;
-        let totalChars = 0;
-
-        function startTypingGame() {
-            currentChallenge = challenges[Math.floor(Math.random() * challenges.length)];
-            typingChallenge.textContent = currentChallenge;
-            typingInput.value = '';
-            typingInput.focus();
-            startTime = Date.now();
-            correctChars = 0;
-            totalChars = 0;
-            typingProgress.style.width = '0%';
-            typingSpeed.textContent = '0';
-            typingAccuracy.textContent = '100';
-            typingGame.classList.add('active');
-        }
-
-        typingInput.addEventListener('input', () => {
-            const typed = typingInput.value;
-            const progress = (typed.length / currentChallenge.length) * 100;
-            typingProgress.style.width = progress + '%';
-
-            // Calculate accuracy
-            correctChars = 0;
-            for (let i = 0; i < typed.length; i++) {
-                if (typed[i] === currentChallenge[i]) correctChars++;
-            }
-            totalChars = typed.length;
-            const accuracy = totalChars > 0 ? Math.round((correctChars / totalChars) * 100) : 100;
-            typingAccuracy.textContent = accuracy;
-
-            // Calculate WPM
-            const timeElapsed = (Date.now() - startTime) / 1000 / 60;
-            const wordsTyped = typed.split(' ').length;
-            const wpm = Math.round(wordsTyped / timeElapsed) || 0;
-            typingSpeed.textContent = wpm;
-
-            // Check if complete
-            if (typed === currentChallenge) {
-                setTimeout(() => {
-                    alert(`Complete! Speed: ${wpm} WPM | Accuracy: ${accuracy}%`);
-                    typingGame.classList.remove('active');
-                }, 100);
-            }
-        });
-
-        closeTyping.addEventListener('click', () => {
-            typingGame.classList.remove('active');
-        });
-
-        // ============================================
         // LANGUAGE SWITCHER
         // ============================================
         const btnFR = document.getElementById('btnFR');
         const btnEN = document.getElementById('btnEN');
         const textFR = document.getElementById('textFR');
         const textEN = document.getElementById('textEN');
+        let currentLang = 'fr';
 
         btnFR.addEventListener('click', () => {
             btnFR.classList.add('active');
             btnEN.classList.remove('active');
             textFR.classList.remove('hidden');
             textEN.classList.add('hidden');
+            currentLang = 'fr';
+            updateModalLanguage();
+            revealOnScroll();
         });
 
         btnEN.addEventListener('click', () => {
@@ -1187,7 +1031,71 @@
             btnFR.classList.remove('active');
             textEN.classList.remove('hidden');
             textFR.classList.add('hidden');
+            currentLang = 'en';
+            updateModalLanguage();
+            revealOnScroll();
         });
+
+        // ============================================
+        // BUILT WITH MODAL
+        // ============================================
+        const builtWithBtn = document.getElementById('builtWithBtn');
+        const builtWithModal = document.getElementById('builtWithModal');
+        const modalClose = document.getElementById('modalClose');
+
+        builtWithBtn.addEventListener('click', () => {
+            builtWithModal.classList.add('active');
+        });
+
+        modalClose.addEventListener('click', () => {
+            builtWithModal.classList.remove('active');
+        });
+
+        builtWithModal.addEventListener('click', (e) => {
+            if (e.target === builtWithModal) {
+                builtWithModal.classList.remove('active');
+            }
+        });
+
+        function updateModalLanguage() {
+            const modalTitle = document.getElementById('modalTitle');
+            const modalIntro = document.getElementById('modalIntro');
+            const toolsTitle = document.getElementById('toolsTitle');
+            const conclusionTitle = document.getElementById('conclusionTitle');
+            const modalConclusion = document.getElementById('modalConclusion');
+
+            if (currentLang === 'fr') {
+                builtWithBtn.textContent = 'Comment ce site a été fait';
+                modalTitle.textContent = 'Transparence';
+                modalIntro.innerHTML = `
+                    <p>Ce site critique le système de consommation qui finance la guerre. Mais il a été créé AVEC les produits de ce système.</p>
+                    <p>Il n'y a pas de position pure. Même en créant ce manifeste, j'ai participé aux structures que je critique. La conscience de cette contradiction n'est pas de l'hypocrisie — c'est de l'honnêteté.</p>
+                `;
+                toolsTitle.textContent = 'Les outils utilisés';
+                conclusionTitle.textContent = 'Et maintenant?';
+                modalConclusion.innerHTML = `
+                    <h3>Et maintenant?</h3>
+                    <p>Utilise cet inconfort. Laisse cette contradiction te motiver à l'action.</p>
+                    <p>La cohérence parfaite est impossible dans ce système. Mais les choix informés sont possibles.</p>
+                    <p>Ce site n'est pas une solution. C'est une interruption. Une pause pour examiner ce qu'on finance, ce qu'on normalise, ce qu'on refuse.</p>
+                `;
+            } else {
+                builtWithBtn.textContent = 'How This Was Made';
+                modalTitle.textContent = 'Transparency';
+                modalIntro.innerHTML = `
+                    <p>This site critiques the consumption system that funds war. But it was created WITH the products of that system.</p>
+                    <p>There is no pure position. Even in creating this manifesto, I participated in the structures I critique. Awareness of this contradiction is not hypocrisy — it's honesty.</p>
+                `;
+                toolsTitle.textContent = 'Tools Used';
+                conclusionTitle.textContent = 'What Now?';
+                modalConclusion.innerHTML = `
+                    <h3>What Now?</h3>
+                    <p>Use this discomfort. Let this contradiction motivate action.</p>
+                    <p>Perfect consistency is impossible in this system. But informed choices are possible.</p>
+                    <p>This site is not a solution. It's an interruption. A pause to examine what we fund, what we normalize, what we refuse.</p>
+                `;
+            }
+        }
 
         // ============================================
         // COUNTER
@@ -1208,13 +1116,13 @@
         // ============================================
         // SCROLL REVEAL
         // ============================================
-        const paragraphs = document.querySelectorAll('.text-container p');
-
         function revealOnScroll() {
-            const triggerBottom = window.innerHeight * 0.9;
+            const paragraphs = document.querySelectorAll('.text-container:not(.hidden) p');
+            const triggerBottom = window.innerHeight * 0.85;
+
             paragraphs.forEach(p => {
                 const pTop = p.getBoundingClientRect().top;
-                if (pTop < triggerBottom && !p.closest('.hidden')) {
+                if (pTop < triggerBottom) {
                     p.classList.add('visible');
                 }
             });
@@ -1222,6 +1130,41 @@
 
         window.addEventListener('scroll', revealOnScroll);
         revealOnScroll();
+
+        // ============================================
+        // T-SHIRT INTERACTION
+        // ============================================
+        const tshirtPrompt = document.getElementById('tshirtPrompt');
+        const generateBtn = document.getElementById('generateBtn');
+        const tshirtPreview = document.getElementById('tshirtPreview');
+        const preorderBtn = document.getElementById('preorderBtn');
+
+        generateBtn.addEventListener('click', () => {
+            const prompt = tshirtPrompt.value.trim();
+            
+            if (!prompt) {
+                alert(currentLang === 'fr' ? 'Écris une idée d\'abord!' : 'Write an idea first!');
+                return;
+            }
+
+            // Simulate design generation
+            tshirtPreview.innerHTML = `
+                <div style="text-align: center; color: var(--white);">
+                    <p style="font-size: 1.2rem; margin-bottom: 1rem;">✓ Design concept créé!</p>
+                    <p style="font-style: italic; color: var(--gray-light);">"${prompt}"</p>
+                    <p style="margin-top: 1rem; font-size: 0.9rem;">Le design final sera créé après ta pré-commande.</p>
+                </div>
+            `;
+
+            preorderBtn.style.display = 'inline-block';
+        });
+
+        preorderBtn.addEventListener('click', () => {
+            const msg = currentLang === 'fr' 
+                ? 'Pré-commande bientôt disponible!\n\nLaisse ton email pour être notifié:\ncontact@kimmaurice.com' 
+                : 'Pre-order coming soon!\n\nLeave your email to be notified:\ncontact@kimmaurice.com';
+            alert(msg);
+        });
 
         // ============================================
         // TERMINAL
@@ -1232,15 +1175,14 @@
         const terminalInput = document.getElementById('terminalInput');
         const terminalContent = document.getElementById('terminalContent');
 
-        let terminalLineIndex = 4;
+        let terminalLineIndex = 2;
 
         const commands = {
-            'help': 'Commands: game, cam, stats, about, reflect, clear',
-            'game': 'Starting typing challenge...',
-            'cam': 'Toggle webcam...',
-            'stats': 'Military: $2.718T/year | Conflicts: 61 | Deaths: 160K',
-            'about': 'Futuristic interactive manifesto by Kim Maurice',
-            'reflect': 'Opening reflection questions...',
+            'help': 'Commands: stats, about, built, tshirt, clear',
+            'stats': 'Military: $2.718T/year | Conflicts: 61 | Deaths: 160K | NATO target: 5%',
+            'about': 'Interactive manifesto by Kim Maurice. Data-driven, transparent, action-oriented.',
+            'built': 'Opening transparency modal...',
+            'tshirt': 'Scroll down to see the T-shirt section!',
             'clear': 'CLEAR_SCREEN'
         };
 
@@ -1263,13 +1205,10 @@
                 if (command === 'clear') {
                     terminalContent.innerHTML = '';
                     terminalLineIndex = 0;
-                } else if (command === 'game') {
+                } else if (command === 'built') {
                     addTerminalLine(commands[command], 'response');
                     terminalWindow.classList.remove('active');
-                    startTypingGame();
-                } else if (command === 'cam') {
-                    addTerminalLine(commands[command], 'response');
-                    webcamToggle.click();
+                    builtWithModal.classList.add('active');
                 } else if (commands[command]) {
                     addTerminalLine(commands[command], 'response');
                 } else if (command) {
@@ -1287,9 +1226,9 @@
             line.style.animationDelay = `${terminalLineIndex * 0.05}s`;
             
             if (type === 'user') {
-                line.innerHTML = `<span style="color: var(--neon-cyan);">${text}</span>`;
+                line.innerHTML = `<span style="color: var(--white);">${text}</span>`;
             } else if (type === 'error') {
-                line.innerHTML = `<span style="color: var(--neon-pink);">${text}</span>`;
+                line.innerHTML = `<span style="color: var(--gray-light);">${text}</span>`;
             } else {
                 line.innerHTML = `<span class="terminal-prompt">&gt;</span> ${text}`;
             }
@@ -1297,91 +1236,6 @@
             terminalContent.appendChild(line);
             terminalLineIndex++;
         }
-
-        // ============================================
-        // AUDIO PLAYER
-        // ============================================
-        const audioPlayer = document.getElementById('audioPlayer');
-        const playBtn = document.getElementById('playBtn');
-        const audioTime = document.getElementById('audioTime');
-        let isPlaying = false;
-
-        playBtn.addEventListener('click', () => {
-            if (isPlaying) {
-                audioPlayer.pause();
-                playBtn.classList.remove('playing');
-            } else {
-                audioPlayer.play();
-                playBtn.classList.add('playing');
-            }
-            isPlaying = !isPlaying;
-        });
-
-        audioPlayer.addEventListener('timeupdate', () => {
-            const current = Math.floor(audioPlayer.currentTime);
-            const duration = Math.floor(audioPlayer.duration) || 0;
-            audioTime.textContent = `${formatTime(current)} / ${formatTime(duration)}`;
-        });
-
-        function formatTime(seconds) {
-            const mins = Math.floor(seconds / 60);
-            const secs = seconds % 60;
-            return `${mins}:${secs.toString().padStart(2, '0')}`;
-        }
-
-        // ============================================
-        // QUESTIONS SYSTEM
-        // ============================================
-        const questionsContainer = document.getElementById('questionsContainer');
-        const questionNumber = document.getElementById('questionNumber');
-        const questionText = document.getElementById('questionText');
-        const questionInput = document.getElementById('questionInput');
-        const nextBtn = document.getElementById('nextBtn');
-        const skipBtn = document.getElementById('skipBtn');
-
-        const questions = [
-            { fr: "Quel est le dernier produit que tu as acheté?", en: "What's the last product you bought?" },
-            { fr: "Sais-tu d'où il vient et qui l'a fabriqué?", en: "Do you know where it comes from and who made it?" },
-            { fr: "Es-tu prêt·e à perdre du confort pour arrêter de financer ça?", en: "Are you willing to lose comfort to stop funding this?" }
-        ];
-
-        let currentQuestion = 0;
-        let currentLang = 'fr';
-
-        function showQuestion(index) {
-            if (index >= questions.length) {
-                alert('Thank you for reflecting.');
-                questionsContainer.classList.remove('active');
-                return;
-            }
-            questionNumber.textContent = `Question ${index + 1}/${questions.length}`;
-            questionText.textContent = questions[index][currentLang];
-            questionInput.value = '';
-        }
-
-        nextBtn.addEventListener('click', () => {
-            currentQuestion++;
-            showQuestion(currentQuestion);
-        });
-
-        skipBtn.addEventListener('click', () => {
-            currentQuestion++;
-            showQuestion(currentQuestion);
-        });
-
-        // Trigger questions at bottom
-        let questionsTriggered = false;
-        window.addEventListener('scroll', () => {
-            if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 200) {
-                if (!questionsTriggered) {
-                    questionsTriggered = true;
-                    setTimeout(() => {
-                        questionsContainer.classList.add('active');
-                        showQuestion(0);
-                    }, 2000);
-                }
-            }
-        });
     </script>
 </body>
 </html>
