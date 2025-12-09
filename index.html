@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Actions - Interactive Manifesto</title>
-    <meta name="description" content="An interactive manifesto about systemic violence and conscious action">
+    <title>Actions - Interactive Manifesto 2025</title>
+    <meta name="description" content="An interactive manifesto with real data about military spending and conflict. Updated 2025.">
     <style>
         * {
             margin: 0;
@@ -53,6 +53,45 @@
             100% { transform: translate(0); }
         }
 
+        /* Language Switcher */
+        .language-switcher {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
+            display: flex;
+            gap: 10px;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 10px 15px;
+            border: 2px solid var(--neon-green);
+            border-radius: 5px;
+            box-shadow: 0 0 20px rgba(0, 255, 65, 0.5);
+        }
+
+        .lang-btn {
+            background: transparent;
+            border: 1px solid var(--neon-green);
+            color: var(--neon-green);
+            padding: 8px 15px;
+            cursor: pointer;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+        }
+
+        .lang-btn:hover {
+            background: var(--neon-green);
+            color: var(--bg-black);
+            box-shadow: 0 0 15px var(--neon-green);
+        }
+
+        .lang-btn.active {
+            background: var(--neon-green);
+            color: var(--bg-black);
+            font-weight: bold;
+        }
+
         /* Matrix Canvas Background */
         #matrix-canvas {
             position: fixed;
@@ -75,23 +114,61 @@
             padding: 4rem 2rem;
         }
 
-        /* Main Title with Glitch Effect */
+        /* 8-bit Pixel Art Title */
         h1 {
             font-size: clamp(3rem, 10vw, 8rem);
             color: var(--neon-green);
             text-transform: uppercase;
-            letter-spacing: 0.5em;
+            letter-spacing: 0.3em;
             text-shadow: 
-                0 0 10px var(--neon-green),
+                4px 0 0 var(--neon-pink),
+                -4px 0 0 var(--neon-cyan),
+                0 4px 0 var(--neon-pink),
+                0 -4px 0 var(--neon-cyan),
+                4px 4px 0 var(--neon-pink),
+                -4px -4px 0 var(--neon-cyan),
                 0 0 20px var(--neon-green),
-                0 0 30px var(--neon-green),
-                0 0 40px var(--neon-green),
-                3px 3px 0px var(--neon-pink),
-                6px 6px 0px var(--neon-cyan);
-            animation: glitch 3s infinite;
-            margin-bottom: 2rem;
+                0 0 40px var(--neon-green);
+            animation: pixel-glitch 4s infinite;
+            margin-bottom: 1rem;
             text-align: center;
-            transition: all 0.3s ease;
+            font-family: monospace;
+            font-weight: 900;
+            image-rendering: pixelated;
+            -webkit-font-smoothing: none;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        @keyframes pixel-glitch {
+            0%, 90%, 100% {
+                transform: translate(0);
+                filter: none;
+            }
+            91% {
+                transform: translate(-4px, 4px);
+                filter: hue-rotate(90deg);
+            }
+            93% {
+                transform: translate(4px, -4px);
+                filter: hue-rotate(-90deg);
+            }
+            95% {
+                transform: translate(-4px, -4px);
+                filter: invert(1);
+            }
+            97% {
+                transform: translate(4px, 4px);
+                filter: saturate(200%);
+            }
+        }
+
+        .subtitle {
+            color: var(--neon-cyan);
+            font-size: clamp(0.8rem, 2vw, 1.2rem);
+            margin-bottom: 3rem;
+            text-align: center;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
         }
 
         /* Real-time Counter */
@@ -146,13 +223,86 @@
                 0 0 20px var(--neon-pink);
             font-variant-numeric: tabular-nums;
             transition: all 0.3s ease;
+            margin-bottom: 0.5rem;
         }
 
         .counter-sublabel {
             font-size: 0.8rem;
             color: var(--text-white);
-            margin-top: 0.5rem;
             opacity: 0.7;
+            margin-bottom: 1rem;
+        }
+
+        .counter-source {
+            font-size: 0.75rem;
+            margin-top: 1rem;
+        }
+
+        .counter-source a {
+            color: var(--neon-cyan);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--neon-cyan);
+            transition: all 0.2s ease;
+        }
+
+        .counter-source a:hover {
+            color: var(--neon-pink);
+            border-bottom-color: var(--neon-pink);
+            text-shadow: 0 0 10px var(--neon-pink);
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            max-width: 1000px;
+            width: 100%;
+            margin-bottom: 3rem;
+        }
+
+        .stat-card {
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px solid var(--neon-cyan);
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            border-color: var(--neon-pink);
+            box-shadow: 0 0 20px rgba(255, 0, 255, 0.5);
+            transform: translateY(-5px);
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            color: var(--neon-cyan);
+            font-weight: bold;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--text-white);
+            margin-bottom: 0.8rem;
+        }
+
+        .stat-source {
+            font-size: 0.7rem;
+            opacity: 0.7;
+        }
+
+        .stat-source a {
+            color: var(--neon-cyan);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--neon-cyan);
+        }
+
+        .stat-source a:hover {
+            color: var(--neon-pink);
+            border-bottom-color: var(--neon-pink);
         }
 
         /* Text Container */
@@ -166,6 +316,10 @@
                 0 0 30px rgba(0, 255, 65, 0.3);
             margin-bottom: 4rem;
             transition: all 0.3s ease;
+        }
+
+        .text-container.hidden {
+            display: none;
         }
 
         .text-container p {
@@ -185,45 +339,19 @@
             transform: translateY(0);
         }
 
-        .text-container p:last-child {
-            margin-bottom: 0;
-        }
-
-        /* Interactive Stats - Highlighted Words */
-        .stat-word {
+        /* Source Links */
+        .source-link {
             color: var(--neon-cyan);
-            cursor: help;
-            position: relative;
-            text-decoration: underline;
-            text-decoration-style: dotted;
-            text-decoration-color: var(--neon-cyan);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--neon-cyan);
             transition: all 0.2s ease;
+            cursor: help;
         }
 
-        .stat-word:hover {
+        .source-link:hover {
             color: var(--neon-pink);
+            border-bottom-color: var(--neon-pink);
             text-shadow: 0 0 10px var(--neon-pink);
-        }
-
-        .stat-tooltip {
-            position: absolute;
-            bottom: 100%;
-            left: 50%;
-            transform: translateX(-50%) translateY(-10px);
-            background: rgba(0, 0, 0, 0.95);
-            border: 1px solid var(--neon-cyan);
-            padding: 0.5rem 1rem;
-            font-size: 0.85rem;
-            white-space: nowrap;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s ease;
-            z-index: 1000;
-            box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
-        }
-
-        .stat-word:hover .stat-tooltip {
-            opacity: 1;
         }
 
         /* Floating "STOP WAR" Text */
@@ -262,6 +390,24 @@
             0% { transform: scale(1); opacity: 0.3; }
             50% { transform: scale(3); opacity: 1; filter: blur(10px); }
             100% { transform: scale(0.5); opacity: 0; }
+        }
+
+        @keyframes float {
+            0% {
+                transform: translate(-10vw, 20vh) rotate(-5deg);
+            }
+            25% {
+                transform: translate(60vw, 10vh) rotate(3deg);
+            }
+            50% {
+                transform: translate(70vw, 60vh) rotate(-2deg);
+            }
+            75% {
+                transform: translate(20vw, 70vh) rotate(4deg);
+            }
+            100% {
+                transform: translate(-10vw, 20vh) rotate(-5deg);
+            }
         }
 
         /* Terminal Chat Interface */
@@ -317,11 +463,20 @@
             50% { opacity: 0.3; }
         }
 
+        @keyframes pulse {
+            0%, 100% {
+                box-shadow: 0 0 20px rgba(0, 255, 65, 0.5);
+            }
+            50% {
+                box-shadow: 0 0 30px rgba(0, 255, 65, 0.8);
+            }
+        }
+
         .terminal-window {
             position: fixed;
             bottom: 100px;
             right: 30px;
-            width: 400px;
+            width: 450px;
             max-height: 500px;
             background: rgba(0, 0, 0, 0.95);
             border: 2px solid var(--neon-green);
@@ -368,7 +523,7 @@
             padding: 1rem;
             overflow-y: auto;
             flex-grow: 1;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             line-height: 1.6;
         }
 
@@ -402,7 +557,7 @@
             border: none;
             color: var(--text-white);
             font-family: 'Courier New', monospace;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             outline: none;
         }
 
@@ -446,6 +601,8 @@
             font-size: 1.1rem;
             line-height: 1.6;
             margin-bottom: 2rem;
+            opacity: 1 !important;
+            transform: none !important;
         }
 
         .secret-message button {
@@ -513,42 +670,6 @@
         }
 
         /* Animations */
-        @keyframes glitch {
-            0%, 90%, 100% {
-                transform: translate(0);
-            }
-            92% {
-                transform: translate(-3px, 3px);
-            }
-            94% {
-                transform: translate(3px, -3px);
-            }
-            96% {
-                transform: translate(-3px, -3px);
-            }
-            98% {
-                transform: translate(3px, 3px);
-            }
-        }
-
-        @keyframes float {
-            0% {
-                transform: translate(-10vw, 20vh) rotate(-5deg);
-            }
-            25% {
-                transform: translate(60vw, 10vh) rotate(3deg);
-            }
-            50% {
-                transform: translate(70vw, 60vh) rotate(-2deg);
-            }
-            75% {
-                transform: translate(20vw, 70vh) rotate(4deg);
-            }
-            100% {
-                transform: translate(-10vw, 20vh) rotate(-5deg);
-            }
-        }
-
         @keyframes scan {
             0% {
                 transform: translateY(-100%);
@@ -564,15 +685,6 @@
             }
             100% {
                 opacity: 1;
-            }
-        }
-
-        @keyframes pulse {
-            0%, 100% {
-                box-shadow: 0 0 20px rgba(0, 255, 65, 0.5);
-            }
-            50% {
-                box-shadow: 0 0 30px rgba(0, 255, 65, 0.8);
             }
         }
 
@@ -600,7 +712,7 @@
             }
             
             h1 {
-                margin-bottom: 2rem;
+                margin-bottom: 1rem;
             }
 
             .terminal-window {
@@ -616,13 +728,21 @@
             .secret-message {
                 padding: 2rem;
             }
-        }
 
-        /* Section Separator */
-        .section-separator {
-            margin-top: 3rem;
-            padding-top: 2rem;
-            border-top: 1px solid var(--neon-green);
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .language-switcher {
+                top: 10px;
+                right: 10px;
+                padding: 8px 12px;
+            }
+
+            .lang-btn {
+                padding: 6px 12px;
+                font-size: 0.8rem;
+            }
         }
     </style>
 </head>
@@ -636,11 +756,17 @@
     <div class="cyber-border"></div>
     <div class="floating-text" id="floatingText">STOP WAR</div>
 
+    <!-- Language Switcher -->
+    <div class="language-switcher">
+        <button class="lang-btn active" id="btnFR">FR</button>
+        <button class="lang-btn" id="btnEN">EN</button>
+    </div>
+
     <!-- Secret Message Overlay -->
     <div class="secret-message" id="secretMessage">
-        <h2>SECRET DÉBLOQUÉ</h2>
-        <p id="secretText">Message secret ici...</p>
-        <button onclick="closeSecret()">FERMER</button>
+        <h2>SECRET UNLOCKED</h2>
+        <p id="secretText">Secret message here...</p>
+        <button onclick="closeSecret()">CLOSE</button>
     </div>
 
     <!-- Terminal Toggle Button -->
@@ -655,7 +781,7 @@
         <div class="terminal-content" id="terminalContent">
             <div class="terminal-line"><span class="terminal-prompt">&gt;</span> System initialized...</div>
             <div class="terminal-line"><span class="terminal-prompt">&gt;</span> Type 'help' for commands</div>
-            <div class="terminal-line"><span class="terminal-prompt">&gt;</span> Hidden codes: Try typing secret words...</div>
+            <div class="terminal-line"><span class="terminal-prompt">&gt;</span> Updated with 2024-2025 data</div>
         </div>
         <div class="terminal-input-container">
             <input type="text" class="terminal-input" id="terminalInput" placeholder="Enter command..." autocomplete="off">
@@ -664,25 +790,55 @@
 
     <!-- Main Content -->
     <div class="content">
-        <h1>Actions</h1>
+        <h1>ACTIONS</h1>
+        <div class="subtitle">Data-Driven Interactive Manifesto // 2025</div>
 
         <!-- Real-time Military Spending Counter -->
         <div class="counter-container" id="counterContainer">
-            <div class="counter-label">Global Military Spending</div>
+            <div class="counter-label">Global Military Spending 2024</div>
             <div class="counter-display" id="militaryCounter">$0</div>
-            <div class="counter-sublabel">Per second (based on $2.4T/year)</div>
+            <div class="counter-sublabel">Per second (live counter)</div>
+            <div class="counter-source">
+                Source: <a href="https://www.sipri.org/publications/2025/sipri-fact-sheets/trends-world-military-expenditure-2024" target="_blank" rel="noopener">SIPRI 2025</a> | 
+                $2.718 trillion/year = $86,158/second
+            </div>
         </div>
 
-        <!-- Main Text Content -->
-        <div class="text-container" id="textContent">
-            <!-- FRENCH VERSION -->
+        <!-- Key Stats Grid -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <span class="stat-number">61</span>
+                <div class="stat-label">Active Armed Conflicts</div>
+                <div class="stat-source">Highest since 1946 | <a href="https://www.uu.se/en/press/press-releases/2024/2024-06-03-ucdp-record-number-of-armed-conflicts-in-the-world" target="_blank">UCDP 2024</a></div>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number">~160K</span>
+                <div class="stat-label">Deaths from Violence 2024</div>
+                <div class="stat-source">Organized violence | <a href="https://phys.org/news/2025-06-reveal-sharp-conflicts-wars.html" target="_blank">UCDP 2024</a></div>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number">€426B</span>
+                <div class="stat-label">EU Military Spending 2026</div>
+                <div class="stat-source">Projected | <a href="https://www.europarl.europa.eu/RegData/etudes/ATAG/2025/772846/EPRS_ATA(2025)772846_EN.pdf" target="_blank">EU Parliament 2025</a></div>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number">5%</span>
+                <div class="stat-label">NATO Target by 2035</div>
+                <div class="stat-source">New commitment | <a href="https://www.nato.int/cps/en/natohq/topics_49198.htm" target="_blank">NATO 2025</a></div>
+            </div>
+        </div>
+
+        <!-- FRENCH VERSION -->
+        <div class="text-container" id="textFR">
             <p>La guerre n'est pas un accident. C'est un système qu'on finance tous les jours.</p>
 
-            <p>Les <span class="stat-word">gouvernements<span class="stat-tooltip">193 pays membres ONU</span></span> dépensent <span class="stat-word">2,4 trillions<span class="stat-tooltip">$2 400 000 000 000 en 2023</span></span> par année en armement. Ça fait <span class="stat-word">76 000$<span class="stat-tooltip">$76,103 par seconde</span></span> par seconde. Pendant que tu lis ça, des contrats militaires se signent, des usines d'armes produisent, des lobbyistes négocient.</p>
+            <p>Les gouvernements ont dépensé <a href="https://www.sipri.org/publications/2025/sipri-fact-sheets/trends-world-military-expenditure-2024" target="_blank" class="source-link">2,718 milliards de dollars</a> en armement en 2024. Ça fait 86 158$ par seconde. L'augmentation de 9.4% est la plus forte depuis la fin de la guerre froide.</p>
 
-            <p>Il y a présentement <span class="stat-word">56 conflits armés<span class="stat-tooltip">Données 2024</span></span> actifs dans le monde. Chacun repose sur des chaînes d'approvisionnement, des investissements, des accords commerciaux. La guerre est une industrie. Elle a besoin de clients.</p>
+            <p>Il y a présentement <a href="https://www.uu.se/en/press/press-releases/2024/2024-06-03-ucdp-record-number-of-armed-conflicts-in-the-world" target="_blank" class="source-link">61 conflits armés</a> actifs dans le monde — le chiffre le plus élevé depuis 1946. Chacun repose sur des chaînes d'approvisionnement, des investissements, des accords commerciaux. La guerre est une industrie. Elle a besoin de clients.</p>
 
-            <p>On condamne la violence. On partage des posts. On signe des pétitions. Puis on achète un nouveau téléphone dont les <span class="stat-word">minéraux<span class="stat-tooltip">Cobalt, lithium, coltan</span></span> viennent de mines où travaillent des <span class="stat-word">enfants<span class="stat-tooltip">160 millions d'enfants en travail forcé</span></span>. On commande des vêtements fabriqués dans des usines où les gens font 12h par jour pour 2$. On mange de la viande produite dans des systèmes qui tuent <span class="stat-word">80 milliards d'animaux<span class="stat-tooltip">Par année, globalement</span></span> par année.</p>
+            <p><a href="https://www.nato.int/cps/en/natohq/topics_49198.htm" target="_blank" class="source-link">L'OTAN a fixé un nouveau target</a>: 5% du PIB d'ici 2035. L'Europe seule prévoit dépenser <a href="https://www.europarl.europa.eu/RegData/etudes/ATAG/2025/772846/EPRS_ATA(2025)772846_EN.pdf" target="_blank" class="source-link">426 milliards d'euros en 2026</a> — une augmentation de 100 milliards par rapport à 2024.</p>
+
+            <p>On condamne la violence. On partage des posts. On signe des pétitions. Puis on achète un nouveau téléphone dont les minéraux viennent de mines où travaillent des <a href="https://www.ilo.org/global/topics/child-labour/lang--en/index.htm" target="_blank" class="source-link">160 millions d'enfants</a>. On commande des vêtements fabriqués dans des usines où les gens font 12h par jour pour 2$. On mange de la viande produite dans des systèmes qui tuent <a href="https://ourworldindata.org/meat-production" target="_blank" class="source-link">80 milliards d'animaux</a> par année.</p>
 
             <p>Ce n'est pas de la morale. C'est de l'observation.</p>
 
@@ -717,15 +873,19 @@
             <p>Ce qui est cherché ici n'est pas le désespoir. C'est l'interruption. Une pause dans le rythme où la conscience devient spectacle. Une invitation à examiner ce qu'on nourrit, ce qu'on normalise, ce qu'on refuse.</p>
 
             <p>La paix commence quand le langage rencontre l'action.</p>
+        </div>
 
-            <!-- ENGLISH VERSION -->
-            <p class="section-separator">War is not an accident. It's a system we all fund every day.</p>
+        <!-- ENGLISH VERSION -->
+        <div class="text-container hidden" id="textEN">
+            <p>War is not an accident. It's a system we all fund every day.</p>
 
-            <p><span class="stat-word">Governments<span class="stat-tooltip">193 UN member states</span></span> spend <span class="stat-word">2.4 trillion<span class="stat-tooltip">$2,400,000,000,000 in 2023</span></span> per year on weapons. That's <span class="stat-word">$76,000<span class="stat-tooltip">$76,103 per second</span></span> per second. While you read this, military contracts are being signed, weapons factories are producing, lobbyists are negotiating.</p>
+            <p>Governments spent <a href="https://www.sipri.org/publications/2025/sipri-fact-sheets/trends-world-military-expenditure-2024" target="_blank" class="source-link">$2.718 trillion</a> on weapons in 2024. That's $86,158 per second. The 9.4% increase is the steepest since the end of the Cold War.</p>
 
-            <p>There are currently <span class="stat-word">56 armed conflicts<span class="stat-tooltip">2024 data</span></span> active worldwide. Each relies on supply chains, investments, trade agreements. War is an industry. It needs customers.</p>
+            <p>There are currently <a href="https://www.uu.se/en/press/press-releases/2024/2024-06-03-ucdp-record-number-of-armed-conflicts-in-the-world" target="_blank" class="source-link">61 armed conflicts</a> active worldwide — the highest number since 1946. Each relies on supply chains, investments, trade agreements. War is an industry. It needs customers.</p>
 
-            <p>We condemn violence. We share posts. We sign petitions. Then we buy a new phone whose <span class="stat-word">minerals<span class="stat-tooltip">Cobalt, lithium, coltan</span></span> come from mines where <span class="stat-word">children<span class="stat-tooltip">160 million children in forced labor</span></span> work. We order clothes made in factories where people work 12-hour days for $2. We eat meat produced in systems that kill <span class="stat-word">80 billion animals<span class="stat-tooltip">Per year, globally</span></span> per year.</p>
+            <p><a href="https://www.nato.int/cps/en/natohq/topics_49198.htm" target="_blank" class="source-link">NATO set a new target</a>: 5% of GDP by 2035. Europe alone projects spending <a href="https://www.europarl.europa.eu/RegData/etudes/ATAG/2025/772846/EPRS_ATA(2025)772846_EN.pdf" target="_blank" class="source-link">€426 billion in 2026</a> — a €100 billion increase from 2024.</p>
+
+            <p>We condemn violence. We share posts. We sign petitions. Then we buy a new phone whose minerals come from mines where <a href="https://www.ilo.org/global/topics/child-labour/lang--en/index.htm" target="_blank" class="source-link">160 million children</a> work. We order clothes made in factories where people work 12-hour days for $2. We eat meat produced in systems that kill <a href="https://ourworldindata.org/meat-production" target="_blank" class="source-link">80 billion animals</a> per year.</p>
 
             <p>This is not morality. This is observation.</p>
 
@@ -764,6 +924,30 @@
     </div>
 
     <script>
+        // ============================================
+        // LANGUAGE SWITCHER
+        // ============================================
+        const btnFR = document.getElementById('btnFR');
+        const btnEN = document.getElementById('btnEN');
+        const textFR = document.getElementById('textFR');
+        const textEN = document.getElementById('textEN');
+
+        btnFR.addEventListener('click', () => {
+            btnFR.classList.add('active');
+            btnEN.classList.remove('active');
+            textFR.classList.remove('hidden');
+            textEN.classList.add('hidden');
+            revealOnScroll();
+        });
+
+        btnEN.addEventListener('click', () => {
+            btnEN.classList.add('active');
+            btnFR.classList.remove('active');
+            textEN.classList.remove('hidden');
+            textFR.classList.add('hidden');
+            revealOnScroll();
+        });
+
         // ============================================
         // MATRIX RAIN EFFECT
         // ============================================
@@ -826,8 +1010,10 @@
         // ============================================
         const counterDisplay = document.getElementById('militaryCounter');
         const counterContainer = document.getElementById('counterContainer');
-        const yearlySpending = 2400000000000;
-        const perSecond = yearlySpending / (365 * 24 * 60 * 60);
+        
+        // 2024 data: $2.718 trillion per year (SIPRI)
+        const yearlySpending = 2718000000000;
+        const perSecond = yearlySpending / (365 * 24 * 60 * 60); // $86,158/sec
         
         let currentAmount = 0;
         let counterSpeed = 1000;
@@ -857,7 +1043,7 @@
                 counterContainer.classList.add('crazy');
                 counterSpeed = 50;
                 startCounter();
-                showSecret('SYSTÈME OVERLOAD', 'Le compteur est devenu fou! Les dépenses militaires montent 20x plus vite! 💸💸💸');
+                showSecret('SYSTEM OVERLOAD', 'The counter has gone crazy! Military spending is climbing 20x faster! 💸💸💸');
                 
                 setTimeout(() => {
                     counterContainer.classList.remove('crazy');
@@ -876,14 +1062,14 @@
         // ============================================
         // SCROLL-TRIGGERED TEXT REVEAL
         // ============================================
-        const paragraphs = document.querySelectorAll('.text-container p');
+        const allParagraphs = document.querySelectorAll('.text-container p');
 
         function revealOnScroll() {
             const triggerBottom = window.innerHeight * 0.9;
 
-            paragraphs.forEach(p => {
+            allParagraphs.forEach(p => {
                 const pTop = p.getBoundingClientRect().top;
-                if (pTop < triggerBottom) {
+                if (pTop < triggerBottom && !p.closest('.hidden')) {
                     p.classList.add('visible');
                 }
             });
@@ -905,11 +1091,13 @@
         let secretsFound = [];
         let hoverTimer;
 
-        // Terminal commands
+        // Terminal commands (updated with 2024-2025 data)
         const commands = {
-            'help': 'Available commands: about, stats, contact, clear, codes\nSecret commands: Try typing words related to peace and war...',
-            'about': 'Interactive manifesto about systemic violence and conscious action. Created by Kim Maurice.',
-            'stats': 'Military spending: $2.4T/year ($76K/sec) | Active conflicts: 56 | Child laborers: 160M | Animals killed: 80B+/year',
+            'help': 'Available commands: about, stats, data, sources, contact, clear, codes\nSecret commands: Try typing words related to peace and war...',
+            'about': 'Data-driven interactive manifesto about systemic violence. Created by Kim Maurice. Updated with 2024-2025 data.',
+            'stats': 'Military: $2.718T/year ($86K/sec) | Conflicts: 61 (highest since 1946) | Deaths: ~160K/year | NATO target: 5% GDP by 2035',
+            'data': '2024 was record-breaking: 9.4% military spending increase, 61 active conflicts, Europe spending up 17%, NATO nations at 55% of global total',
+            'sources': 'SIPRI (military spending), UCDP (conflict data), NATO (targets), EU Parliament (projections). All clickable in the text.',
             'contact': 'Kim Maurice - Multimedia Designer & Creative Technologist\nPortfolio: kimmaurice.com | Montreal, QC',
             'clear': 'CLEAR_SCREEN',
             'codes': 'Secret codes found: ' + (secretsFound.length > 0 ? secretsFound.join(', ') : 'None yet. Keep exploring!'),
@@ -919,11 +1107,12 @@
             'wake': '⚡ WAKE UP. The system depends on your sleep.',
             'stop': '🛑 Stopping is the first act of resistance.',
             'action': '🎯 Real change requires alignment between words and deeds.',
-            'money': '💰 Follow the money. It always leads to the source.',
+            'money': '💰 Follow the money: $86,158 per second to military systems.',
             'system': '🔧 The system is not broken. It works exactly as designed.',
             'refuse': '🚫 Refusal is not apathy. It is strategy.',
-            'kim': '👋 Hey! You found my name. Thanks for exploring!',
-            'end': '🏁 You reached the end. But this is where it begins.'
+            'kim': '👋 Hey! You found my name. Thanks for exploring! Check out kimmaurice.com',
+            'end': '🏁 You reached the end. But this is where it begins.',
+            '2025': '📊 This page uses the latest 2024-2025 data. All sources are linked.'
         };
 
         // Toggle terminal
@@ -944,7 +1133,7 @@
                 if (!secretsFound.includes('hover')) {
                     secretsFound.push('hover');
                     terminalToggle.classList.add('secret-found');
-                    showSecret('SECRET HOVER', 'Tu as découvert le secret du hover! 🎉\nContinue d\'explorer... il y en a d\'autres.');
+                    showSecret('SECRET HOVER', 'You discovered the hover secret! 🎉\nKeep exploring... there are more.');
                 }
             }, 3000);
         });
@@ -1072,7 +1261,7 @@
                 floatingText.classList.add('explode');
                 if (!secretsFound.includes('stopwar')) {
                     secretsFound.push('stopwar');
-                    showSecret('STOP WAR ACTIVATED', 'Tu as double-cliqué sur STOP WAR! 💥\nLes mots ne suffisent pas. L\'action commence maintenant.');
+                    showSecret('STOP WAR ACTIVATED', 'You double-clicked STOP WAR! 💥\nWords aren\'t enough. Action starts now.');
                 }
                 
                 setTimeout(() => {
@@ -1101,7 +1290,7 @@
                 document.body.style.filter = 'hue-rotate(180deg)';
                 if (!secretsFound.includes('konami')) {
                     secretsFound.push('konami');
-                    showSecret('KONAMI CODE! 🎮', 'Tu connais les classiques! Le code Konami original de 1986.\nRespect aux vrais gamers. 👾');
+                    showSecret('KONAMI CODE! 🎮', 'You know the classics! The original Konami Code from 1986.\nRespect to real gamers. 👾');
                 }
                 setTimeout(() => {
                     document.body.style.filter = 'none';
@@ -1126,7 +1315,7 @@
             if (typedWord.includes('end')) {
                 if (!secretsFound.includes('end')) {
                     secretsFound.push('end');
-                    showSecret('THE END?', 'Non. C\'est juste le début.\nMaintenant, va agir. 🎯');
+                    showSecret('THE END?', 'No. This is just the beginning.\nNow go take action. 🎯');
                 }
                 typedWord = '';
             }
