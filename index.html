@@ -93,11 +93,14 @@
             font-size: 0.9rem;
             transition: all 0.3s ease;
             text-transform: uppercase;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
         }
 
-        .lang-btn:hover {
+        .lang-btn:hover, .lang-btn:active {
             background: var(--white);
             color: var(--black);
+            transform: scale(1.05);
         }
 
         .lang-btn.active {
@@ -312,11 +315,14 @@
             z-index: 100;
             transition: all 0.3s ease;
             text-transform: uppercase;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
         }
 
-        .built-with-btn:hover {
+        .built-with-btn:hover, .built-with-btn:active {
             background: var(--white);
             color: var(--black);
+            transform: scale(1.05);
         }
 
         /* Built With Modal */
@@ -530,11 +536,15 @@
             transition: all 0.3s ease;
             text-transform: uppercase;
             font-weight: bold;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+            min-height: 48px;
         }
 
-        .tshirt-cta:hover {
+        .tshirt-cta:hover, .tshirt-cta:active {
             background: var(--black);
             color: var(--white);
+            transform: scale(1.05);
         }
 
         .tshirt-price {
@@ -590,10 +600,13 @@
             cursor: pointer;
             z-index: 100;
             transition: all 0.3s ease;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
         }
 
-        .terminal-toggle:hover {
+        .terminal-toggle:hover, .terminal-toggle:active {
             background: var(--white);
+            transform: scale(1.1);
         }
 
         .terminal-toggle::before {
@@ -601,9 +614,10 @@
             font-size: 2rem;
             color: var(--white);
             font-weight: bold;
+            pointer-events: none;
         }
 
-        .terminal-toggle:hover::before {
+        .terminal-toggle:hover::before, .terminal-toggle:active::before {
             color: var(--black);
         }
 
@@ -624,11 +638,14 @@
             z-index: 100;
             transition: all 0.3s ease;
             animation: subtlePulse 3s infinite;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
         }
 
-        .hints-toggle:hover {
+        .hints-toggle:hover, .hints-toggle:active {
             background: var(--white);
             animation: none;
+            transform: scale(1.1);
         }
 
         .hints-toggle::before {
@@ -636,9 +653,10 @@
             font-size: 2rem;
             color: var(--white);
             font-weight: bold;
+            pointer-events: none;
         }
 
-        .hints-toggle:hover::before {
+        .hints-toggle:hover::before, .hints-toggle:active::before {
             color: var(--black);
         }
 
@@ -901,6 +919,8 @@
                 width: calc(100vw - 40px);
                 right: 20px;
                 left: 20px;
+                bottom: 20px;
+                max-height: 60vh;
             }
             
             .stats-grid {
@@ -913,37 +933,191 @@
 
             .modal-content, .hints-content {
                 padding: 2rem 1.5rem;
+                width: 95%;
+                max-height: 90vh;
             }
 
             h1 {
                 letter-spacing: 0.2em;
+                font-size: clamp(2.5rem, 12vw, 5rem);
             }
 
+            /* Mobile: Stack buttons vertically on right side */
             .built-with-btn {
-                font-size: 0.8rem;
-                padding: 8px 15px;
+                top: 10px;
+                left: 10px;
+                right: auto;
+                font-size: 0.7rem;
+                padding: 8px 12px;
+                max-width: 120px;
+                line-height: 1.2;
             }
 
-            .floating-text {
-                font-size: clamp(3rem, 12vw, 8rem);
+            .language-switcher {
+                top: 10px;
+                right: 10px;
+                left: auto;
+                padding: 5px 8px;
+                gap: 5px;
             }
 
+            .lang-btn {
+                padding: 6px 10px;
+                font-size: 0.75rem;
+            }
+
+            /* Mobile: Bottom buttons bigger and better positioned */
             .hints-toggle {
-                bottom: 100px;
+                bottom: 20px;
                 left: 20px;
+                width: 55px;
+                height: 55px;
             }
 
             .terminal-toggle {
-                bottom: 100px;
+                bottom: 20px;
                 right: 20px;
-            }
-
-            .hints-toggle, .terminal-toggle {
-                width: 50px;
-                height: 50px;
+                width: 55px;
+                height: 55px;
             }
 
             .hints-toggle::before, .terminal-toggle::before {
+                font-size: 1.8rem;
+            }
+
+            .hints-toggle .badge {
+                width: 22px;
+                height: 22px;
+                font-size: 0.7rem;
+                top: -3px;
+                right: -3px;
+            }
+
+            /* Floating text smaller on mobile */
+            .floating-text {
+                font-size: clamp(2.5rem, 10vw, 6rem);
+                opacity: 0.1;
+            }
+
+            /* Counter smaller on mobile */
+            .counter-container {
+                padding: 1.5rem 1rem;
+            }
+
+            .counter-display {
+                font-size: clamp(1.2rem, 5vw, 2rem);
+            }
+
+            /* Stats cards better spacing */
+            .stats-grid {
+                gap: 1rem;
+                margin-bottom: 2rem;
+            }
+
+            .stat-card {
+                padding: 1.2rem;
+            }
+
+            /* T-shirt image container */
+            .tshirt-image-container {
+                max-width: 100%;
+                margin-bottom: 2rem;
+            }
+
+            /* Make all touch targets at least 44px */
+            button, .lang-btn, a {
+                min-height: 44px;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            /* Modal close buttons bigger */
+            .modal-close, .hints-close, .terminal-close {
+                font-size: 2.5rem;
+                padding: 0.5rem;
+                min-width: 44px;
+                min-height: 44px;
+            }
+
+            /* Terminal input bigger */
+            .terminal-input {
+                font-size: 1rem;
+                padding: 0.5rem;
+            }
+
+            .terminal-header {
+                padding: 1rem;
+            }
+
+            /* Secret message responsive */
+            .secret-message {
+                width: 90%;
+                max-width: 90%;
+                padding: 2rem 1.5rem;
+            }
+
+            .secret-message h2 {
+                font-size: 1.5rem;
+            }
+
+            .secret-message p {
+                font-size: 1rem;
+            }
+
+            .secret-message button {
+                padding: 0.8rem 1.5rem;
+                font-size: 0.9rem;
+                min-height: 44px;
+            }
+
+            /* Content padding top to avoid overlap */
+            .content {
+                padding-top: 5rem;
+            }
+        }
+
+        /* Extra small mobile */
+        @media (max-width: 480px) {
+            .built-with-btn {
+                font-size: 0.65rem;
+                padding: 6px 10px;
+                max-width: 100px;
+            }
+
+            .language-switcher {
+                padding: 4px 6px;
+            }
+
+            .lang-btn {
+                padding: 5px 8px;
+                font-size: 0.7rem;
+            }
+
+            h1 {
+                font-size: clamp(2rem, 15vw, 4rem);
+                margin-bottom: 0.5rem;
+            }
+
+            .subtitle {
+                font-size: 0.7rem;
+                margin-bottom: 2rem;
+            }
+
+            .counter-container {
+                padding: 1rem 0.8rem;
+                margin-bottom: 2rem;
+            }
+
+            .text-container, .tshirt-section {
+                padding: 1.5rem 1rem;
+            }
+
+            .tshirt-section h2 {
+                font-size: 1.8rem;
+            }
+
+            .tshirt-price {
                 font-size: 1.5rem;
             }
         }
@@ -966,6 +1140,16 @@
             text-shadow: 
                 2px 2px 0 var(--white),
                 -2px -2px 0 var(--white);
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* On mobile, make it less visible and don't block interaction */
+        @media (max-width: 768px) {
+            .floating-text {
+                opacity: 0.08;
+                pointer-events: none;
+            }
         }
 
         .floating-text:hover {
@@ -1065,11 +1249,15 @@
             cursor: pointer;
             transition: all 0.3s ease;
             text-transform: uppercase;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+            min-height: 44px;
         }
 
-        .secret-message button:hover {
+        .secret-message button:hover, .secret-message button:active {
             background: var(--black);
             color: var(--white);
+            transform: scale(1.05);
         }
 
         /* Counter crazy mode */
@@ -1445,8 +1633,14 @@
             <!-- T-SHIRT IMAGE -->
             <div class="tshirt-image-container">
                 <!-- REPLACE WITH YOUR ACTUAL IMAGE: -->
-                 <img src="tshirt.png" alt="T-shirt ACTIONS" class="tshirt-image">  <img src="action.png" alt="T-shirt ACTIONS" class="tshirt-image"> 
-             
+                <!-- <img src="path/to/your/tshirt.jpg" alt="T-shirt ACTIONS" class="tshirt-image"> -->
+                
+                <!-- PLACEHOLDER - Delete this div when you add real image -->
+                <div class="tshirt-placeholder">
+                    <div class="placeholder-text">T-SHIRT</div>
+                    <div class="placeholder-subtext">ACTIONS</div>
+                    <div class="placeholder-note">Design minimaliste noir/blanc</div>
+                </div>
             </div>
 
             <div class="tshirt-description">
