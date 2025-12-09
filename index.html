@@ -27,6 +27,35 @@
             font-family: 'Courier New', monospace;
             color: var(--white);
             line-height: 1.6;
+            transition: all 0.3s ease;
+        }
+
+        body.peace-mode {
+            background: #1a1a1a;
+        }
+
+        body.truth-mode {
+            animation: glitchBody 0.3s infinite;
+        }
+
+        body.wake-mode {
+            animation: shakeBody 0.5s infinite;
+        }
+
+        @keyframes glitchBody {
+            0% { transform: translate(0); }
+            20% { transform: translate(-3px, 3px); }
+            40% { transform: translate(3px, -3px); }
+            60% { transform: translate(-3px, -3px); }
+            80% { transform: translate(3px, 3px); }
+            100% { transform: translate(0); }
+        }
+
+        @keyframes shakeBody {
+            0%, 100% { transform: translate(0, 0); }
+            25% { transform: translate(3px, 3px); }
+            50% { transform: translate(-3px, -3px); }
+            75% { transform: translate(3px, -3px); }
         }
 
         /* Three.js Canvas Background */
@@ -418,55 +447,76 @@
             font-style: italic;
         }
 
+        /* T-shirt Image */
+        .tshirt-image-container {
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto 3rem auto;
+            border: 2px solid var(--white);
+            background: rgba(255, 255, 255, 0.05);
+            overflow: hidden;
+        }
+
+        .tshirt-image {
+            width: 100%;
+            height: auto;
+            display: block;
+            filter: grayscale(100%) contrast(1.1);
+        }
+
+        .tshirt-placeholder {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: 
+                linear-gradient(45deg, transparent 48%, var(--white) 48%, var(--white) 52%, transparent 52%),
+                linear-gradient(-45deg, transparent 48%, var(--white) 48%, var(--white) 52%, transparent 52%);
+            background-size: 20px 20px;
+            background-position: 0 0, 10px 10px;
+            opacity: 0.1;
+            position: relative;
+        }
+
+        .placeholder-text {
+            font-size: 3rem;
+            color: var(--white);
+            font-weight: bold;
+            letter-spacing: 0.3em;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+            background: var(--black);
+            padding: 1rem 2rem;
+            border: 2px solid var(--white);
+        }
+
+        .placeholder-subtext {
+            font-size: 1.5rem;
+            color: var(--white);
+            letter-spacing: 0.2em;
+            margin-top: 1rem;
+            background: var(--black);
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--white);
+        }
+
+        .placeholder-note {
+            font-size: 0.8rem;
+            color: var(--gray-light);
+            margin-top: 2rem;
+            text-align: center;
+            font-style: italic;
+            background: var(--black);
+            padding: 0.5rem 1rem;
+        }
+
         .tshirt-description {
             text-align: left;
             margin-bottom: 2rem;
             line-height: 1.8;
-        }
-
-        .tshirt-prompt-container {
-            margin: 2rem 0;
-        }
-
-        .tshirt-prompt-label {
-            font-size: 1rem;
-            color: var(--white);
-            margin-bottom: 1rem;
-            text-align: left;
-        }
-
-        .tshirt-prompt-input {
-            width: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            border: 1px solid var(--white);
-            color: var(--white);
-            padding: 1rem;
-            font-family: 'Courier New', monospace;
-            font-size: 1rem;
-            margin-bottom: 1rem;
-            outline: none;
-            resize: vertical;
-            min-height: 100px;
-        }
-
-        .tshirt-prompt-input:focus {
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        .tshirt-preview {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid var(--white);
-            padding: 2rem;
-            margin: 2rem 0;
-            min-height: 200px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .tshirt-preview-placeholder {
-            color: var(--gray-light);
-            font-style: italic;
         }
 
         .tshirt-cta {
@@ -490,7 +540,7 @@
         .tshirt-price {
             font-size: 2rem;
             color: var(--white);
-            margin: 1rem 0;
+            margin: 2rem 0 1rem 0;
         }
 
         .tshirt-impact {
@@ -555,6 +605,201 @@
 
         .terminal-toggle:hover::before {
             color: var(--black);
+        }
+
+        /* Hints Button */
+        .hints-toggle {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            width: 60px;
+            height: 60px;
+            background: rgba(0, 0, 0, 0.9);
+            border: 2px solid var(--white);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 100;
+            transition: all 0.3s ease;
+            animation: subtlePulse 3s infinite;
+        }
+
+        .hints-toggle:hover {
+            background: var(--white);
+            animation: none;
+        }
+
+        .hints-toggle::before {
+            content: '?';
+            font-size: 2rem;
+            color: var(--white);
+            font-weight: bold;
+        }
+
+        .hints-toggle:hover::before {
+            color: var(--black);
+        }
+
+        @keyframes subtlePulse {
+            0%, 100% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.05); opacity: 1; }
+        }
+
+        /* Hints badge when secrets found */
+        .hints-toggle .badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            width: 24px;
+            height: 24px;
+            background: var(--white);
+            color: var(--black);
+            border-radius: 50%;
+            font-size: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        /* Hints Modal */
+        .hints-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 250;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .hints-modal.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .hints-content {
+            background: var(--black);
+            border: 2px solid var(--white);
+            padding: 3rem;
+            max-width: 700px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .hints-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid var(--white);
+            padding-bottom: 1rem;
+        }
+
+        .hints-title {
+            font-size: 1.8rem;
+            color: var(--white);
+            text-transform: uppercase;
+        }
+
+        .hints-close {
+            color: var(--white);
+            font-size: 2rem;
+            cursor: pointer;
+            border: none;
+            background: none;
+            transition: opacity 0.2s ease;
+        }
+
+        .hints-close:hover {
+            opacity: 0.7;
+        }
+
+        .hints-counter {
+            font-size: 1.2rem;
+            color: var(--white);
+            margin-bottom: 2rem;
+            text-align: center;
+            padding: 1rem;
+            border: 1px solid var(--gray-mid);
+        }
+
+        .hints-counter .number {
+            font-size: 2rem;
+            font-weight: bold;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .hints-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .hint-item {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--gray-mid);
+            padding: 1rem;
+            margin-bottom: 1rem;
+            position: relative;
+        }
+
+        .hint-item.found {
+            border-color: var(--white);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .hint-item.found::before {
+            content: '✓';
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            color: var(--white);
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .hint-title {
+            color: var(--white);
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .hint-description {
+            color: var(--gray-light);
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .hint-locked {
+            color: var(--gray-mid);
+            font-style: italic;
+            font-size: 0.85rem;
+        }
+
+        .bonus-hint {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid var(--white);
+            padding: 1.5rem;
+            margin-top: 2rem;
+            text-align: center;
+        }
+
+        .bonus-hint h3 {
+            color: var(--white);
+            margin-bottom: 1rem;
+        }
+
+        .bonus-hint p {
+            color: var(--gray-light);
         }
 
         .terminal-window {
@@ -666,7 +911,7 @@
                 padding: 2rem 1.5rem;
             }
 
-            .modal-content {
+            .modal-content, .hints-content {
                 padding: 2rem 1.5rem;
             }
 
@@ -678,12 +923,204 @@
                 font-size: 0.8rem;
                 padding: 8px 15px;
             }
+
+            .floating-text {
+                font-size: clamp(3rem, 12vw, 8rem);
+            }
+
+            .hints-toggle {
+                bottom: 100px;
+                left: 20px;
+            }
+
+            .terminal-toggle {
+                bottom: 100px;
+                right: 20px;
+            }
+
+            .hints-toggle, .terminal-toggle {
+                width: 50px;
+                height: 50px;
+            }
+
+            .hints-toggle::before, .terminal-toggle::before {
+                font-size: 1.5rem;
+            }
+        }
+
+        /* Floating STOP WAR Text */
+        .floating-text {
+            position: fixed;
+            font-size: clamp(4rem, 15vw, 12rem);
+            color: var(--white);
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            opacity: 0.15;
+            pointer-events: all;
+            z-index: 6;
+            animation: float 25s infinite ease-in-out;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-shadow: 
+                2px 2px 0 var(--white),
+                -2px -2px 0 var(--white);
+        }
+
+        .floating-text:hover {
+            opacity: 0.3;
+            transform: scale(1.05);
+        }
+
+        .floating-text.explode {
+            animation: explode 1s ease-out;
+        }
+
+        @keyframes explode {
+            0% { 
+                transform: scale(1); 
+                opacity: 0.15; 
+            }
+            50% { 
+                transform: scale(3); 
+                opacity: 0.8; 
+                filter: blur(5px);
+            }
+            100% { 
+                transform: scale(0.5); 
+                opacity: 0; 
+            }
+        }
+
+        @keyframes float {
+            0% {
+                transform: translate(-10vw, 20vh) rotate(-5deg);
+            }
+            25% {
+                transform: translate(70vw, 10vh) rotate(3deg);
+            }
+            50% {
+                transform: translate(80vw, 70vh) rotate(-2deg);
+            }
+            75% {
+                transform: translate(10vw, 80vh) rotate(4deg);
+            }
+            100% {
+                transform: translate(-10vw, 20vh) rotate(-5deg);
+            }
+        }
+
+        /* Secret Message */
+        .secret-message {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            background: rgba(0, 0, 0, 0.98);
+            border: 3px solid var(--white);
+            padding: 3rem;
+            z-index: 300;
+            text-align: center;
+            max-width: 80%;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s ease;
+        }
+
+        .secret-message.show {
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 1;
+            pointer-events: all;
+            animation: popIn 0.5s ease;
+        }
+
+        @keyframes popIn {
+            0% { transform: translate(-50%, -50%) scale(0); }
+            70% { transform: translate(-50%, -50%) scale(1.1); }
+            100% { transform: translate(-50%, -50%) scale(1); }
+        }
+
+        .secret-message h2 {
+            color: var(--white);
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+        }
+
+        .secret-message p {
+            color: var(--gray-light);
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+
+        .secret-message button {
+            background: var(--white);
+            color: var(--black);
+            border: 2px solid var(--white);
+            padding: 0.8rem 2rem;
+            font-family: 'Courier New', monospace;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+        }
+
+        .secret-message button:hover {
+            background: var(--black);
+            color: var(--white);
+        }
+
+        /* Counter crazy mode */
+        .counter-container.crazy {
+            animation: shake 0.5s infinite;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(5px, 5px) rotate(2deg); }
+            50% { transform: translate(-5px, -5px) rotate(-2deg); }
+            75% { transform: translate(5px, -5px) rotate(1deg); }
+        }
+
+        /* Terminal secret found indicator */
+        .terminal-toggle.secret-found::after {
+            content: '!';
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            width: 20px;
+            height: 20px;
+            background: var(--white);
+            border-radius: 50%;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--black);
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
         }
     </style>
 </head>
 <body>
     <!-- Three.js 3D Background -->
     <canvas id="three-canvas"></canvas>
+
+    <!-- Floating STOP WAR -->
+    <div class="floating-text" id="floatingText">STOP WAR</div>
+
+    <!-- Secret Message Overlay -->
+    <div class="secret-message" id="secretMessage">
+        <h2>SECRET UNLOCKED</h2>
+        <p id="secretText">Secret message here...</p>
+        <button onclick="closeSecret()">CLOSE</button>
+    </div>
 
     <!-- Built With Button -->
     <button class="built-with-btn" id="builtWithBtn">How This Was Made</button>
@@ -703,8 +1140,8 @@
             </div>
 
             <div class="modal-section" id="modalIntro">
-                <p>Ce site critique le système de consommation qui finance la guerre. Mais il a été créé AVEC les produits de ce système.</p>
-                <p>Il n'y a pas de position pure. Même en créant ce manifeste, j'ai participé aux structures que je critique. La conscience de cette contradiction n'est pas de l'hypocrisie — c'est de l'honnêteté.</p>
+                <p id="modalIntroP1">Ce site critique le système de consommation qui finance la guerre. Mais il a été créé AVEC les produits de ce système.</p>
+                <p id="modalIntroP2">Il n'y a pas de position pure. Même en créant ce manifeste, j'ai participé aux structures que je critique. La conscience de cette contradiction n'est pas de l'hypocrisie — c'est de l'honnêteté.</p>
             </div>
 
             <div class="modal-section">
@@ -712,7 +1149,7 @@
                 
                 <div class="tool-item">
                     <div class="tool-name">MacBook Air M2</div>
-                    <div class="tool-description">Ordinateur portable fabriqué par Apple. Chaîne d'approvisionnement incluant Foxconn, cobalt extrait au Congo dans des conditions problématiques, terres rares.</div>
+                    <div class="tool-description" id="tool1Desc">Ordinateur portable fabriqué par Apple. Chaîne d'approvisionnement incluant Foxconn, cobalt extrait au Congo dans des conditions problématiques, terres rares.</div>
                     <div class="tool-links">
                         <a href="https://www.theguardian.com/global-development/2021/nov/08/cobalt-drc-miners-toil-for-30p-a-day-to-fuel-electric-cars" target="_blank">Cobalt mining</a>
                         <a href="https://www.bbc.com/news/business-50154499" target="_blank">Foxconn conditions</a>
@@ -721,31 +1158,31 @@
 
                 <div class="tool-item">
                     <div class="tool-name">Claude AI (Anthropic)</div>
-                    <div class="tool-description">Intelligence artificielle utilisée pour coder ce site. Nécessite des serveurs massifs, data centers énergivores, infrastructure cloud mondiale.</div>
+                    <div class="tool-description" id="tool2Desc">Intelligence artificielle utilisée pour coder ce site. Nécessite des serveurs massifs, data centers énergivores, infrastructure cloud mondiale.</div>
                     <div class="tool-links">
                         <a href="https://www.nature.com/articles/s42256-020-0219-9" target="_blank">AI energy consumption</a>
                     </div>
                 </div>
 
                 <div class="tool-item">
-                    <div class="tool-name">Souris (commandée en ligne)</div>
-                    <div class="tool-description">Périphérique fabriqué en Asie, expédié par avion cargo, emballage plastique, distribution via plateformes e-commerce.</div>
+                    <div class="tool-name" id="tool3Name">Souris (commandée en ligne)</div>
+                    <div class="tool-description" id="tool3Desc">Périphérique fabriqué en Asie, expédié par avion cargo, emballage plastique, distribution via plateformes e-commerce.</div>
                     <div class="tool-links">
                         <a href="https://www.theguardian.com/environment/2020/mar/23/amazon-climate-change-environmental-impact" target="_blank">E-commerce impact</a>
                     </div>
                 </div>
 
                 <div class="tool-item">
-                    <div class="tool-name">Électricité (Hydro-Québec)</div>
-                    <div class="tool-description">Énergie hydroélectrique, réseau provincial, infrastructure de barrages avec impacts environnementaux et sociaux sur territoires autochtones.</div>
+                    <div class="tool-name" id="tool4Name">Électricité (Hydro-Québec)</div>
+                    <div class="tool-description" id="tool4Desc">Énergie hydroélectrique, réseau provincial, infrastructure de barrages avec impacts environnementaux et sociaux sur territoires autochtones.</div>
                     <div class="tool-links">
                         <a href="https://www.cbc.ca/news/canada/north/hydro-quebec-indigenous-consultation-1.5349888" target="_blank">Hydro impacts</a>
                     </div>
                 </div>
 
                 <div class="tool-item">
-                    <div class="tool-name">Hébergement web (Vercel)</div>
-                    <div class="tool-description">Infrastructure cloud, serveurs mondiaux, centres de données AWS/Google Cloud, consommation énergétique continue.</div>
+                    <div class="tool-name" id="tool5Name">Hébergement web (Vercel)</div>
+                    <div class="tool-description" id="tool5Desc">Infrastructure cloud, serveurs mondiaux, centres de données AWS/Google Cloud, consommation énergétique continue.</div>
                     <div class="tool-links">
                         <a href="https://www.theguardian.com/environment/2017/dec/11/tsunami-of-data-could-consume-fifth-global-electricity-by-2025" target="_blank">Data centers</a>
                     </div>
@@ -754,15 +1191,103 @@
 
             <div class="modal-section" id="modalConclusion">
                 <h3 id="conclusionTitle">Et maintenant?</h3>
-                <p>Utilise cet inconfort. Laisse cette contradiction te motiver à l'action.</p>
-                <p>La cohérence parfaite est impossible dans ce système. Mais les choix informés sont possibles.</p>
-                <p>Ce site n'est pas une solution. C'est une interruption. Une pause pour examiner ce qu'on finance, ce qu'on normalise, ce qu'on refuse.</p>
+                <p id="conclusionP1">Utilise cet inconfort. Laisse cette contradiction te motiver à l'action.</p>
+                <p id="conclusionP2">La cohérence parfaite est impossible dans ce système. Mais les choix informés sont possibles.</p>
+                <p id="conclusionP3">Ce site n'est pas une solution. C'est une interruption. Une pause pour examiner ce qu'on finance, ce qu'on normalise, ce qu'on refuse.</p>
             </div>
         </div>
     </div>
 
     <!-- Terminal -->
     <div class="terminal-toggle" id="terminalToggle"></div>
+    
+    <!-- Hints Button -->
+    <div class="hints-toggle" id="hintsToggle">
+        <span class="badge" id="hintsBadge" style="display: none;">0</span>
+    </div>
+
+    <!-- Hints Modal -->
+    <div class="hints-modal" id="hintsModal">
+        <div class="hints-content">
+            <div class="hints-header">
+                <h2 class="hints-title">🔐 Hidden Codes</h2>
+                <button class="hints-close" id="hintsClose">×</button>
+            </div>
+
+            <div class="hints-counter">
+                <span class="number" id="secretsCount">0/12</span>
+                <span>Secrets Discovered</span>
+            </div>
+
+            <ul class="hints-list">
+                <li class="hint-item" id="hint-konami">
+                    <div class="hint-title">01. The Gamer's Code</div>
+                    <div class="hint-description">Gamers from the 80s know this legendary sequence... ↑↑↓↓</div>
+                </li>
+
+                <li class="hint-item" id="hint-stopwar">
+                    <div class="hint-title">02. Double Impact</div>
+                    <div class="hint-description">Words floating in space have power, especially when clicked twice.</div>
+                </li>
+
+                <li class="hint-item" id="hint-counter">
+                    <div class="hint-title">03. Speed Run</div>
+                    <div class="hint-description">The military counter knows too much. Click it 5 times rapidly.</div>
+                </li>
+
+                <li class="hint-item" id="hint-peace">
+                    <div class="hint-title">04. Peaceful Command</div>
+                    <div class="hint-description">Open the terminal and type a word about tranquility...</div>
+                </li>
+
+                <li class="hint-item" id="hint-truth">
+                    <div class="hint-title">05. Reality Check</div>
+                    <div class="hint-description">The terminal can reveal what's real. Try typing it.</div>
+                </li>
+
+                <li class="hint-item" id="hint-wake">
+                    <div class="hint-title">06. Awakening</div>
+                    <div class="hint-description">The system wants you asleep. Command it to do the opposite.</div>
+                </li>
+
+                <li class="hint-item" id="hint-hover">
+                    <div class="hint-title">07. Patient Discovery</div>
+                    <div class="hint-description">Hover over the terminal button. Wait. Be patient.</div>
+                </li>
+
+                <li class="hint-item" id="hint-end">
+                    <div class="hint-title">08. The Ending</div>
+                    <div class="hint-description">Scroll to the bottom, then type a three-letter word anywhere...</div>
+                </li>
+
+                <li class="hint-item" id="hint-bottom">
+                    <div class="hint-title">09. Reach the Depths</div>
+                    <div class="hint-description">What happens when you scroll all the way down?</div>
+                </li>
+
+                <li class="hint-item" id="hint-kim">
+                    <div class="hint-title">10. Creator's Mark</div>
+                    <div class="hint-description">Type the creator's first name in the terminal...</div>
+                </li>
+
+                <li class="hint-item" id="hint-keyboard1">
+                    <div class="hint-title">11. Type & Trigger</div>
+                    <div class="hint-description">Type "peace" anywhere on the page (not in inputs).</div>
+                </li>
+
+                <li class="hint-item" id="hint-keyboard2">
+                    <div class="hint-title">12. Truth Typed</div>
+                    <div class="hint-description">Type "truth" anywhere on the page (not in inputs).</div>
+                </li>
+            </ul>
+
+            <div class="bonus-hint" id="bonusHint" style="display: none;">
+                <h3>🎁 BONUS UNLOCKED!</h3>
+                <p>You found <span id="bonusCount">5</span>+ secrets! More terminal commands: action, refuse, money, system, stop, war</p>
+            </div>
+        </div>
+    </div>
+
     <div class="terminal-window" id="terminalWindow">
         <div class="terminal-header">
             <span class="terminal-title">Terminal</span>
@@ -771,6 +1296,8 @@
         <div class="terminal-content" id="terminalContent">
             <div class="terminal-line"><span class="terminal-prompt">&gt;</span> System initialized...</div>
             <div class="terminal-line"><span class="terminal-prompt">&gt;</span> Type 'help' for commands</div>
+            <div class="terminal-line"><span class="terminal-prompt">&gt;</span> Try: peace, truth, wake, codes</div>
+            <div class="terminal-line"><span class="terminal-prompt">&gt;</span> Konami code works here... 🎮</div>
         </div>
         <div class="terminal-input-container">
             <input type="text" class="terminal-input" id="terminalInput" placeholder="Enter command..." autocomplete="off">
@@ -913,28 +1440,31 @@
         <!-- T-SHIRT SECTION -->
         <div class="tshirt-section">
             <h2>BUT NOW...</h2>
-            <p class="tshirt-tagline">"Ce n'est pas du merch. C'est une collaboration."</p>
+            <p class="tshirt-tagline">"Ce n'est pas du merch. C'est une action concrète."</p>
             
+            <!-- T-SHIRT IMAGE -->
+            <div class="tshirt-image-container">
+                <!-- REPLACE WITH YOUR ACTUAL IMAGE: -->
+                <!-- <img src="path/to/your/tshirt.jpg" alt="T-shirt ACTIONS" class="tshirt-image"> -->
+                
+                <!-- PLACEHOLDER - Delete this div when you add real image -->
+                <div class="tshirt-placeholder">
+                    <div class="placeholder-text">T-SHIRT</div>
+                    <div class="placeholder-subtext">ACTIONS</div>
+                    <div class="placeholder-note">Design minimaliste noir/blanc</div>
+                </div>
+            </div>
+
             <div class="tshirt-description">
-                <p>Ce texte t'a fait réfléchir? Transforme cette réflexion en objet tangible.</p>
-                <p>Écris un prompt. Une phrase. Une idée. Je la transforme en design de T-shirt.</p>
-                <p>Ce n'est pas de la consommation passive. C'est une co-création.</p>
-            </div>
-
-            <div class="tshirt-prompt-container">
-                <div class="tshirt-prompt-label">Ton prompt / ton idée:</div>
-                <textarea class="tshirt-prompt-input" id="tshirtPrompt" placeholder="Exemple: 'La paix en pixels', 'Refuse le système', 'Mon rêve en image'..."></textarea>
-                <button class="tshirt-cta" id="generateBtn">Générer le design</button>
-            </div>
-
-            <div class="tshirt-preview" id="tshirtPreview">
-                <div class="tshirt-preview-placeholder">Ton design apparaîtra ici...</div>
+                <p>Ce texte t'a fait réfléchir? Transforme cette réflexion en geste tangible.</p>
+                <p>T-shirt design minimaliste noir/blanc. Message simple. Impact réel.</p>
+                <p>Chaque achat finance directement des causes sociales. Ce n'est pas de la consommation passive.</p>
             </div>
 
             <div class="tshirt-price">45$</div>
-            <p style="color: var(--gray-light); margin-bottom: 1rem;">Pré-commande uniquement • Livraison 2-4 semaines</p>
+            <p style="color: var(--gray-light); margin-bottom: 2rem;">Pré-commande • Production éthique • Livraison 2-4 semaines</p>
             
-            <button class="tshirt-cta" id="preorderBtn" style="display: none;">Pré-commander maintenant</button>
+            <button class="tshirt-cta" id="preorderBtn">Pré-commander maintenant</button>
 
             <div class="tshirt-impact">
                 <h4>Où va l'argent?</h4>
@@ -1008,7 +1538,7 @@
         });
 
         // ============================================
-        // LANGUAGE SWITCHER
+        // LANGUAGE SWITCHER - FULL PAGE
         // ============================================
         const btnFR = document.getElementById('btnFR');
         const btnEN = document.getElementById('btnEN');
@@ -1016,14 +1546,285 @@
         const textEN = document.getElementById('textEN');
         let currentLang = 'fr';
 
+        // Translation object
+        const translations = {
+            fr: {
+                builtWithBtn: 'Comment ce site a été fait',
+                subtitle: 'Manifeste Interactif // 2025',
+                counterLabel: 'Dépenses Militaires Mondiales 2024',
+                counterSub: 'Par seconde (en direct)',
+                counterSource: 'Source: ',
+                stat1Label: 'Conflits Actifs',
+                stat2Label: 'Morts 2024',
+                stat3Label: 'UE 2026',
+                stat4Label: 'NATO 2035',
+                tshirtTitle: 'MAIS MAINTENANT...',
+                tshirtTagline: '"Ce n\'est pas du merch. C\'est une action concrète."',
+                tshirtDesc1: 'Ce texte t\'a fait réfléchir? Transforme cette réflexion en geste tangible.',
+                tshirtDesc2: 'T-shirt design minimaliste noir/blanc. Message simple. Impact réel.',
+                tshirtDesc3: 'Chaque achat finance directement des causes sociales. Ce n\'est pas de la consommation passive.',
+                tshirtPreorder: 'Pré-commande • Production éthique • Livraison 2-4 semaines',
+                tshirtBtn: 'Pré-commander maintenant',
+                tshirtImpactTitle: 'Où va l\'argent?',
+                tshirtImpact1: '2$ par T-shirt → Organismes d\'aide à l\'itinérance (Montréal)',
+                tshirtImpact2: 'Production, impression, expédition → Artisans locaux quand possible',
+                tshirtImpact3: 'Le reste → Finance mon apprentissage créatif et mon loyer',
+                tshirtImpactFooter: 'Acheter ce T-shirt, c\'est soutenir un projet artistique vivant et aider quelqu\'un à continuer de créer.',
+                hintsTitle: '🔐 Codes Cachés',
+                hintsCounter: 'Secrets Découverts',
+                hint1Title: '01. Le Code des Gamers',
+                hint1Desc: 'Les gamers des années 80 connaissent cette séquence légendaire... ↑↑↓↓',
+                hint2Title: '02. Double Impact',
+                hint2Desc: 'Les mots flottant dans l\'espace ont du pouvoir, surtout quand cliqués deux fois.',
+                hint3Title: '03. Course de Vitesse',
+                hint3Desc: 'Le compteur militaire en sait trop. Clique dessus 5 fois rapidement.',
+                hint4Title: '04. Commande Pacifique',
+                hint4Desc: 'Ouvre le terminal et tape un mot sur la tranquillité...',
+                hint5Title: '05. Vérification de Réalité',
+                hint5Desc: 'Le terminal peut révéler ce qui est réel. Essaie de le taper.',
+                hint6Title: '06. Éveil',
+                hint6Desc: 'Le système veut que tu dormes. Commande-lui de faire l\'opposé.',
+                hint7Title: '07. Découverte Patiente',
+                hint7Desc: 'Survole le bouton terminal. Attends. Sois patient.',
+                hint8Title: '08. La Fin',
+                hint8Desc: 'Scroll jusqu\'en bas, puis tape un mot de trois lettres n\'importe où...',
+                hint9Title: '09. Atteindre les Profondeurs',
+                hint9Desc: 'Que se passe-t-il quand tu scrolls jusqu\'en bas?',
+                hint10Title: '10. Marque du Créateur',
+                hint10Desc: 'Tape le prénom du créateur dans le terminal...',
+                hint11Title: '11. Taper & Déclencher',
+                hint11Desc: 'Tape "peace" n\'importe où sur la page (pas dans les inputs).',
+                hint12Title: '12. Vérité Tapée',
+                hint12Desc: 'Tape "truth" n\'importe où sur la page (pas dans les inputs).',
+                bonusTitle: '🎁 BONUS DÉBLOQUÉ!',
+                bonusText: 'Tu as trouvé <span id="bonusCount">5</span>+ secrets! Plus de commandes terminal: action, refuse, money, system, stop, war',
+                preorderAlert: 'Pré-commande bientôt disponible!\n\nLaisse ton email pour être notifié:\ncontact@kimmaurice.com',
+                // Modal Built With
+                modalTitle: 'Transparence',
+                modalIntro1: 'Ce site critique le système de consommation qui finance la guerre. Mais il a été créé AVEC les produits de ce système.',
+                modalIntro2: 'Il n\'y a pas de position pure. Même en créant ce manifeste, j\'ai participé aux structures que je critique. La conscience de cette contradiction n\'est pas de l\'hypocrisie — c\'est de l\'honnêteté.',
+                toolsTitle: 'Les outils utilisés',
+                tool1Desc: 'Ordinateur portable fabriqué par Apple. Chaîne d\'approvisionnement incluant Foxconn, cobalt extrait au Congo dans des conditions problématiques, terres rares.',
+                tool2Desc: 'Intelligence artificielle utilisée pour coder ce site. Nécessite des serveurs massifs, data centers énergivores, infrastructure cloud mondiale.',
+                tool3Name: 'Souris (commandée en ligne)',
+                tool3Desc: 'Périphérique fabriqué en Asie, expédié par avion cargo, emballage plastique, distribution via plateformes e-commerce.',
+                tool4Name: 'Électricité (Hydro-Québec)',
+                tool4Desc: 'Énergie hydroélectrique, réseau provincial, infrastructure de barrages avec impacts environnementaux et sociaux sur territoires autochtones.',
+                tool5Name: 'Hébergement web (Vercel)',
+                tool5Desc: 'Infrastructure cloud, serveurs mondiaux, centres de données AWS/Google Cloud, consommation énergétique continue.',
+                conclusionTitle: 'Et maintenant?',
+                conclusionP1: 'Utilise cet inconfort. Laisse cette contradiction te motiver à l\'action.',
+                conclusionP2: 'La cohérence parfaite est impossible dans ce système. Mais les choix informés sont possibles.',
+                conclusionP3: 'Ce site n\'est pas une solution. C\'est une interruption. Une pause pour examiner ce qu\'on finance, ce qu\'on normalise, ce qu\'on refuse.',
+                // Secret messages
+                secretKonami: { title: 'CODE KONAMI! 🎮', msg: 'Tu connais les classiques! Le Code Konami original de 1986.\nRespect aux vrais gamers. 👾' },
+                secretStopWar: { title: 'STOP WAR ACTIVÉ', msg: 'Tu as double-cliqué sur STOP WAR! 💥\nLes mots ne suffisent pas. L\'action commence maintenant.' },
+                secretHover: { title: 'SECRET HOVER', msg: 'Tu as découvert le secret hover! 🎉\nContinue d\'explorer... il y en a d\'autres.' },
+                secretEnd: { title: 'LA FIN?', msg: 'Non. Ce n\'est que le début.\nMaintenant passe à l\'action. 🎯' },
+                secretCounter: { title: 'SURCHARGE SYSTÈME', msg: 'Le compteur est devenu fou! Les dépenses militaires montent 20x plus vite! 💸💸💸' },
+                secretBottom: { msg: 'Tu as scrollé jusqu\'en bas. Tape "end" n\'importe où...' },
+                // Terminal commands
+                cmdHelp: 'Commandes: stats, about, built, tshirt, peace, truth, wake, codes, clear\nAstuce: Click sur ? pour des indices!',
+                cmdStats: 'Militaire: 2.718T$/an | Conflits: 61 | Morts: 160K | Cible NATO: 5%',
+                cmdAbout: 'Manifeste interactif par Kim Maurice. Basé sur les données, transparent, orienté action.',
+                cmdBuilt: 'Ouverture du modal de transparence...',
+                cmdTshirt: 'Scroll vers le bas pour voir la section T-shirt!',
+                cmdPeace: '✌️ Activation MODE PAIX... (5 secondes)',
+                cmdTruth: '🔴 Activation MODE VÉRITÉ... Voir sans filtres. (5 secondes)',
+                cmdWake: '⚡ MODE RÉVEIL... Le système dépend de ton sommeil. (3 secondes)',
+                cmdCodes: 'Codes secrets trouvés: 0/12 - Aucun encore',
+                cmdKim: '👋 Hey! Tu as trouvé mon nom. kimmaurice.com',
+                cmdAction: '🎯 Le vrai changement nécessite l\'alignement entre les mots et les actes.',
+                cmdRefuse: '🚫 Le refus n\'est pas de l\'apathie. C\'est une stratégie.',
+                cmdMoney: '💰 Suis l\'argent: 86 158$ par seconde.',
+                cmdSystem: '🔧 Le système n\'est pas brisé. Il fonctionne comme prévu.',
+                cmdStop: '🛑 S\'arrêter est le premier acte de résistance.',
+                cmdWar: '⚠️ La guerre est une construction humaine. Chaque achat la nourrit ou l\'affame.',
+                cmdNotFound: 'Commande non trouvée: "{cmd}". Tape \'help\'.'
+            },
+            en: {
+                builtWithBtn: 'How This Was Made',
+                subtitle: 'Interactive Manifesto // 2025',
+                counterLabel: 'Global Military Spending 2024',
+                counterSub: 'Per second (live)',
+                counterSource: 'Source: ',
+                stat1Label: 'Active Conflicts',
+                stat2Label: 'Deaths 2024',
+                stat3Label: 'EU 2026',
+                stat4Label: 'NATO 2035',
+                tshirtTitle: 'BUT NOW...',
+                tshirtTagline: '"This isn\'t merch. It\'s concrete action."',
+                tshirtDesc1: 'Did this text make you think? Transform that reflection into tangible action.',
+                tshirtDesc2: 'Minimalist black/white T-shirt design. Simple message. Real impact.',
+                tshirtDesc3: 'Every purchase directly funds social causes. This isn\'t passive consumption.',
+                tshirtPreorder: 'Pre-order • Ethical production • Delivery 2-4 weeks',
+                tshirtBtn: 'Pre-order now',
+                tshirtImpactTitle: 'Where does the money go?',
+                tshirtImpact1: '$2 per T-shirt → Homeless support organizations (Montreal)',
+                tshirtImpact2: 'Production, printing, shipping → Local artisans when possible',
+                tshirtImpact3: 'The rest → Funds my creative learning and rent',
+                tshirtImpactFooter: 'Buying this T-shirt means supporting a living art project and helping someone continue creating.',
+                hintsTitle: '🔐 Hidden Codes',
+                hintsCounter: 'Secrets Discovered',
+                hint1Title: '01. The Gamer\'s Code',
+                hint1Desc: 'Gamers from the 80s know this legendary sequence... ↑↑↓↓',
+                hint2Title: '02. Double Impact',
+                hint2Desc: 'Words floating in space have power, especially when clicked twice.',
+                hint3Title: '03. Speed Run',
+                hint3Desc: 'The military counter knows too much. Click it 5 times rapidly.',
+                hint4Title: '04. Peaceful Command',
+                hint4Desc: 'Open the terminal and type a word about tranquility...',
+                hint5Title: '05. Reality Check',
+                hint5Desc: 'The terminal can reveal what\'s real. Try typing it.',
+                hint6Title: '06. Awakening',
+                hint6Desc: 'The system wants you asleep. Command it to do the opposite.',
+                hint7Title: '07. Patient Discovery',
+                hint7Desc: 'Hover over the terminal button. Wait. Be patient.',
+                hint8Title: '08. The Ending',
+                hint8Desc: 'Scroll to the bottom, then type a three-letter word anywhere...',
+                hint9Title: '09. Reach the Depths',
+                hint9Desc: 'What happens when you scroll all the way down?',
+                hint10Title: '10. Creator\'s Mark',
+                hint10Desc: 'Type the creator\'s first name in the terminal...',
+                hint11Title: '11. Type & Trigger',
+                hint11Desc: 'Type "peace" anywhere on the page (not in inputs).',
+                hint12Title: '12. Truth Typed',
+                hint12Desc: 'Type "truth" anywhere on the page (not in inputs).',
+                bonusTitle: '🎁 BONUS UNLOCKED!',
+                bonusText: 'You found <span id="bonusCount">5</span>+ secrets! More terminal commands: action, refuse, money, system, stop, war',
+                preorderAlert: 'Pre-order coming soon!\n\nLeave your email to be notified:\ncontact@kimmaurice.com',
+                // Modal Built With
+                modalTitle: 'Transparency',
+                modalIntro1: 'This site critiques consumption systems that fund war. But it was built WITH products of those systems.',
+                modalIntro2: 'There is no pure position. Even creating this manifesto, I participated in the structures I critique. Awareness of this contradiction isn\'t hypocrisy — it\'s honesty.',
+                toolsTitle: 'Tools used',
+                tool1Desc: 'Laptop manufactured by Apple. Supply chain including Foxconn, cobalt extracted in Congo under problematic conditions, rare earths.',
+                tool2Desc: 'Artificial intelligence used to code this site. Requires massive servers, energy-intensive data centers, global cloud infrastructure.',
+                tool3Name: 'Mouse (ordered online)',
+                tool3Desc: 'Device manufactured in Asia, shipped by air cargo, plastic packaging, distribution via e-commerce platforms.',
+                tool4Name: 'Electricity (Hydro-Québec)',
+                tool4Desc: 'Hydroelectric power, provincial network, dam infrastructure with environmental and social impacts on Indigenous territories.',
+                tool5Name: 'Web hosting (Vercel)',
+                tool5Desc: 'Cloud infrastructure, global servers, AWS/Google Cloud data centers, continuous energy consumption.',
+                conclusionTitle: 'What now?',
+                conclusionP1: 'Use this discomfort. Let this contradiction motivate you to action.',
+                conclusionP2: 'Perfect consistency is impossible in this system. But informed choices are possible.',
+                conclusionP3: 'This site is not a solution. It\'s an interruption. A pause to examine what we fund, what we normalize, what we refuse.',
+                // Secret messages
+                secretKonami: { title: 'KONAMI CODE! 🎮', msg: 'You know the classics! The original Konami Code from 1986.\nRespect to real gamers. 👾' },
+                secretStopWar: { title: 'STOP WAR ACTIVATED', msg: 'You double-clicked STOP WAR! 💥\nWords aren\'t enough. Action starts now.' },
+                secretHover: { title: 'SECRET HOVER', msg: 'You discovered the hover secret! 🎉\nKeep exploring... there are more.' },
+                secretEnd: { title: 'THE END?', msg: 'No. This is just the beginning.\nNow go take action. 🎯' },
+                secretCounter: { title: 'SYSTEM OVERLOAD', msg: 'The counter has gone crazy! Military spending climbing 20x faster! 💸💸💸' },
+                secretBottom: { msg: 'You scrolled to the bottom. Type "end" anywhere...' },
+                // Terminal commands
+                cmdHelp: 'Commands: stats, about, built, tshirt, peace, truth, wake, codes, clear\nTip: Click the ? button for hints!',
+                cmdStats: 'Military: $2.718T/year | Conflicts: 61 | Deaths: 160K | NATO target: 5%',
+                cmdAbout: 'Interactive manifesto by Kim Maurice. Data-driven, transparent, action-oriented.',
+                cmdBuilt: 'Opening transparency modal...',
+                cmdTshirt: 'Scroll down to see the T-shirt section!',
+                cmdPeace: '✌️ Activating PEACE MODE... (5 seconds)',
+                cmdTruth: '🔴 Activating TRUTH MODE... See without filters. (5 seconds)',
+                cmdWake: '⚡ WAKE UP MODE... The system depends on your sleep. (3 seconds)',
+                cmdCodes: 'Secret codes found: 0/12 - None yet',
+                cmdKim: '👋 Hey! You found my name. kimmaurice.com',
+                cmdAction: '🎯 Real change requires alignment between words and deeds.',
+                cmdRefuse: '🚫 Refusal is not apathy. It is strategy.',
+                cmdMoney: '💰 Follow the money: $86,158 per second.',
+                cmdSystem: '🔧 The system is not broken. It works as designed.',
+                cmdStop: '🛑 Stopping is the first act of resistance.',
+                cmdWar: '⚠️ War is a human construction. Every purchase feeds or starves it.',
+                cmdNotFound: 'Command not found: "{cmd}". Type \'help\'.'
+            }
+        };
+
+        function updateLanguage(lang) {
+            currentLang = lang;
+            const t = translations[lang];
+
+            // Update all interface elements
+            document.getElementById('builtWithBtn').textContent = t.builtWithBtn;
+            document.querySelector('.subtitle').textContent = t.subtitle;
+            document.querySelector('.counter-label').textContent = t.counterLabel;
+            document.querySelector('.counter-sublabel').textContent = t.counterSub;
+            
+            // Stats labels
+            document.querySelectorAll('.stat-label')[0].textContent = t.stat1Label;
+            document.querySelectorAll('.stat-label')[1].textContent = t.stat2Label;
+            document.querySelectorAll('.stat-label')[2].textContent = t.stat3Label;
+            document.querySelectorAll('.stat-label')[3].textContent = t.stat4Label;
+
+            // T-shirt section
+            document.querySelector('.tshirt-section h2').textContent = t.tshirtTitle;
+            document.querySelector('.tshirt-tagline').textContent = t.tshirtTagline;
+            const tshirtDesc = document.querySelectorAll('.tshirt-description p');
+            tshirtDesc[0].textContent = t.tshirtDesc1;
+            tshirtDesc[1].textContent = t.tshirtDesc2;
+            tshirtDesc[2].textContent = t.tshirtDesc3;
+            document.querySelector('.tshirt-section > p').textContent = t.tshirtPreorder;
+            document.getElementById('preorderBtn').textContent = t.tshirtBtn;
+            document.querySelector('.tshirt-impact h4').textContent = t.tshirtImpactTitle;
+            const impactItems = document.querySelectorAll('.tshirt-impact li');
+            impactItems[0].textContent = t.tshirtImpact1;
+            impactItems[1].textContent = t.tshirtImpact2;
+            impactItems[2].textContent = t.tshirtImpact3;
+            document.querySelector('.tshirt-impact p').textContent = t.tshirtImpactFooter;
+
+            // Hints modal
+            document.querySelector('.hints-title').textContent = t.hintsTitle;
+            document.querySelector('.hints-counter span:last-child').textContent = t.hintsCounter;
+            
+            const hints = [
+                { title: t.hint1Title, desc: t.hint1Desc },
+                { title: t.hint2Title, desc: t.hint2Desc },
+                { title: t.hint3Title, desc: t.hint3Desc },
+                { title: t.hint4Title, desc: t.hint4Desc },
+                { title: t.hint5Title, desc: t.hint5Desc },
+                { title: t.hint6Title, desc: t.hint6Desc },
+                { title: t.hint7Title, desc: t.hint7Desc },
+                { title: t.hint8Title, desc: t.hint8Desc },
+                { title: t.hint9Title, desc: t.hint9Desc },
+                { title: t.hint10Title, desc: t.hint10Desc },
+                { title: t.hint11Title, desc: t.hint11Desc },
+                { title: t.hint12Title, desc: t.hint12Desc }
+            ];
+
+            document.querySelectorAll('.hint-item').forEach((item, i) => {
+                item.querySelector('.hint-title').textContent = hints[i].title;
+                item.querySelector('.hint-description').textContent = hints[i].desc;
+            });
+
+            document.querySelector('.bonus-hint h3').textContent = t.bonusTitle;
+            document.querySelector('.bonus-hint p').innerHTML = t.bonusText;
+
+            // Update modal
+            document.getElementById('modalTitle').textContent = t.modalTitle;
+            document.getElementById('modalIntroP1').textContent = t.modalIntro1;
+            document.getElementById('modalIntroP2').textContent = t.modalIntro2;
+            document.getElementById('toolsTitle').textContent = t.toolsTitle;
+            document.getElementById('tool1Desc').textContent = t.tool1Desc;
+            document.getElementById('tool2Desc').textContent = t.tool2Desc;
+            document.getElementById('tool3Name').textContent = t.tool3Name;
+            document.getElementById('tool3Desc').textContent = t.tool3Desc;
+            document.getElementById('tool4Name').textContent = t.tool4Name;
+            document.getElementById('tool4Desc').textContent = t.tool4Desc;
+            document.getElementById('tool5Name').textContent = t.tool5Name;
+            document.getElementById('tool5Desc').textContent = t.tool5Desc;
+            document.getElementById('conclusionTitle').textContent = t.conclusionTitle;
+            document.getElementById('conclusionP1').textContent = t.conclusionP1;
+            document.getElementById('conclusionP2').textContent = t.conclusionP2;
+            document.getElementById('conclusionP3').textContent = t.conclusionP3;
+
+            // Reveal paragraphs
+            revealOnScroll();
+        }
+
         btnFR.addEventListener('click', () => {
             btnFR.classList.add('active');
             btnEN.classList.remove('active');
             textFR.classList.remove('hidden');
             textEN.classList.add('hidden');
-            currentLang = 'fr';
-            updateModalLanguage();
-            revealOnScroll();
+            updateLanguage('fr');
         });
 
         btnEN.addEventListener('click', () => {
@@ -1031,10 +1832,11 @@
             btnFR.classList.remove('active');
             textEN.classList.remove('hidden');
             textFR.classList.add('hidden');
-            currentLang = 'en';
-            updateModalLanguage();
-            revealOnScroll();
+            updateLanguage('en');
         });
+
+        // Initialize with French
+        updateLanguage('fr');
 
         // ============================================
         // BUILT WITH MODAL
@@ -1056,46 +1858,6 @@
                 builtWithModal.classList.remove('active');
             }
         });
-
-        function updateModalLanguage() {
-            const modalTitle = document.getElementById('modalTitle');
-            const modalIntro = document.getElementById('modalIntro');
-            const toolsTitle = document.getElementById('toolsTitle');
-            const conclusionTitle = document.getElementById('conclusionTitle');
-            const modalConclusion = document.getElementById('modalConclusion');
-
-            if (currentLang === 'fr') {
-                builtWithBtn.textContent = 'Comment ce site a été fait';
-                modalTitle.textContent = 'Transparence';
-                modalIntro.innerHTML = `
-                    <p>Ce site critique le système de consommation qui finance la guerre. Mais il a été créé AVEC les produits de ce système.</p>
-                    <p>Il n'y a pas de position pure. Même en créant ce manifeste, j'ai participé aux structures que je critique. La conscience de cette contradiction n'est pas de l'hypocrisie — c'est de l'honnêteté.</p>
-                `;
-                toolsTitle.textContent = 'Les outils utilisés';
-                conclusionTitle.textContent = 'Et maintenant?';
-                modalConclusion.innerHTML = `
-                    <h3>Et maintenant?</h3>
-                    <p>Utilise cet inconfort. Laisse cette contradiction te motiver à l'action.</p>
-                    <p>La cohérence parfaite est impossible dans ce système. Mais les choix informés sont possibles.</p>
-                    <p>Ce site n'est pas une solution. C'est une interruption. Une pause pour examiner ce qu'on finance, ce qu'on normalise, ce qu'on refuse.</p>
-                `;
-            } else {
-                builtWithBtn.textContent = 'How This Was Made';
-                modalTitle.textContent = 'Transparency';
-                modalIntro.innerHTML = `
-                    <p>This site critiques the consumption system that funds war. But it was created WITH the products of that system.</p>
-                    <p>There is no pure position. Even in creating this manifesto, I participated in the structures I critique. Awareness of this contradiction is not hypocrisy — it's honesty.</p>
-                `;
-                toolsTitle.textContent = 'Tools Used';
-                conclusionTitle.textContent = 'What Now?';
-                modalConclusion.innerHTML = `
-                    <h3>What Now?</h3>
-                    <p>Use this discomfort. Let this contradiction motivate action.</p>
-                    <p>Perfect consistency is impossible in this system. But informed choices are possible.</p>
-                    <p>This site is not a solution. It's an interruption. A pause to examine what we fund, what we normalize, what we refuse.</p>
-                `;
-            }
-        }
 
         // ============================================
         // COUNTER
@@ -1132,38 +1894,12 @@
         revealOnScroll();
 
         // ============================================
-        // T-SHIRT INTERACTION
+        // T-SHIRT PRE-ORDER
         // ============================================
-        const tshirtPrompt = document.getElementById('tshirtPrompt');
-        const generateBtn = document.getElementById('generateBtn');
-        const tshirtPreview = document.getElementById('tshirtPreview');
         const preorderBtn = document.getElementById('preorderBtn');
 
-        generateBtn.addEventListener('click', () => {
-            const prompt = tshirtPrompt.value.trim();
-            
-            if (!prompt) {
-                alert(currentLang === 'fr' ? 'Écris une idée d\'abord!' : 'Write an idea first!');
-                return;
-            }
-
-            // Simulate design generation
-            tshirtPreview.innerHTML = `
-                <div style="text-align: center; color: var(--white);">
-                    <p style="font-size: 1.2rem; margin-bottom: 1rem;">✓ Design concept créé!</p>
-                    <p style="font-style: italic; color: var(--gray-light);">"${prompt}"</p>
-                    <p style="margin-top: 1rem; font-size: 0.9rem;">Le design final sera créé après ta pré-commande.</p>
-                </div>
-            `;
-
-            preorderBtn.style.display = 'inline-block';
-        });
-
         preorderBtn.addEventListener('click', () => {
-            const msg = currentLang === 'fr' 
-                ? 'Pré-commande bientôt disponible!\n\nLaisse ton email pour être notifié:\ncontact@kimmaurice.com' 
-                : 'Pre-order coming soon!\n\nLeave your email to be notified:\ncontact@kimmaurice.com';
-            alert(msg);
+            alert(translations[currentLang].preorderAlert);
         });
 
         // ============================================
@@ -1175,16 +1911,107 @@
         const terminalInput = document.getElementById('terminalInput');
         const terminalContent = document.getElementById('terminalContent');
 
-        let terminalLineIndex = 2;
+        let terminalLineIndex = 4;
+        let secretsFound = [];
+        let hoverTimer;
 
-        const commands = {
-            'help': 'Commands: stats, about, built, tshirt, clear',
-            'stats': 'Military: $2.718T/year | Conflicts: 61 | Deaths: 160K | NATO target: 5%',
-            'about': 'Interactive manifesto by Kim Maurice. Data-driven, transparent, action-oriented.',
-            'built': 'Opening transparency modal...',
-            'tshirt': 'Scroll down to see the T-shirt section!',
-            'clear': 'CLEAR_SCREEN'
+        // Hints mapping
+        const secretHints = {
+            'konami': 'hint-konami',
+            'stopwar': 'hint-stopwar',
+            'counter': 'hint-counter',
+            'peace': 'hint-peace',
+            'truth': 'hint-truth',
+            'wake': 'hint-wake',
+            'hover': 'hint-hover',
+            'end': 'hint-end',
+            'bottom': 'hint-bottom',
+            'kim': 'hint-kim'
         };
+
+        function updateHintsDisplay() {
+            const count = secretsFound.length;
+            const badge = document.getElementById('hintsBadge');
+            const secretsCount = document.getElementById('secretsCount');
+            const bonusHint = document.getElementById('bonusHint');
+            const bonusCount = document.getElementById('bonusCount');
+
+            // Update counter
+            secretsCount.textContent = `${count}/12`;
+
+            // Show badge if secrets found
+            if (count > 0) {
+                badge.style.display = 'flex';
+                badge.textContent = count;
+            }
+
+            // Mark found hints
+            secretsFound.forEach(secret => {
+                const hintId = secretHints[secret];
+                if (hintId) {
+                    const hintElement = document.getElementById(hintId);
+                    if (hintElement) {
+                        hintElement.classList.add('found');
+                    }
+                }
+            });
+
+            // Unlock bonus hint at 5+
+            if (count >= 5) {
+                bonusHint.style.display = 'block';
+                bonusCount.textContent = count;
+            }
+
+            // Update terminal codes command
+            const count = secretsFound.length;
+            const secretsList = secretsFound.join(', ') || (currentLang === 'fr' ? 'Aucun encore' : 'None yet');
+            translations[currentLang].cmdCodes = `${currentLang === 'fr' ? 'Codes secrets trouvés' : 'Secret codes found'}: ${count}/12 - ${secretsList}`;
+        }
+
+        // Hints modal controls
+        const hintsToggle = document.getElementById('hintsToggle');
+        const hintsModal = document.getElementById('hintsModal');
+        const hintsClose = document.getElementById('hintsClose');
+
+        hintsToggle.addEventListener('click', () => {
+            updateHintsDisplay();
+            hintsModal.classList.add('active');
+        });
+
+        hintsClose.addEventListener('click', () => {
+            hintsModal.classList.remove('active');
+        });
+
+        hintsModal.addEventListener('click', (e) => {
+            if (e.target === hintsModal) {
+                hintsModal.classList.remove('active');
+            }
+        });
+
+        // Function to get command text in current language
+        function getCommand(cmd) {
+            const t = translations[currentLang];
+            const cmdMap = {
+                'help': t.cmdHelp,
+                'stats': t.cmdStats,
+                'about': t.cmdAbout,
+                'built': t.cmdBuilt,
+                'tshirt': t.cmdTshirt,
+                'peace': t.cmdPeace,
+                'truth': t.cmdTruth,
+                'wake': t.cmdWake,
+                'codes': t.cmdCodes,
+                'kim': t.cmdKim,
+                'action': t.cmdAction,
+                'refuse': t.cmdRefuse,
+                'money': t.cmdMoney,
+                'system': t.cmdSystem,
+                'stop': t.cmdStop,
+                'war': t.cmdWar,
+                'clear': 'CLEAR_SCREEN'
+            };
+            return cmdMap[cmd];
+        }
 
         terminalToggle.addEventListener('click', () => {
             terminalWindow.classList.toggle('active');
@@ -1197,6 +2024,26 @@
             terminalWindow.classList.remove('active');
         });
 
+        // Initialize hints display
+        updateHintsDisplay();
+
+        // Terminal hover easter egg
+        terminalToggle.addEventListener('mouseenter', () => {
+            hoverTimer = setTimeout(() => {
+                if (!secretsFound.includes('hover')) {
+                    secretsFound.push('hover');
+                    terminalToggle.classList.add('secret-found');
+                    updateHintsDisplay();
+                    const t = translations[currentLang].secretHover;
+                    showSecret(t.title, t.msg);
+                }
+            }, 3000);
+        });
+
+        terminalToggle.addEventListener('mouseleave', () => {
+            clearTimeout(hoverTimer);
+        });
+
         terminalInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
                 const command = terminalInput.value.trim().toLowerCase();
@@ -1206,13 +2053,41 @@
                     terminalContent.innerHTML = '';
                     terminalLineIndex = 0;
                 } else if (command === 'built') {
-                    addTerminalLine(commands[command], 'response');
+                    addTerminalLine(getCommand(command), 'response');
                     terminalWindow.classList.remove('active');
                     builtWithModal.classList.add('active');
-                } else if (commands[command]) {
-                    addTerminalLine(commands[command], 'response');
+                } else if (command === 'peace') {
+                    addTerminalLine(getCommand(command), 'response');
+                    activatePeaceMode();
+                    if (!secretsFound.includes('peace')) {
+                        secretsFound.push('peace');
+                        updateHintsDisplay();
+                    }
+                } else if (command === 'truth') {
+                    addTerminalLine(getCommand(command), 'response');
+                    activateTruthMode();
+                    if (!secretsFound.includes('truth')) {
+                        secretsFound.push('truth');
+                        updateHintsDisplay();
+                    }
+                } else if (command === 'wake') {
+                    addTerminalLine(getCommand(command), 'response');
+                    activateWakeMode();
+                    if (!secretsFound.includes('wake')) {
+                        secretsFound.push('wake');
+                        updateHintsDisplay();
+                    }
+                } else if (command === 'kim') {
+                    addTerminalLine(getCommand(command), 'response');
+                    if (!secretsFound.includes('kim')) {
+                        secretsFound.push('kim');
+                        updateHintsDisplay();
+                    }
+                } else if (getCommand(command)) {
+                    addTerminalLine(getCommand(command), 'response');
                 } else if (command) {
-                    addTerminalLine(`Command not found: "${command}". Type 'help'.`, 'error');
+                    const errorMsg = translations[currentLang].cmdNotFound.replace('{cmd}', command);
+                    addTerminalLine(errorMsg, 'error');
                 }
                 
                 terminalInput.value = '';
@@ -1236,6 +2111,215 @@
             terminalContent.appendChild(line);
             terminalLineIndex++;
         }
+
+        // ============================================
+        // SPECIAL MODES
+        // ============================================
+        function activatePeaceMode() {
+            document.body.classList.add('peace-mode');
+            sphere.material.opacity = 0.1;
+            
+            setTimeout(() => {
+                document.body.classList.remove('peace-mode');
+                sphere.material.opacity = 0.3;
+            }, 5000);
+        }
+
+        function activateTruthMode() {
+            document.body.classList.add('truth-mode');
+            sphere.material.opacity = 0.6;
+            
+            setTimeout(() => {
+                document.body.classList.remove('truth-mode');
+                sphere.material.opacity = 0.3;
+            }, 5000);
+        }
+
+        function activateWakeMode() {
+            document.body.classList.add('wake-mode');
+            sphere.rotation.x += 2;
+            sphere.rotation.y += 2;
+            
+            setTimeout(() => {
+                document.body.classList.remove('wake-mode');
+            }, 3000);
+        }
+
+        // ============================================
+        // SECRET MESSAGE SYSTEM
+        // ============================================
+        function showSecret(title, message) {
+            const secretMsg = document.getElementById('secretMessage');
+            const secretText = document.getElementById('secretText');
+            
+            document.querySelector('.secret-message h2').textContent = title;
+            secretText.textContent = message;
+            
+            secretMsg.classList.add('show');
+        }
+
+        function closeSecret() {
+            document.getElementById('secretMessage').classList.remove('show');
+        }
+
+        // ============================================
+        // FLOATING TEXT EASTER EGG
+        // ============================================
+        const floatingText = document.getElementById('floatingText');
+        let doubleClickTimer;
+        let doubleClickCount = 0;
+
+        floatingText.addEventListener('click', () => {
+            doubleClickCount++;
+            clearTimeout(doubleClickTimer);
+            
+            if (doubleClickCount === 2) {
+                floatingText.classList.add('explode');
+                if (!secretsFound.includes('stopwar')) {
+                    secretsFound.push('stopwar');
+                    updateHintsDisplay();
+                    const t = translations[currentLang].secretStopWar;
+                    showSecret(t.title, t.msg);
+                }
+                
+                setTimeout(() => {
+                    floatingText.classList.remove('explode');
+                }, 1000);
+                
+                doubleClickCount = 0;
+            }
+            
+            doubleClickTimer = setTimeout(() => {
+                doubleClickCount = 0;
+            }, 500);
+        });
+
+        // ============================================
+        // KONAMI CODE EASTER EGG
+        // ============================================
+        let konamiCode = [];
+        const konamiSequence = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
+
+        document.addEventListener('keydown', (e) => {
+            konamiCode.push(e.key);
+            konamiCode = konamiCode.slice(-10);
+
+            if (konamiCode.join(',') === konamiSequence.join(',')) {
+                document.body.style.filter = 'invert(1)';
+                if (!secretsFound.includes('konami')) {
+                    secretsFound.push('konami');
+                    updateHintsDisplay();
+                    const t = translations[currentLang].secretKonami;
+                    showSecret(t.title, t.msg);
+                }
+                setTimeout(() => {
+                    document.body.style.filter = 'none';
+                }, 3000);
+            }
+        });
+
+        // ============================================
+        // COUNTER CLICK EASTER EGG
+        // ============================================
+        const counterContainer = document.querySelector('.counter-container');
+        let clickCount = 0;
+        let clickTimer;
+        let counterSpeed = 1000;
+        let counterInterval;
+
+        function startCounter() {
+            if (counterInterval) clearInterval(counterInterval);
+            counterInterval = setInterval(updateCounter, counterSpeed);
+        }
+
+        counterContainer.addEventListener('click', () => {
+            clickCount++;
+            clearTimeout(clickTimer);
+            
+            if (clickCount === 5) {
+                counterContainer.classList.add('crazy');
+                counterSpeed = 50;
+                startCounter();
+                
+                if (!secretsFound.includes('counter')) {
+                    secretsFound.push('counter');
+                    updateHintsDisplay();
+                }
+                
+                const t = translations[currentLang].secretCounter;
+                showSecret(t.title, t.msg);
+                
+                setTimeout(() => {
+                    counterContainer.classList.remove('crazy');
+                    counterSpeed = 1000;
+                    startCounter();
+                }, 5000);
+                
+                clickCount = 0;
+            }
+            
+            clickTimer = setTimeout(() => {
+                clickCount = 0;
+            }, 1000);
+        });
+
+        startCounter();
+
+        // ============================================
+        // KEYBOARD EASTER EGGS
+        // ============================================
+        let typedWord = '';
+        let typingTimer;
+
+        document.addEventListener('keypress', (e) => {
+            // Ignore if typing in terminal or input fields
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+            
+            typedWord += e.key.toLowerCase();
+            clearTimeout(typingTimer);
+            
+            // Check for secret words
+            if (typedWord.includes('end')) {
+                if (!secretsFound.includes('end')) {
+                    secretsFound.push('end');
+                    updateHintsDisplay();
+                    const t = translations[currentLang].secretEnd;
+                    showSecret(t.title, t.msg);
+                }
+                typedWord = '';
+            }
+            
+            if (typedWord.includes('peace')) {
+                activatePeaceMode();
+                typedWord = '';
+            }
+            
+            if (typedWord.includes('truth')) {
+                activateTruthMode();
+                typedWord = '';
+            }
+            
+            // Reset typed word after 2 seconds
+            typingTimer = setTimeout(() => {
+                typedWord = '';
+            }, 2000);
+        });
+
+        // ============================================
+        // SCROLL TO BOTTOM DETECTION
+        // ============================================
+        let hasReachedBottom = false;
+
+        window.addEventListener('scroll', () => {
+            if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 100) {
+                if (!hasReachedBottom && !secretsFound.includes('bottom')) {
+                    hasReachedBottom = true;
+                    secretsFound.push('bottom');
+                    updateHintsDisplay();
+                    addTerminalLine(translations[currentLang].secretBottom.msg, 'response');
+                }
+            }
+        });
     </script>
 </body>
 </html>
